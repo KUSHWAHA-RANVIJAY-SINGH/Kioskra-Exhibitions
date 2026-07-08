@@ -206,15 +206,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const data = await response.json();
 
                 if (response.ok) {
-                    alert("Success! Your message has been sent.");
-                    form.reset();
-                    window.location.href = "thankyou.html";
+                    showPremiumAlert("Success!", "Your message has been sent successfully.", true, () => {
+                        form.reset();
+                        window.location.href = "thankyou.html";
+                    });
                 } else {
-                    alert("Error: " + data.message);
+                    showPremiumAlert("Error", data.message || "Failed to send message.", false);
                 }
 
             } catch (error) {
-                alert("Something went wrong. Please try again.");
+                showPremiumAlert("Something went wrong", "Please check your connection and try again.", false);
             } finally {
                 submitBtn.textContent = originalText;
                 submitBtn.disabled = false;
@@ -271,7 +272,7 @@ function sendWhatsApp() {
     const message = document.getElementById("message") ? document.getElementById("message").value.trim() : "";
 
     if (!name || !phone) {
-        alert("Please fill in your Name and Phone Number.");
+        showPremiumAlert("Required Fields", "Please fill in your Name and Phone Number.", false);
         return;
     }
 
@@ -283,4 +284,70 @@ function sendWhatsApp() {
         `Requirement: ${encodeURIComponent(message)}`;
 
     window.open(`https://wa.me/919643378735?text=${text}`, "_blank");
+}
+
+// --- Premium Custom Alert Modal Helper ---
+function showPremiumAlert(title, message, isSuccess = true, callback = null) {
+    // Remove existing alert if any
+    const existingAlert = document.querySelector('.custom-alert-overlay');
+    if (existingAlert) {
+        existingAlert.remove();
+    }
+
+    // Create overlay container
+    const overlay = document.createElement('div');
+    overlay.className = 'custom-alert-overlay';
+    
+    // Choose icon based on state
+    const iconSVG = isSuccess 
+        ? `<svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>`
+        : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>`;
+    
+    const iconClass = isSuccess ? 'custom-alert-icon' : 'custom-alert-icon error';
+
+    overlay.innerHTML = `
+        <div class="custom-alert-box">
+            <div class="${iconClass}">
+                ${iconSVG}
+            </div>
+            <div class="custom-alert-title">${title}</div>
+            <div class="custom-alert-message">${message}</div>
+            <button class="custom-alert-btn">OK</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Trigger transition
+    requestAnimationFrame(() => {
+        overlay.classList.add('active');
+    });
+
+    // Close alert function
+    const closeAlert = () => {
+        overlay.classList.remove('active');
+        setTimeout(() => {
+            overlay.remove();
+            if (callback) callback();
+        }, 300);
+    };
+
+    // Close on button click
+    overlay.querySelector('.custom-alert-btn').addEventListener('click', closeAlert);
+
+    // Close on click outside the alert box
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeAlert();
+        }
+    });
+
+    // Keyboard controls (Enter or Escape to close)
+    const handleKeydown = (e) => {
+        if (e.key === 'Enter' || e.key === 'Escape') {
+            document.removeEventListener('keydown', handleKeydown);
+            closeAlert();
+        }
+    };
+    document.addEventListener('keydown', handleKeydown);
 }
