@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exhibition Design Portfolio – Kioskra Exhibitions, Delhi</title>
+    <meta name="description" content="View our portfolio of premium custom exhibition stalls, 3D designs, on-ground fabrication work, and finished exhibition booths across India." />
+    
+    <link rel="icon" type="image/png" href="Source Images/LOGOS/Kioskra Transparent.png" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header role="banner">
+        <a href="index.html" class="logo" aria-label="Kioskra Exhibitions Home">
+            <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="45" height="45">
+            <span class="logo-text">Kioskra Exhibitions</span>
+        </a>
+
+        <nav role="navigation" aria-label="Main Navigation">
+            <button class="hamburger" aria-label="Toggle Navigation" aria-expanded="false">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="Portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="#contact-section">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- PORTFOLIO HEADER -->
+    <section class="portfolio-header">
+        <h1>Our Portfolio</h1>
+        <p>Explore our complete design and execution lifecycle, showcasing futuristic concepts and successful brand installations.</p>
+    </section>
+
+    <!-- NAVIGATION CARDS -->
+    <section class="service-cards-container">
+        <div class="service-cards-heading">
+            <h2>Explore by Project Phase</h2>
+            <p>Select a phase below to jump to that gallery, or filter all projects dynamically.</p>
+        </div>
+        <div class="service-cards">
+            <div class="service-card" onclick="document.querySelector('.filter-btn[data-filter=\'design\']').click(); document.getElementById('gallery-section').scrollIntoView({behavior: 'smooth'});">
+                <div class="service-icon">🎨</div>
+                <h3>3D Designs</h3>
+                <p>Innovative virtual concepts and creative exhibition layouts customized to client brand needs.</p>
+            </div>
+            <div class="service-card" onclick="document.querySelector('.filter-btn[data-filter=\'execution\']').click(); document.getElementById('gallery-section').scrollIntoView({behavior: 'smooth'});">
+                <div class="service-icon">🏗️</div>
+                <h3>On-ground Setup</h3>
+                <p>Exacting fabrication process and structural assembly live at major exhibition halls.</p>
+            </div>
+            <div class="service-card" onclick="document.querySelector('.filter-btn[data-filter=\'delivered\']').click(); document.getElementById('gallery-section').scrollIntoView({behavior: 'smooth'});">
+                <div class="service-icon">✓</div>
+                <h3>Delivered Stands</h3>
+                <p>Completed premium stalls handed over to our clients, ready for trade show success.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- DYNAMIC GRID GALLERY SECTION -->
+    <section id="gallery-section" class="light-bg">
+        <div class="container">
+            <h2 class="center-title">Project Gallery</h2>
+            
+            <!-- Category Filter Tabs -->
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">Show All</button>
+                <button class="filter-btn" data-filter="design">3D Designs</button>
+                <button class="filter-btn" data-filter="execution">On-ground Setup</button>
+                <button class="filter-btn" data-filter="delivered">Delivered Stands</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="gallery-grid">
+                <!-- Designs (24 Items) -->
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (1).jpeg" alt="Futuristic Exhibition Stall Design concept">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept A</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (1).jpg" alt="Double-decker Exhibition Booth Design mockup">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept B</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (2).jpeg" alt="Luxury Open-sided Booth Design render">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept C</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (2).jpg" alt="Modern Corporate Pavilion 3D render">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept D</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (3).jpeg" alt="Premium Tech Exhibition Booth design">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept E</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (3).jpg" alt="Interactive Experience Stall Design render">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept F</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (4).jpeg" alt="Automotive Exhibition Pavilion layout">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept G</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (1).png" alt="Futuristic Product Display Stall design">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept H</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (2).png" alt="Retail Brand Experience Stall design">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept I</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (5).jpeg" alt="Premium Fabricated Pavilion render">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept J</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (6).jpeg" alt="Custom Hang-lighting Booth design">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept K</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (7).jpeg" alt="Luxury Corporate Lounge Stall layout">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept L</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (8).jpeg" alt="Exhibition Pod display concept">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept M</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (9).jpeg" alt="Sleek Minimalist Pavilion mockup">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept N</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (10).jpeg" alt="Bright Led Backlit Stall design">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept O</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (11).jpeg" alt="Industrial Exhibition Stall design">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept P</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (12).jpeg" alt="Exhibition Interior Lounge render">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept Q</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (13).jpeg" alt="Illuminated Branding Counter concept">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept R</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (14).jpeg" alt="Modern Curve Truss Stall design">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept S</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (15).jpeg" alt="Interactive Brand Wall mockup">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept T</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (16).jpeg" alt="Custom Hanging Truss Concept render">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept U</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (17).jpeg" alt="Exhibition Product Rack concept layout">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Stall Concept V</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="design">
+                    <img src="Source Images/Designs/1 (1).gif" alt="3D Stall Walkthrough Animation GIF">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">3D Design</span>
+                        <h3 class="gallery-item-title">Exhibition Walkthrough Concept</h3>
+                    </div>
+                </div>
+
+                <!-- Onground working (7 Items) -->
+                <div class="gallery-item" data-category="execution">
+                    <img src="Source Images/Onground working/1.jpeg" alt="Structural truss assembly live at venue">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">On-ground Setup</span>
+                        <h3 class="gallery-item-title">Truss and Core Setup</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="execution">
+                    <img src="Source Images/Onground working/2.jpeg" alt="Wooden partition carpentry setup at exhibition center">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">On-ground Setup</span>
+                        <h3 class="gallery-item-title">Wooden Partitioning</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="execution">
+                    <img src="Source Images/Onground working/3.jpeg" alt="Precision painting and finishing of stand walls">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">On-ground Setup</span>
+                        <h3 class="gallery-item-title">Painting & Drywall Finish</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="execution">
+                    <img src="Source Images/Onground working/4.jpeg" alt="Electrical cabling and spot lighting installation">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">On-ground Setup</span>
+                        <h3 class="gallery-item-title">Electrical & Lighting Rigging</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="execution">
+                    <img src="Source Images/Onground working/5.jpeg" alt="Acrylic brand letters fabrication on wall">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">On-ground Setup</span>
+                        <h3 class="gallery-item-title">Vinyl Branding mounting</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="execution">
+                    <img src="Source Images/Onground working/6.jpeg" alt="Platform raising and premium vinyl flooring laydown">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">On-ground Setup</span>
+                        <h3 class="gallery-item-title">Raised Flooring Setup</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="execution">
+                    <img src="Source Images/Onground working/7.jpeg" alt="Quality review and structural checks before opening">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">On-ground Setup</span>
+                        <h3 class="gallery-item-title">On-site Structural Alignment</h3>
+                    </div>
+                </div>
+
+                <!-- Delivered (19 Items) -->
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (1).jpeg" alt="Finished Federal Bank exhibition stall">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Federal Bank Exhibition Stall</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (2).jpeg" alt="Delivered custom Milton corporate booth">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Milton Exhibition Stall</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (3).jpeg" alt="Delivered premium ProCook kitchenware stand">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">ProCook Exhibition Booth</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (4).jpeg" alt="Finished Voltas smart appliances exhibition stall">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Voltas Exhibition Booth</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (5).jpeg" alt="Finished Livguard energy storage stall">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Livguard Stall Setup</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (6).jpeg" alt="Completed Treo glassware corporate pavilion">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Treo Exhibition Stall</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (7).jpeg" alt="Finished Servo oil high impact display counter">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Servo Lubricants Stall</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (8).jpeg" alt="Delivered Prayag bath fittings display booth">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Prayag Exhibition Pavilion</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (9).jpeg" alt="Finished Okaya batteries exhibition layout">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Okaya Power Booth</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (10).jpeg" alt="Delivered BOBCARD financial stall">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">BOBCARD Trade Show Stall</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (11).jpeg" alt="Completed Tulip diagnostics booth">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Tulip Diagnostics Pavilion</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (12).jpeg" alt="Delivered custom brand kiosk stand">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Brand Activations Kiosk</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (13).jpeg" alt="Finished corporate lounge experience booth">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">VIP Corporate Lounge Booth</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (14).jpeg" alt="Completed double open-angle stand">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Custom Corner Exhibition Booth</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (15).jpeg" alt="Delivered heavy products industrial booth">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Industrial Goods Pavilion</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (16).jpeg" alt="Delivered smart home brand exhibition pavilion">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Smart Living Exhibition Stall</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (17).jpeg" alt="Finished custom fabricated counter block">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Premium Exhibition Reception</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (18).jpeg" alt="Completed brand selfie point installation">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Brand Activation Selfie Stand</h3>
+                    </div>
+                </div>
+                <div class="gallery-item" data-category="delivered">
+                    <img src="Source Images/Delivered/1 (19).jpeg" alt="Completed exhibition hall registration area block">
+                    <div class="gallery-item-overlay">
+                        <span class="gallery-item-tag">Delivered Stand</span>
+                        <h3 class="gallery-item-title">Exhibition Hall Entry Gates</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3D WALKTHROUGHS VIDEO SECTION -->
+    <section class="portfolio-section portfolio-dark">
+        <div class="container">
+            <h2 class="center-title" style="color: var(--text-white);">3D Walkthroughs</h2>
+            
+            <div class="video-container">
+                <div class="video-item active">
+                    <video muted loop playsinline poster="Source Images/LOGOS/Kioskra Transparent.png">
+                        <source src="Video/hero.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-label">
+                        <h3>Main Concept Walkthrough</h3>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <video muted loop playsinline poster="Source Images/LOGOS/Kioskra Transparent.png">
+                        <source src="Video/Hero2.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-label">
+                        <h3>Stall Interior Details</h3>
+                    </div>
+                </div>
+
+                <div class="video-item">
+                    <video muted loop playsinline poster="Source Images/LOGOS/Kioskra Transparent.png">
+                        <source src="Video/hero3.mp4" type="video/mp4">
+                    </video>
+                    <div class="video-label">
+                        <h3>Lighting & Texture Animation</h3>
+                    </div>
+                </div>
+
+                <button class="nav-btn prev" aria-label="Previous video">&#10094;</button>
+                <button class="nav-btn next" aria-label="Next video">&#10095;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- PORTFOLIO STATS -->
+    <section class="portfolio-stats">
+        <div class="stat-item"><h3>150+</h3><p>Projects Completed</p></div>
+        <div class="stat-item"><h3>8+</h3><p>Years Experience</p></div>
+        <div class="stat-item"><h3>24/7</h3><p>Project Support</p></div>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section id="contact-section" class="contact-form" aria-label="Get Free Exhibition Consultation">
+        <h2 class="center-title">Start Your Exhibition Journey</h2>
+        <p class="center" style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Fill out the form below and our exhibition experts will contact you within 24 hours.</p>
+        
+        <form action="https://formsubmit.co/kioskraexhibitions@gmail.com" method="POST" aria-label="Exhibition Enquiry Form">
+            <!-- Hidden inputs -->
+            <input type="hidden" name="_subject" value="New Exhibition Enquiry - Kioskra">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="thankyou.html">
+
+            <!-- Form fields -->
+            <input type="text" name="name" id="name" placeholder="Your Name" required aria-label="Full Name">
+            <input type="text" name="company" id="company" placeholder="Company Name" aria-label="Company Name">
+            <input type="tel" name="phone" id="phone" placeholder="Phone Number" required aria-label="Phone Number">
+            <input type="text" name="city" id="city" placeholder="Exhibition City" aria-label="City">
+            <textarea name="message" id="message" placeholder="Your Requirement" aria-label="Message" class="full-width"></textarea>
+
+            <button type="submit" class="full-width">Submit Enquiry</button>
+        </form>
+    </section>
+
+    <!-- FOOTER / CONTACT -->
+    <footer id="contact" class="footer">
+        <div class="footer-container">
+            <!-- Col 1: Bio -->
+            <div class="footer-col footer-bio">
+                <div class="footer-logo">
+                    <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="40" height="40">
+                    <span class="logo-text">Kioskra Exhibitions</span>
+                </div>
+                <p class="bio-text">
+                    Design-led exhibition stall fabrication and brand activation experts based in Delhi, executing premium turnkey booth solutions pan-India.
+                </p>
+                <div class="footer-socials">
+                    <a href="https://www.instagram.com/kioskraexhibitions/" target="_blank" rel="noopener" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" class="social-icon"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </a>
+                    <a href="https://www.youtube.com/@KioskraExhibitions" target="_blank" rel="noopener" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" class="social-icon"><path d="M23.498 6.163a3.003 3.003 0 00-2.11-2.11C19.53 3.545 12 3.545 12 3.545s-7.53 0-9.388.508a3.003 3.003 0 00-2.11 2.11C0 8.017 0 12 0 12s0 3.983.502 5.837a3.003 3.003 0 002.11 2.11c1.858.507 9.388.507 9.388.507s7.53 0 9.388-.507a3.003 3.003 0 002.11-2.11C24 15.983 24 12 24 12s0-3.983-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/company/kioskra-exhibitions" target="_blank" rel="noopener" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" class="social-icon"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Col 2: Quick Links -->
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="services.html">Services</a>
+                <a href="Portfolio.html">Portfolio</a>
+                <a href="index.html#about">About</a>
+                <a href="#contact-section">Contact</a>
+            </div>
+
+            <!-- Col 3: Services -->
+            <div class="footer-col">
+                <h3>Exhibition Services</h3>
+                <a href="services.html">Concept Stall Design</a>
+                <a href="services.html">3D Visualization</a>
+                <a href="services.html">Custom Stall Fabrication</a>
+                <a href="services.html">Turnkey Exhibition Solutions</a>
+            </div>
+
+            <!-- Col 4: Contact Details -->
+            <div class="footer-col footer-contact-details">
+                <h3>Contact Us</h3>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" class="contact-icon"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <span>L2/86, Shastri Nagar, New Delhi – 110052</span>
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" class="contact-icon"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <span style="display: flex; flex-direction: column; gap: 5px;">
+                        <a href="mailto:info@kioskra.com">info@kioskra.com</a>
+                        <a href="mailto:kioskraexhibitions@gmail.com">kioskraexhibitions@gmail.com</a>
+                    </span>
+                </div>
+                <div class="contact-item">
+                    <svg viewBox="0 0 24 24" class="contact-icon"><path d="M6.62 10.79c1.44 2.82 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <span style="display: flex; flex-direction: column; gap: 5px;">
+                        <a href="tel:9643378735">+91 9643378735</a>
+                        <a href="tel:8882737989">+91 8882737989</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <div class="footer-bottom">
+            &copy; 2026 Kioskra Exhibitions – All Rights Reserved.
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floater -->
+    <a href="https://wa.me/919643378735?text=Hi%20Kioskra%20Exhibitions,%20I%20visited%20your%20website%20and%20would%20like%20to%20get%20a%20free%20design%20consultation%20for%20an%20upcoming%20exhibition.%20Please%20connect%20with%20me." class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.968C16.588 1.971 14.12 1.93 11.993 1.93c-5.439 0-9.865 4.37-9.869 9.802-.001 1.73.475 3.42 1.378 4.908l-.947 3.454 3.502-.94zm11.303-6.19c-.31-.154-1.834-.894-2.115-.995-.281-.102-.485-.154-.689.154-.204.307-.791.995-.97 1.199-.178.204-.356.228-.666.074-.31-.154-1.31-.477-2.494-1.522-.922-.814-1.545-1.82-1.725-2.13-.18-.306-.02-.471.135-.623.14-.136.31-.357.466-.537.156-.178.208-.307.31-.512.102-.204.05-.383-.025-.537-.075-.154-.689-1.637-.945-2.253-.25-.598-.503-.517-.689-.527-.178-.009-.383-.012-.587-.012-.204 0-.537.076-.817.38-.28.307-1.073 1.037-1.073 2.53 0 1.493 1.102 2.937 1.254 3.14.153.204 2.169 3.262 5.253 4.568.734.31 1.307.496 1.752.636.737.232 1.41.199 1.94.12.59-.088 1.834-.737 2.09-1.449.255-.712.255-1.32.179-1.448-.076-.128-.28-.204-.59-.36z"/>
+        </svg>
+    </a>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image Viewer">
+        <button id="lightbox-close" class="lightbox-close" aria-label="Close image viewer">&times;</button>
+        <button id="lightbox-prev" class="lightbox-nav lightbox-prev" aria-label="Previous image">&#10094;</button>
+        <div class="lightbox-content">
+            <img id="lightbox-img" src="" alt="">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+        <button id="lightbox-next" class="lightbox-nav lightbox-next" aria-label="Next image">&#10095;</button>
+    </div>
+
+    <!-- JS -->
+    <script src="script.js"></script>
+</body>
+</html>
