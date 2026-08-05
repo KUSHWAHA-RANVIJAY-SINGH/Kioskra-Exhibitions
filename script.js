@@ -219,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 8. HOMEPAGE VIDEO LOOP
     // =========================================================
     const heroVideo = document.getElementById('heroVideo');
-    const videos = ['Video/hero.mp4', 'Video/Hero2.mp4', 'Video/hero3.mp4'];
+    const videos = ['Video/hero.webm', 'Video/Hero2.webm', 'Video/hero3.webm'];
     let currentVideoIndex = 0;
 
     if (heroVideo) {
