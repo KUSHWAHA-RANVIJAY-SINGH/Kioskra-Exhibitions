@@ -99,16 +99,16 @@
     })(window,document,'script','dataLayer','GTM-KWG3QMGF');</script>
     <!-- End Google Tag Manager -->
 </head>
-<body>
+<body data-page="home">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KWG3QMGF"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <!-- HEADER -->
-    <header role="banner">
+    <header role="banner" class="header--transparent">
         <a href="index.html" class="logo" aria-label="Kioskra Exhibitions Home">
-            <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="45" height="45">
+            <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="45" height="45" fetchpriority="high">
             <span class="logo-text">Kioskra Exhibitions</span>
         </a>
 
@@ -131,7 +131,7 @@
     <!-- VIDEO HERO -->
     <section class="video-hero" id="home" aria-label="Hero Section">
         <div class="video-hero-overlay"></div>
-        <video id="heroVideo" autoplay muted playsinline poster="Source Images/LOGOS/Kioskra Exhibition Logo White.png">
+        <video id="heroVideo" autoplay muted playsinline preload="metadata" poster="Source Images/LOGOS/Kioskra Exhibition Logo White.png">
             <source src="Video/hero.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -144,25 +144,43 @@
                 <a href="Portfolio.html" class="btn-secondary">View Work</a>
             </div>
         </div>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator" aria-hidden="true">
+            <div class="scroll-mouse"></div>
+            <span>Scroll</span>
+        </div>
     </section>
 
     <!-- SERVICES -->
     <section id="services" aria-label="Exhibition Services">
-        <h2 class="center-title">Our Exhibition Services</h2>
+        <h2 class="center-title reveal">Our Exhibition Services</h2>
         <div class="services">
-            <div class="service-card">
+            <div class="service-card reveal">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.04 10 9c0 3.31-2.69 6-6 6h-1.77c-.28 0-.5.22-.5.5 0 .12.05.23.13.33.41.47.64 1.06.64 1.67A2.5 2.5 0 0 1 12 22zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5a.54.54 0 0 0-.14-.35c-.41-.46-.63-1.05-.63-1.65a2.5 2.5 0 0 1 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7zm-5.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                </div>
                 <h3>Concept Design</h3>
                 <p>Creative & strategic exhibition concepts tailored specifically to your brand identity.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/><path d="M2 17l10 5 10-5" fill="none" stroke="currentColor" stroke-width="0"/></svg>
+                </div>
                 <h3>3D Visualization</h3>
                 <p>Realistic 3D renders before execution to perfectly visualize your exhibition booth.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
+                </div>
                 <h3>Booth Fabrication</h3>
                 <p>High-quality execution & onsite management utilizing premium materials.</p>
             </div>
-            <div class="service-card">
+            <div class="service-card reveal">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                </div>
                 <h3>Turnkey Solutions</h3>
                 <p>End-to-end exhibition solutions spanning from conceptual design to structural dismantle.</p>
             </div>
@@ -171,177 +189,338 @@
 
     <!-- WHY CHOOSE US -->
     <section id="why-kioskra" class="services-section" aria-label="Our Services">
-        <h2 class="center-title">Why Choose Kioskra</h2>
+        <h2 class="center-title reveal">Why Choose Kioskra</h2>
         <div class="services-grid">
-            <div class="service-item">
-                <div class="service-icon">✔</div>
+            <div class="service-item reveal">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
                 <h3>3D-Driven Design Process</h3>
                 <p>Futuristic design approach using advanced 3D visualization and CAD technology for accurate booth planning.</p>
             </div>
-            <div class="service-item">
-                <div class="service-icon">✔</div>
+            <div class="service-item reveal">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                </div>
                 <h3>Premium Materials & Finish</h3>
                 <p>High-quality materials with premium finishing for elegant and professional exhibition spaces.</p>
             </div>
-            <div class="service-item">
-                <div class="service-icon">✔</div>
+            <div class="service-item reveal">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                </div>
                 <h3>On-Time Execution</h3>
                 <p>Reliable delivery and execution with dedicated project management and quality assurance.</p>
             </div>
-            <div class="service-item">
-                <div class="service-icon">✔</div>
+            <div class="service-item reveal">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+                </div>
                 <h3>Transparent Pricing</h3>
                 <p>Clear, competitive pricing with no hidden charges or surprises in exhibition costs.</p>
             </div>
-            <div class="service-item">
-                <div class="service-icon">✔</div>
+            <div class="service-item reveal">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
                 <h3>Delhi-Based, PAN-India Service</h3>
                 <p>Established in Delhi with nationwide reach and service capabilities across India.</p>
             </div>
-            <div class="service-item">
-                <div class="service-icon">✔</div>
+            <div class="service-item reveal">
+                <div class="service-icon">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+                </div>
                 <h3>End-to-End Turnkey Solutions</h3>
                 <p>Complete exhibition solutions from concept to execution with in-house expertise.</p>
             </div>
         </div>
     </section>
 
-    <!-- PROCESS -->
-    <section class="process" aria-label="Exhibition Process - 5 Step Methodology">
-        <h2 class="center-title">Our 5-Step Process</h2>
-        <div class="process-steps">
-            <div>
-                <span>01</span>
-                <p>Requirements & Brief</p>
+    <!-- STATS COUNTER -->
+    <section class="stats-section" aria-label="Our Achievements">
+        <h2 class="center-title reveal" style="color: var(--text-white);">Our Impact in Numbers</h2>
+        <div class="stats-grid">
+            <div class="stat-card reveal">
+                <div class="stat-number" data-target="150">0</div>
+                <div class="stat-label">Projects Completed</div>
             </div>
-            <div>
-                <span>02</span>
-                <p>Concept & 3D Designing</p>
+            <div class="stat-card reveal">
+                <div class="stat-number" data-target="8">0</div>
+                <div class="stat-label">Years Experience</div>
             </div>
-            <div>
-                <span>03</span>
-                <p>Design Finalization</p>
+            <div class="stat-card reveal">
+                <div class="stat-number" data-target="50">0</div>
+                <div class="stat-label">Happy Clients</div>
             </div>
-            <div>
-                <span>04</span>
-                <p>Fabrication & Logistics</p>
+            <div class="stat-card reveal">
+                <div class="stat-number" data-target="100">0</div>
+                <div class="stat-label">Cities Covered</div>
             </div>
-            <div>
-                <span>05</span>
-                <p>On-Site Execution</p>
+        </div>
+    </section>
+
+    <!-- TIMELINE (Process) -->
+    <section class="timeline-section" aria-label="Our Exhibition Process">
+        <h2 class="center-title reveal">Our 5-Step Process</h2>
+        <div class="timeline">
+            <div class="timeline-item reveal-left">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 01</span>
+                    <h3>Requirements & Brief</h3>
+                    <p>We start with understanding your brand, objectives, booth size, and exhibition timeline in detail.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal-right">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 02</span>
+                    <h3>Concept & 3D Designing</h3>
+                    <p>Our designers create multiple 3D concepts with realistic renders for your approval and visualization.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal-left">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 03</span>
+                    <h3>Design Finalization</h3>
+                    <p>Based on your feedback, we finalize the design with material selections, lighting plans, and branding layouts.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal-right">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 04</span>
+                    <h3>Fabrication & Logistics</h3>
+                    <p>In-house fabrication with premium materials, followed by safe logistics and transportation to the venue.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal-left">
+                <div class="timeline-content">
+                    <span class="timeline-step">Step 05</span>
+                    <h3>On-Site Execution</h3>
+                    <p>Our team handles complete installation, electrical setup, branding, and final QC before handover.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- PORTFOLIO MARQUEE -->
     <section id="portfolio" class="light-bg" aria-label="Portfolio Gallery">
-        <h2 class="center-title">Our Gallery Highlights</h2>
+        <h2 class="center-title reveal">Our Gallery Highlights</h2>
 
         <div class="marquee">
             <div class="marquee-track">
-                <img src="Source Images/Designs/1 (1).jpeg" alt="3D Exhibition Design Concept">
-                <img src="Source Images/Onground working/1.jpeg" alt="On-ground Fabrication Setup">
-                <img src="Source Images/Delivered/1 (1).jpeg" alt="Delivered Exhibition Stall">
-                <img src="Source Images/Designs/1 (2).jpeg" alt="3D Exhibition Design Concept">
-                <img src="Source Images/Onground working/2.jpeg" alt="On-ground Fabrication Setup">
-                <img src="Source Images/Delivered/1 (2).jpeg" alt="Delivered Exhibition Stall">
-                <img src="Source Images/Designs/1 (3).jpeg" alt="3D Exhibition Design Concept">
-                <img src="Source Images/Onground working/3.jpeg" alt="On-ground Fabrication Setup">
-                <img src="Source Images/Delivered/1 (3).jpeg" alt="Delivered Exhibition Stall">
+                <img src="Source Images/Designs/1 (1).jpeg" alt="3D Exhibition Design Concept" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Onground working/1.jpeg" alt="On-ground Fabrication Setup" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Delivered/1 (1).jpeg" alt="Delivered Exhibition Stall" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Designs/1 (2).jpeg" alt="3D Exhibition Design Concept" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Onground working/2.jpeg" alt="On-ground Fabrication Setup" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Delivered/1 (2).jpeg" alt="Delivered Exhibition Stall" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Designs/1 (3).jpeg" alt="3D Exhibition Design Concept" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Onground working/3.jpeg" alt="On-ground Fabrication Setup" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Delivered/1 (3).jpeg" alt="Delivered Exhibition Stall" loading="lazy" decoding="async" width="280" height="180">
 
                 <!-- duplicate for seamless loop -->
-                <img src="Source Images/Designs/1 (1).jpeg" alt="3D Exhibition Design Concept">
-                <img src="Source Images/Onground working/1.jpeg" alt="On-ground Fabrication Setup">
-                <img src="Source Images/Delivered/1 (1).jpeg" alt="Delivered Exhibition Stall">
-                <img src="Source Images/Designs/1 (2).jpeg" alt="3D Exhibition Design Concept">
-                <img src="Source Images/Onground working/2.jpeg" alt="On-ground Fabrication Setup">
-                <img src="Source Images/Delivered/1 (2).jpeg" alt="Delivered Exhibition Stall">
-                <img src="Source Images/Designs/1 (3).jpeg" alt="3D Exhibition Design Concept">
-                <img src="Source Images/Onground working/3.jpeg" alt="On-ground Fabrication Setup">
-                <img src="Source Images/Delivered/1 (3).jpeg" alt="Delivered Exhibition Stall">
+                <img src="Source Images/Designs/1 (1).jpeg" alt="3D Exhibition Design Concept" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Onground working/1.jpeg" alt="On-ground Fabrication Setup" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Delivered/1 (1).jpeg" alt="Delivered Exhibition Stall" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Designs/1 (2).jpeg" alt="3D Exhibition Design Concept" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Onground working/2.jpeg" alt="On-ground Fabrication Setup" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Delivered/1 (2).jpeg" alt="Delivered Exhibition Stall" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Designs/1 (3).jpeg" alt="3D Exhibition Design Concept" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Onground working/3.jpeg" alt="On-ground Fabrication Setup" loading="lazy" decoding="async" width="280" height="180">
+                <img src="Source Images/Delivered/1 (3).jpeg" alt="Delivered Exhibition Stall" loading="lazy" decoding="async" width="280" height="180">
             </div>
         </div>
     </section>
 
     <!-- ABOUT -->
     <section id="about" aria-label="About Kioskra Exhibitions">
-        <h2>About Kioskra Exhibitions - Premium Exhibition Partner</h2>
-        <p><strong>Kioskra Exhibitions</strong> is a design-led exhibition and on-ground brand activation company based in Delhi, delivering end-to-end solutions for brands that want to stand out in physical spaces.
+        <h2 class="reveal">About Kioskra Exhibitions - Premium Exhibition Partner</h2>
+        <p class="reveal"><strong>Kioskra Exhibitions</strong> is a design-led exhibition and on-ground brand activation company based in Delhi, delivering end-to-end solutions for brands that want to stand out in physical spaces.
 
-        We specialise in premium exhibition stall design, temporary brand structures, and experiential marketing executions that combine strong visual identity with flawless on-ground delivery. From concept and 3D design to fabrication, installation, and execution, we manage the entire process with precision, accountability, and attention to detail.
+We specialise in premium exhibition stall design, temporary brand structures, and experiential marketing executions that combine strong visual identity with flawless on-ground delivery. From concept and 3D design to fabrication, installation, and execution, we manage the entire process with precision, accountability, and attention to detail.
 
-        Our expertise goes beyond exhibitions. We execute RWA campaigns, van branding and mobile marketing, kiosks, arch gates, brand pods, selfie points, and experiential installations designed to maximise visibility, engagement, and brand recall.
+Our expertise goes beyond exhibitions. We execute RWA campaigns, van branding and mobile marketing, kiosks, arch gates, brand pods, selfie points, and experiential installations designed to maximise visibility, engagement, and brand recall.
 
-        At Kioskra, we believe physical brand experiences should not just look impressive — they should communicate clearly, perform commercially, and reflect the brand’s future vision. We work closely with marketing teams, founders, and corporate stakeholders to ensure every project aligns with business objectives, timelines, and quality expectations.
+At Kioskra, we believe physical brand experiences should not just look impressive — they should communicate clearly, perform commercially, and reflect the brand's future vision. We work closely with marketing teams, founders, and corporate stakeholders to ensure every project aligns with business objectives, timelines, and quality expectations.
 
-        Whether it’s a large-scale trade fair, a high-impact roadshow, or a focused on-ground activation, Kioskra Exhibitions acts as a reliable execution partner, delivering structured processes, premium finishes, and consistent results.</p>
+Whether it's a large-scale trade fair, a high-impact roadshow, or a focused on-ground activation, Kioskra Exhibitions acts as a reliable execution partner, delivering structured processes, premium finishes, and consistent results.</p>
     </section>
 
-    <!-- TESTIMONIALS -->
+    <!-- TESTIMONIALS SLIDER -->
     <section class="testimonials light-bg" aria-label="Customer Testimonials">
-        <h2 class="center-title">Client Testimonials</h2>
-        <div class="testimonial-grid">
-            <div class="testimonial">
-                <div class="testimonial-text">"Kioskra delivered a premium exhibition booth with flawless execution. Highly recommended!"</div>
-                <strong>— Marketing Head, Corporate Client</strong>
+        <h2 class="center-title reveal">Client Testimonials</h2>
+        <div class="testimonial-slider-wrapper reveal">
+            <div class="testimonial-track" id="testimonialTrack">
+                <div class="testimonial-slide">
+                    <div class="testimonial">
+                        <div class="testimonial-text">"Kioskra delivered a premium exhibition booth with flawless execution. The 3D design was exactly what we envisioned. Highly recommended for any brand looking for premium booth presence!"</div>
+                        <div>
+                            <strong>— Marketing Head, Corporate Client</strong>
+                            <div class="testimonial-stars">
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial">
+                        <div class="testimonial-text">"Professional team, clear process, and outstanding design quality. They managed everything from concept to on-site installation seamlessly. Perfect exhibition partner."</div>
+                        <div>
+                            <strong>— Event Manager, Fortune 500 Company</strong>
+                            <div class="testimonial-stars">
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial">
+                        <div class="testimonial-text">"We've worked with Kioskra for 3 consecutive exhibitions and they've consistently delivered exceptional quality. The transparency in pricing and timely delivery sets them apart."</div>
+                        <div>
+                            <strong>— Brand Manager, Consumer Electronics</strong>
+                            <div class="testimonial-stars">
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-slide">
+                    <div class="testimonial">
+                        <div class="testimonial-text">"From the initial 3D render to the final booth handover, every step was smooth and well-coordinated. Our booth was the talk of the expo. Can't recommend Kioskra enough!"</div>
+                        <div>
+                            <strong>— Director, Industrial Products Company</strong>
+                            <div class="testimonial-stars">
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                                <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="testimonial">
-                <div class="testimonial-text">"Professional team, clear process, and outstanding design quality. Perfect exhibition partner."</div>
-                <strong>— Event Manager, Fortune 500 Company</strong>
+        </div>
+        <!-- Slider Nav -->
+        <div class="testimonial-nav reveal">
+            <button class="testimonial-arrow" id="testimonialPrev" aria-label="Previous testimonial">&#10094;</button>
+            <div class="testimonial-dots" id="testimonialDots"></div>
+            <button class="testimonial-arrow" id="testimonialNext" aria-label="Next testimonial">&#10095;</button>
+        </div>
+    </section>
+
+    <!-- CLIENT LOGOS MARQUEE -->
+    <section class="our-clients" aria-label="Our Clients - Brands We've Worked With">
+        <h2 class="center-title reveal">Brands We've Worked With</h2>
+        <div class="logos-marquee">
+            <div class="logos-marquee-track">
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Livguard.png" alt="Livguard" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Voltas.png" alt="Voltas" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/okaya-power-seeklogo.png" alt="Okaya Power" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Milton Appliances.png" alt="Milton Appliances" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Milton.png" alt="Milton" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Treo.png" alt="Treo" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/procook.png" alt="ProCook" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Prayag_Logo.png" alt="Prayag" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Servo.png" alt="Servo" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Federal.png" alt="Federal" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/tulip Logo.png" alt="Tulip" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Livfast.png" alt="Livfast" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/BOB card.png" alt="BOB Card" loading="lazy" decoding="async"></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Livguard.png" alt="Livguard" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Voltas.png" alt="Voltas" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/okaya-power-seeklogo.png" alt="Okaya Power" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Milton Appliances.png" alt="Milton Appliances" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Milton.png" alt="Milton" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Treo.png" alt="Treo" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/procook.png" alt="ProCook" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Prayag_Logo.png" alt="Prayag" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Servo.png" alt="Servo" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Federal.png" alt="Federal" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/tulip Logo.png" alt="Tulip" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/Livfast.png" alt="Livfast" loading="lazy" decoding="async"></div>
+                <div class="logo-marquee-item"><img src="Source Images/LOGOS/BOB card.png" alt="BOB Card" loading="lazy" decoding="async"></div>
             </div>
         </div>
     </section>
 
-    <!-- OUR CLIENTS / BRANDS -->
-    <section class="our-clients" aria-label="Our Clients - Brands We've Worked With">
-        <h2 class="center-title">Brands We've Worked With</h2>
-        <div class="brands-grid">
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Livguard.png" alt="Livguard - Exhibition client" loading="lazy">
+    <!-- FAQ ACCORDION -->
+    <section class="faq-section" aria-label="Frequently Asked Questions">
+        <h2 class="center-title reveal">Frequently Asked Questions</h2>
+        <div class="faq-container">
+            <div class="faq-item reveal">
+                <button class="faq-question" aria-expanded="false">
+                    What is the typical cost of an exhibition stall in Delhi?
+                    <span class="faq-icon"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>
+                </button>
+                <div class="faq-answer">
+                    <p>Exhibition stall costs in Delhi typically range from ₹1,200 – ₹1,800 per sq ft for basic setups, ₹2,000 – ₹3,500 for premium custom booths, and ₹4,000+ for luxury experiential builds with interactive elements and high-end materials.</p>
+                </div>
             </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Voltas.png" alt="Voltas - Exhibition client" loading="lazy">
+            <div class="faq-item reveal">
+                <button class="faq-question" aria-expanded="false">
+                    How many days before the exhibition should I contact you?
+                    <span class="faq-icon"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>
+                </button>
+                <div class="faq-answer">
+                    <p>Ideally, reach out 30-45 days before the exhibition for complex custom booths. For standard setups, 15-20 days is sufficient. Early engagement gives us time for 3D revisions and material procurement.</p>
+                </div>
             </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/okaya-power-seeklogo.png" alt="Okaya - Exhibition client" loading="lazy">
+            <div class="faq-item reveal">
+                <button class="faq-question" aria-expanded="false">
+                    Do you provide 3D visualization before fabrication?
+                    <span class="faq-icon"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes! We provide detailed 3D renders and walkthrough animations of your booth design before any fabrication begins. This ensures you get to visualize and approve every element before we build it.</p>
+                </div>
             </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Milton Appliances.png" alt="Milton Appliances - Exhibition client" loading="lazy">
+            <div class="faq-item reveal">
+                <button class="faq-question" aria-expanded="false">
+                    Can you handle exhibitions outside Delhi?
+                    <span class="faq-icon"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>
+                </button>
+                <div class="faq-answer">
+                    <p>Absolutely! While we're based in Delhi, we execute exhibitions pan-India – Mumbai, Bangalore, Chennai, Hyderabad, Kolkata, Ahmedabad, and more. We handle logistics, transport, and on-site setup everywhere.</p>
+                </div>
             </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Milton.png" alt="Milton - Exhibition client" loading="lazy">
+            <div class="faq-item reveal">
+                <button class="faq-question" aria-expanded="false">
+                    What is included in your turnkey exhibition solution?
+                    <span class="faq-icon"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>
+                </button>
+                <div class="faq-answer">
+                    <p>Our turnkey solutions cover everything: concept design, 3D visualization, material procurement, fabrication, transportation, on-site installation, electrical and lighting setup, branding, and post-event dismantling.</p>
+                </div>
             </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Treo.png" alt="Treo - Exhibition client" loading="lazy">
-            </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/procook.png" alt="ProCook - Exhibition client" loading="lazy">
-            </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Prayag_Logo.png" alt="Prayag - Exhibition client" loading="lazy">
-            </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Servo.png" alt="Servo - Exhibition client" loading="lazy">
-            </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Federal.png" alt="Federal - Exhibition client" loading="lazy">
-            </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/tulip Logo.png" alt="Tulip - Exhibition client" loading="lazy">
-            </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/Livfast.png" alt="Livfast - Exhibition client" loading="lazy">
-            </div>
-            <div class="brand-logo">
-                <img src="Source Images/LOGOS/BOB card.png" alt="BOB Card - Exhibition client" loading="lazy">
+            <div class="faq-item reveal">
+                <button class="faq-question" aria-expanded="false">
+                    Do you handle AV equipment and interactive technology?
+                    <span class="faq-icon"><svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg></span>
+                </button>
+                <div class="faq-answer">
+                    <p>Yes, we can integrate LED screens, touch panels, interactive kiosks, sound systems, and projection mapping into your booth design for a cutting-edge experiential exhibition experience.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- CONTACT FORM -->
     <section id="contact-section" class="contact-form" aria-label="Get Free Exhibition Consultation">
-        <h2 class="center-title">Get Free Design Consultation</h2>
-        <form id="form" action="https://api.web3forms.com/submit" method="POST" aria-label="Exhibition Enquiry Form">
+        <h2 class="center-title reveal">Get Free Design Consultation</h2>
+        <form id="form" action="https://api.web3forms.com/submit" method="POST" aria-label="Exhibition Enquiry Form" class="reveal">
             <!-- Hidden inputs -->
             <input type="hidden" name="_subject" value="New Exhibition Enquiry - Kioskra">
             <input type="hidden" name="_captcha" value="false">
@@ -364,7 +543,7 @@
             <!-- Col 1: Bio -->
             <div class="footer-col footer-bio">
                 <div class="footer-logo">
-                    <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="40" height="40">
+                    <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="40" height="40" loading="lazy" decoding="async">
                     <span class="logo-text">Kioskra Exhibitions</span>
                 </div>
                 <p class="bio-text">
@@ -440,6 +619,11 @@
         </svg>
     </a>
 
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
     <!-- JS -->
     <script src="script.js"></script>
 </body>

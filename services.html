@@ -14,7 +14,7 @@
     <!-- HEADER -->
     <header role="banner">
         <a href="index.html" class="logo" aria-label="Kioskra Exhibitions Home">
-            <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="45" height="45">
+            <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="45" height="45" fetchpriority="high">
             <span class="logo-text">Kioskra Exhibitions</span>
         </a>
 
@@ -46,68 +46,80 @@
     <!-- CONTENT -->
     <section>
         <div class="container">
-            <p style="text-align: center; max-width: 800px; margin: 0 auto 50px; font-size: 1.1rem; color: var(--text-muted);">
+            <p class="reveal" style="text-align: center; max-width: 800px; margin: 0 auto 50px; font-size: 1.1rem; color: var(--text-muted);">
                 Kioskra is a leading exhibition stall design company in Delhi specializing in premium custom booth design, fabrication, and turnkey exhibition solutions. We create high-impact exhibition stalls that attract visitors and maximize brand visibility at trade shows and expos.
             </p>
 
-            <h2 class="center-title">What We Offer</h2>
+            <h2 class="center-title reveal">What We Offer</h2>
 
             <div class="services">
-                <div class="service-card">
+                <div class="service-card reveal">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.04 10 9c0 3.31-2.69 6-6 6h-1.77c-.28 0-.5.22-.5.5 0 .12.05.23.13.33.41.47.64 1.06.64 1.67A2.5 2.5 0 0 1 12 22zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5a.54.54 0 0 0-.14-.35c-.41-.46-.63-1.05-.63-1.65a2.5 2.5 0 0 1 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7zm-5.5 9a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3-4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm3 4a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+                    </div>
                     <h3>Custom Stall Design</h3>
                     <p>Creative booth concepts tailored specifically to your brand identity, marketing objectives, and spatial constraints.</p>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card reveal">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
                     <h3>3D Visualization</h3>
                     <p>Highly realistic 3D renders, walkthroughs, and spatial mockups before production begins, ensuring zero surprises.</p>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card reveal">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/></svg>
+                    </div>
                     <h3>Fabrication</h3>
                     <p>State-of-the-art manufacturing using premium raw materials and professional craftsmen for an elegant structural finish.</p>
                 </div>
 
-                <div class="service-card">
+                <div class="service-card reveal">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                    </div>
                     <h3>Turnkey Execution</h3>
                     <p>Complete end-to-end exhibition solutions including setup, logistics, onsite coordination, support, and structural teardown.</p>
                 </div>
             </div>
 
-            <h2 class="center-title" style="margin-top: 80px;">Exhibition Stall Cost in Delhi</h2>
+            <h2 class="center-title reveal" style="margin-top: 80px;">Exhibition Stall Cost in Delhi</h2>
             <div class="services" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
-                <div class="service-card price">
+                <div class="service-card price reveal">
                     <h3>Basic Setup</h3>
                     <p>Great for budget-conscious exhibitions seeking clean layouts</p>
                     <p><strong>₹1,200 – ₹1,800</strong> per sq ft</p>
                 </div>
-                <div class="service-card price" style="border-color: var(--accent-teal); box-shadow: var(--shadow-md);">
+                <div class="service-card price reveal" style="border-color: var(--accent-teal); box-shadow: var(--shadow-md);">
                     <h3>Premium Setup</h3>
                     <p>Custom structures, high-end lighting, and textured materials</p>
                     <p><strong>₹2,000 – ₹3,500</strong> per sq ft</p>
                 </div>
-                <div class="service-card price">
+                <div class="service-card price reveal">
                     <h3>Luxury / Experiential</h3>
                     <p>Futuristic designs, interactive screens, and ultra-premium materials</p>
                     <p><strong>₹4,000+</strong> per sq ft</p>
                 </div>
             </div>
 
-            <h2 class="center-title" style="margin-top: 80px;">Our Process</h2>
+            <h2 class="center-title reveal" style="margin-top: 80px;">Our Process</h2>
             <div class="process-steps">
-                <div>
+                <div class="reveal">
                     <span>01</span>
                     <p>Requirement Discussion</p>
                 </div>
-                <div>
+                <div class="reveal">
                     <span>02</span>
                     <p>Concept & 3D Design</p>
                 </div>
-                <div>
+                <div class="reveal">
                     <span>03</span>
                     <p>Fabrication</p>
                 </div>
-                <div>
+                <div class="reveal">
                     <span>04</span>
                     <p>Installation at Venue</p>
                 </div>
@@ -118,7 +130,7 @@
 
     <!-- CTA -->
     <section class="cta">
-        <div class="container">
+        <div class="container reveal">
             <h2>Planning an Exhibition Soon?</h2>
             <p>Get a FREE 3D Design Proposal within 48 hours</p>
             <a href="https://wa.me/919643378735?text=Hi%20Kioskra%20Exhibitions,%20I%20visited%20your%20website%20and%20would%20like%20to%20get%20a%20free%20design%20consultation%20for%20an%20upcoming%20exhibition.%20Please%20connect%20with%20me." class="btn-primary" target="_blank">Contact on WhatsApp</a>
@@ -131,7 +143,7 @@
             <!-- Col 1: Bio -->
             <div class="footer-col footer-bio">
                 <div class="footer-logo">
-                    <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="40" height="40">
+                    <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="40" height="40" loading="lazy" decoding="async">
                     <span class="logo-text">Kioskra Exhibitions</span>
                 </div>
                 <p class="bio-text">
@@ -207,6 +219,11 @@
         </svg>
     </a>
 
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
     <!-- JS -->
     <script src="script.js"></script>
 </body>
