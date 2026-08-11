@@ -215,20 +215,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // =========================================================
-    // 8. HOMEPAGE VIDEO LOOP
-    // =========================================================
-    const heroVideo = document.getElementById('heroVideo');
-    const videos = ['Video/hero.webm', 'Video/Hero2.webm', 'Video/hero3.webm'];
-    let currentVideoIndex = 0;
 
-    if (heroVideo) {
-        heroVideo.addEventListener('ended', () => {
-            currentVideoIndex = (currentVideoIndex + 1) % videos.length;
-            heroVideo.src = videos[currentVideoIndex];
-            heroVideo.play().catch(err => console.log("Video auto-play interrupted:", err));
-        });
-    }
 
     // =========================================================
     // 9. TESTIMONIALS SLIDER
