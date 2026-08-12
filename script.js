@@ -470,47 +470,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // =========================================================
-    // 14. WEB3FORMS AJAX FORM SUBMISSION
+    // 14. FORM SUBMISSION — Handled by form-handler.js
     // =========================================================
-    const form = document.getElementById('form');
-    if (form) {
-        const submitBtn = form.querySelector('button[type="submit"]');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData(form);
-            formData.append("access_key", "6707ec36-3879-4a9e-9752-59eab3843d77");
-
-            const originalText = submitBtn.textContent;
-
-            submitBtn.textContent = "Sending...";
-            submitBtn.disabled = true;
-
-            try {
-                const response = await fetch("https://api.web3forms.com/submit", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    showPremiumAlert("Success!", "Your message has been sent successfully.", true, () => {
-                        form.reset();
-                        window.location.href = "thankyou.html";
-                    });
-                } else {
-                    showPremiumAlert("Error", data.message || "Failed to send message.", false);
-                }
-
-            } catch (error) {
-                showPremiumAlert("Something went wrong", "Please check your connection and try again.", false);
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    }
 
     // =========================================================
     // 15. DYNAMIC WHATSAPP LINK BUILDER

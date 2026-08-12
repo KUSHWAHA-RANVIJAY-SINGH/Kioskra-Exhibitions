@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interactive 2D Booth Configurator – Kioskra Exhibitions</title>
+    <meta name="description" content="Design your own exhibition booth in 2D. Customize booth shape, size, color, and features to see a top-down preview and instant cost estimate." />
+    <link rel="icon" type="image/png" href="Source Images/LOGOS/Kioskra Transparent.png" />
+    <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://kioskra.com"},{"@type":"ListItem","position":2,"name":"Booth Configurator","item":"https://kioskra.com/configurator.html"}]}
+    </script>
+</head>
+<body>
+    <!-- HEADER -->
+    <header role="banner">
+        <a href="index.html" class="logo" aria-label="Kioskra Exhibitions Home">
+            <img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra Exhibitions Logo" width="45" height="45" fetchpriority="high">
+            <span class="logo-text">Kioskra Exhibitions</span>
+        </a>
+        <nav role="navigation" aria-label="Main Navigation">
+            <button class="hamburger" aria-label="Toggle Navigation" aria-expanded="false">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="Portfolio.html">Portfolio</a></li>
+                <li><a href="case-studies.html">Case Studies</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#contact-section">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <h1>Interactive Booth <span class="text-gradient">Configurator</span></h1>
+        <p>Design your top-down exhibition booth layout in real time. Choose shapes, sizes, features, and get an instant estimate.</p>
+    </section>
+
+    <!-- CONFIGURATOR LAYOUT -->
+    <section class="page-content">
+        <div class="configurator-layout">
+            <!-- Controls (Left) -->
+            <div class="configurator-controls">
+                <!-- Step 1: Shape -->
+                <div class="config-section">
+                    <h3><span class="step-num">1</span> Booth Layout Shape</h3>
+                    <div class="shape-options">
+                        <button class="shape-btn active" data-shape="square">Square / Rect</button>
+                        <button class="shape-btn" data-shape="l-shape">L-Shape Corner</button>
+                        <button class="shape-btn" data-shape="open-three">3 Side Open</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Dimensions -->
+                <div class="config-section">
+                    <h3><span class="step-num">2</span> Booth Dimensions (ft)</h3>
+                    <div class="dimension-inputs">
+                        <div class="dim-input">
+                            <label for="config-width">Width</label>
+                            <input type="number" id="config-width" value="20" min="10" max="60">
+                        </div>
+                        <div class="dim-input">
+                            <label for="config-depth">Depth</label>
+                            <input type="number" id="config-depth" value="20" min="10" max="60">
+                        </div>
+                        <div class="dim-input">
+                            <label for="config-height">Height</label>
+                            <select id="config-height">
+                                <option value="8">8 ft (Standard)</option>
+                                <option value="10">10 ft (Premium)</option>
+                                <option value="12">12 ft (High-rise)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Color Theme -->
+                <div class="config-section">
+                    <h3><span class="step-num">3</span> Brand Color Theme</h3>
+                    <div class="color-picker-wrapper">
+                        <input type="color" id="config-color" value="#0ea5e9">
+                        <div>
+                            <div class="color-hex" id="color-hex">#0EA5E9</div>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">Applies to focal graphics & structural walls</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Features & Add-ons -->
+                <div class="config-section">
+                    <h3><span class="step-num">4</span> Booth Features</h3>
+                    <div class="feature-toggles" id="featureToggles">
+                        <label class="feature-toggle">
+                            <input type="checkbox" id="feat-led" data-price="10000" value="led" checked>
+                            <span>LED Video Wall (Back wall placement)</span>
+                        </label>
+                        <label class="feature-toggle">
+                            <input type="checkbox" id="feat-counter" data-price="4000" value="counter" checked>
+                            <span>Reception Counter (Front desk placement)</span>
+                        </label>
+                        <label class="feature-toggle">
+                            <input type="checkbox" id="feat-lounge" data-price="6000" value="lounge">
+                            <span>Discussion Lounge (Table + 3 chairs)</span>
+                        </label>
+                        <label class="feature-toggle">
+                            <input type="checkbox" id="feat-shelves" data-price="3000" value="shelves">
+                            <span>Product Display Shelves (Side walls)</span>
+                        </label>
+                        <label class="feature-toggle">
+                            <input type="checkbox" id="feat-plant" data-price="1500" value="plants">
+                            <span>Premium Planters & Greenery (Corners)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview & Quote (Right) -->
+            <div class="configurator-preview">
+                <div class="preview-card">
+                    <!-- SVG Live Canvas -->
+                    <div class="preview-canvas">
+                        <svg id="live-svg" width="100%" height="100%" viewBox="0 0 400 350" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Grid -->
+                            <defs>
+                                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                                    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+                                </pattern>
+                            </defs>
+                            <rect width="100%" height="100%" fill="url(#grid)" />
+                            
+                            <!-- Drawing Group -->
+                            <g id="svg-draw-group" transform="translate(200, 175)"></g>
+                        </svg>
+                        <div style="position: absolute; bottom: 10px; right: 10px; font-size: 0.75rem; color: rgba(255,255,255,0.4); font-weight: 500;">Top-down 2D View</div>
+                    </div>
+
+                    <!-- Config Summary & Quote -->
+                    <div class="preview-info">
+                        <div class="preview-cost">
+                            <div class="cost-label">Estimated Price Range</div>
+                            <div class="cost-value" id="config-cost">₹1,80,000 – ₹2,10,000</div>
+                            <div class="cost-timeline">🕒 Estimated fabrication time: 15-20 Days</div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <h4 style="font-size: 0.9rem; margin-bottom: 10px;">📋 Selected Specifications:</h4>
+                            <ul style="font-size: 0.85rem; color: var(--text-muted); display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding-left: 14px;" id="config-summary-list">
+                                <!-- filled by JS -->
+                            </ul>
+                        </div>
+
+                        <!-- Inquiry form inside configurator -->
+                        <div style="margin-top: 25px; border-top: 1px solid rgba(226, 232, 240, 0.8); padding-top: 20px;">
+                            <h4 style="font-size: 0.95rem; margin-bottom: 12px;">Submit Design to Kioskra Studio</h4>
+                            <form id="config-form" style="display: flex; flex-direction: column; gap: 12px;">
+                                <input type="hidden" id="config-hidden-specs" name="configuration_details">
+                                <input type="text" name="name" id="config-name" placeholder="Your Name *" required style="padding: 10px; font-size: 0.9rem; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--border-radius-sm);">
+                                <input type="email" name="email" id="config-email" placeholder="Your Email *" required style="padding: 10px; font-size: 0.9rem; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--border-radius-sm);">
+                                <input type="tel" name="phone" id="config-phone" placeholder="Your Phone Number *" required style="padding: 10px; font-size: 0.9rem; border: 1px solid rgba(226, 232, 240, 0.8); border-radius: var(--border-radius-sm);">
+                                <button type="submit" class="btn-primary" style="width: 100%; border: none;">Get Free 3D Concepts &amp; Quote</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer id="contact" class="footer">
+        <div class="footer-container">
+            <div class="footer-col footer-bio">
+                <div class="footer-logo"><img src="Source Images/LOGOS/Kioskra Transparent.png" alt="Kioskra" width="40" height="40" loading="lazy"><span class="logo-text">Kioskra Exhibitions</span></div>
+                <p class="bio-text">Design-led exhibition stall fabrication and brand activation experts based in Delhi, executing premium turnkey booth solutions pan-India.</p>
+            </div>
+            <div class="footer-col"><h3>Quick Links</h3><a href="index.html">Home</a><a href="services.html">Services</a><a href="Portfolio.html">Portfolio</a><a href="case-studies.html">Case Studies</a><a href="blog.html">Blog</a></div>
+            <div class="footer-col"><h3>Exhibition Services</h3><a href="services.html">Concept Stall Design</a><a href="services.html">3D Visualization</a><a href="services.html">Custom Stall Fabrication</a><a href="services.html">Turnkey Solutions</a></div>
+            <div class="footer-col footer-contact-details"><h3>Contact Us</h3>
+                <div class="contact-item"><svg viewBox="0 0 24 24" class="contact-icon"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg><span>L2/86, Shastri Nagar, New Delhi – 110052</span></div>
+                <div class="contact-item"><svg viewBox="0 0 24 24" class="contact-icon"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg><span style="display:flex;flex-direction:column;gap:5px"><a href="mailto:info@kioskra.com">info@kioskra.com</a></span></div>
+                <div class="contact-item"><svg viewBox="0 0 24 24" class="contact-icon"><path d="M6.62 10.79c1.44 2.82 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg><span style="display:flex;flex-direction:column;gap:5px"><a href="tel:9643378735">+91 9643378735</a></span></div>
+            </div>
+        </div>
+        <div class="footer-divider"></div>
+        <div class="footer-bottom">&copy; 2026 Kioskra Exhibitions – All Rights Reserved.</div>
+    </footer>
+
+    <a href="https://wa.me/919643378735" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.968C16.588 1.971 14.12 1.93 11.993 1.93c-5.439 0-9.865 4.37-9.869 9.802-.001 1.73.475 3.42 1.378 4.908l-.947 3.454 3.502-.94zm11.303-6.19c-.31-.154-1.834-.894-2.115-.995-.281-.102-.485-.154-.689.154-.204.307-.791.995-.97 1.199-.178.204-.356.228-.666.074-.31-.154-1.31-.477-2.494-1.522-.922-.814-1.545-1.82-1.725-2.13-.18-.306-.02-.471.135-.623.14-.136.31-.357.466-.537.156-.178.208-.307.31-.512.102-.204.05-.383-.025-.537-.075-.154-.689-1.637-.945-2.253-.25-.598-.503-.517-.689-.527-.178-.009-.383-.012-.587-.012-.204 0-.537.076-.817.38-.28.307-1.073 1.037-1.073 2.53 0 1.493 1.102 2.937 1.254 3.14.153.204 2.169 3.262 5.253 4.568.734.31 1.307.496 1.752.636.737.232 1.41.199 1.94.12.59-.088 1.834-.737 2.09-1.449.255-.712.255-1.32.179-1.448-.076-.128-.28-.204-.59-.36z"/></svg>
+        <span class="whatsapp-tooltip">Message us on WhatsApp</span>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+    <script src="configurator.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

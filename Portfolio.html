@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Exhibition Design Portfolio – Kioskra Exhibitions, Delhi</title>
-    <meta name="description" content="View our portfolio of premium custom exhibition stalls, 3D designs, on-ground fabrication work, and finished exhibition booths across India." />
-    
+    <title>Exhibition Design & Fabrication Portfolio | Kioskra Exhibitions</title>
+    <meta name="description" content="View our portfolio of premium custom exhibition stalls, 3D designs, on-ground fabrication work, and finished trade show booths across India." />
+    <meta name="keywords" content="exhibition booth gallery, custom stall portfolio, trade show stands India, exhibition design photos, stall fabrication Delhi" />
+    <meta name="author" content="Kioskra Exhibitions" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kioskra.com/Portfolio.html" />
+    <meta property="og:title" content="Our Exhibition Stall Design Portfolio | Kioskra" />
+    <meta property="og:description" content="Explore finished booths, live setups, and 3D design renders from India's premier exhibition contractor." />
+    <meta property="og:image" content="https://kioskra.com/Source%20Images/LOGOS/Kioskra%20Transparent.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Exhibition Stall Design Portfolio – Kioskra" />
+    <meta name="twitter:description" content="Completed booths and custom exhibition design concepts across India." />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="icon" type="image/png" href="Source Images/LOGOS/Kioskra Transparent.png" />
     <link rel="stylesheet" href="style.css">
 </head>
@@ -28,6 +39,8 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="Portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="case-studies.html">Case Studies</a></li>
+                <li><a href="blog.html">Blog</a></li>
                 <li><a href="index.html#about">About</a></li>
                 <li><a href="#contact-section">Contact</a></li>
             </ul>
@@ -76,6 +89,60 @@
                 <button class="filter-btn" data-filter="design">3D Designs</button>
                 <button class="filter-btn" data-filter="execution">On-ground Setup</button>
                 <button class="filter-btn" data-filter="delivered">Delivered Stands</button>
+            </div>
+
+            <!-- Advanced Multi-Filters -->
+            <div class="advanced-filters reveal">
+                <div class="filter-field">
+                    <label for="filter-industry">Industry</label>
+                    <select id="filter-industry">
+                        <option value="all">All Industries</option>
+                        <option value="electronics">Electronics & Electrical</option>
+                        <option value="fmcg">FMCG & Retail</option>
+                        <option value="industrial">Industrial & Machinery</option>
+                        <option value="auto">Automotive</option>
+                        <option value="pharma">Healthcare & Pharma</option>
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="filter-size">Booth Size</label>
+                    <select id="filter-size">
+                        <option value="all">All Sizes</option>
+                        <option value="small">Small (&lt; 150 sq ft)</option>
+                        <option value="medium">Medium (150 - 400 sq ft)</option>
+                        <option value="large">Large (400+ sq ft)</option>
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="filter-budget">Budget</label>
+                    <select id="filter-budget">
+                        <option value="all">All Budgets</option>
+                        <option value="economy">Economy (&lt; ₹2 Lakh)</option>
+                        <option value="mid-range">Mid-range (₹2L - ₹5L)</option>
+                        <option value="premium">Premium (₹5L+)</option>
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="filter-year">Year</label>
+                    <select id="filter-year">
+                        <option value="all">All Years</option>
+                        <option value="2026">2026</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn-sm btn-filter-reset" id="btn-reset-filters">Reset</button>
+                </div>
+            </div>
+
+            <!-- Result Count & Empty State -->
+            <div class="result-count" id="result-count">Showing all projects</div>
+            <div class="no-results-message" id="no-results-message">
+                <h3>No Matching Projects Found</h3>
+                <p>Try adjusting your filters or resetting them to see more designs.</p>
+                <button class="btn-outline btn-filter-reset" style="margin-top: 15px; padding: 8px 20px;" onclick="document.getElementById('btn-reset-filters').click()">Reset Filters</button>
             </div>
 
             <!-- Gallery Grid -->
@@ -531,6 +598,8 @@
                 <a href="index.html">Home</a>
                 <a href="services.html">Services</a>
                 <a href="Portfolio.html">Portfolio</a>
+                <a href="case-studies.html">Case Studies</a>
+                <a href="blog.html">Blog</a>
                 <a href="index.html#about">About</a>
                 <a href="#contact-section">Contact</a>
             </div>
@@ -542,6 +611,8 @@
                 <a href="services.html">3D Visualization</a>
                 <a href="services.html">Custom Stall Fabrication</a>
                 <a href="services.html">Turnkey Exhibition Solutions</a>
+                <a href="calculator.html">Booth Cost Calculator</a>
+                <a href="configurator.html">2D Booth Configurator</a>
             </div>
 
             <!-- Col 4: Contact Details -->
@@ -599,6 +670,7 @@
     <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
     <!-- JS -->
+    <script src="portfolio-filters.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
