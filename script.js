@@ -149,6 +149,72 @@ document.addEventListener("DOMContentLoaded", () => {
     } // end GSAP check
 
     // =========================================================
+    // HERO VIDEO SLIDESHOW
+    // =========================================================
+    const v1 = document.getElementById("hero-video-1");
+    const v2 = document.getElementById("hero-video-2");
+
+    if (v1 && v2) {
+        v1.muted = true;
+        v2.muted = true;
+
+        const playVideo = async (video) => {
+            try {
+                video.muted = true;
+                await video.play();
+            } catch (err) {
+                console.warn("Autoplay prevented on this device:", err);
+            }
+        };
+
+        // Start playing the first video
+        playVideo(v1);
+
+        // Listen for ended event on video 1
+        v1.addEventListener("ended", () => {
+            v2.currentTime = 0;
+            playVideo(v2);
+            v2.classList.add("active");
+            v1.classList.remove("active");
+            
+            // Pause the non-active video after fade transition (1.5s) completes
+            setTimeout(() => {
+                if (!v1.classList.contains("active")) {
+                    v1.pause();
+                }
+            }, 1500);
+        });
+
+        // Listen for ended event on video 2
+        v2.addEventListener("ended", () => {
+            v1.currentTime = 0;
+            playVideo(v1);
+            v1.classList.add("active");
+            v2.classList.remove("active");
+
+            // Pause the non-active video after fade transition (1.5s) completes
+            setTimeout(() => {
+                if (!v2.classList.contains("active")) {
+                    v2.pause();
+                }
+            }, 1500);
+        });
+
+        // Autoplay bypass on first user interaction if blocked
+        const handleFirstInteraction = () => {
+            if (v1.paused && !v2.classList.contains("active")) {
+                playVideo(v1);
+            } else if (v2.paused && v2.classList.contains("active")) {
+                playVideo(v2);
+            }
+            document.removeEventListener("click", handleFirstInteraction);
+            document.removeEventListener("touchstart", handleFirstInteraction);
+        };
+        document.addEventListener("click", handleFirstInteraction);
+        document.addEventListener("touchstart", handleFirstInteraction);
+    }
+
+    // =========================================================
     // 5. FAIL-SAFE SCROLL REVEAL ANIMATIONS (IntersectionObserver)
     // =========================================================
     const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
@@ -375,17 +441,25 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentImageIndex = 0;
     let visibleGalleryItems = [];
 
+    // On index.html, we select the marquee images; on Portfolio.html, we select the gallery items
+    const marqueeImages = document.querySelectorAll(".marquee-track img");
+    const activeGalleryItems = galleryItems.length > 0 ? galleryItems : marqueeImages;
+
     function updateVisibleItems() {
-        visibleGalleryItems = Array.from(galleryItems).filter(item => !item.classList.contains("hidden"));
+        if (galleryItems.length > 0) {
+            visibleGalleryItems = Array.from(galleryItems).filter(item => !item.classList.contains("hidden"));
+        } else {
+            visibleGalleryItems = Array.from(marqueeImages);
+        }
     }
 
-    if (lightbox && galleryItems.length > 0) {
-        galleryItems.forEach(item => {
+    if (lightbox && activeGalleryItems.length > 0) {
+        activeGalleryItems.forEach(item => {
             item.addEventListener("click", () => {
                 updateVisibleItems();
-                const clickedImg = item.querySelector("img");
                 currentImageIndex = visibleGalleryItems.indexOf(item);
                 
+                const clickedImg = item.tagName === "IMG" ? item : item.querySelector("img");
                 showLightboxImage(clickedImg.src, clickedImg.alt);
                 lightbox.classList.add("active");
                 document.body.style.overflow = "hidden";
@@ -415,7 +489,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             currentImageIndex = (currentImageIndex + direction + visibleGalleryItems.length) % visibleGalleryItems.length;
             const nextItem = visibleGalleryItems[currentImageIndex];
-            const nextImg = nextItem.querySelector("img");
+            const nextImg = nextItem.tagName === "IMG" ? nextItem : nextItem.querySelector("img");
             showLightboxImage(nextImg.src, nextImg.alt);
         };
 
