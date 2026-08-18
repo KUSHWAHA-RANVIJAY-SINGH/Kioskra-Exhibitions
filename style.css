@@ -4978,27 +4978,26 @@ nav {
 .theme-toggle {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 50px;
-    padding: 5px 8px;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
     cursor: pointer;
-    font-size: 0;
-    line-height: 1;
     transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    height: 34px;
-    min-width: 68px;
+    padding: 0;
     user-select: none;
     -webkit-user-select: none;
     vertical-align: middle;
+    position: relative;
+    overflow: hidden;
 }
 
 .theme-toggle:hover {
-    background: rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.12);
     border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .theme-toggle:focus-visible {
@@ -5006,52 +5005,36 @@ nav {
     outline-offset: 2px;
 }
 
-.theme-toggle-icon {
-    font-size: 14px;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
-    z-index: 2;
-    position: relative;
+/* Icon Styles */
+.theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
 }
 
-.theme-icon-colorful {
-    background: rgba(14, 165, 233, 0.2);
-    opacity: 1;
+.theme-toggle:hover svg {
+    transform: rotate(45deg) scale(1.1);
 }
 
-.theme-icon-mono {
-    background: transparent;
-    opacity: 0.5;
+/* Show/hide icons depending on active theme */
+.theme-toggle .theme-icon-mono {
+    display: none;
+    color: var(--text-white);
 }
 
-/* Active state — monochrome selected */
-.theme-toggle--mono .theme-icon-colorful {
-    background: transparent;
-    opacity: 0.5;
-}
-
-.theme-toggle--mono .theme-icon-mono {
-    background: rgba(255, 255, 255, 0.15);
-    opacity: 1;
-}
-
-/* Theme toggle slider track */
-.theme-toggle-slider {
+.theme-toggle .theme-icon-colorful {
     display: block;
-    width: 12px;
-    height: 2px;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 1px;
-    flex-shrink: 0;
 }
 
-/* Desktop navbar: show toggle inline */
+[data-theme="monochrome"] .theme-toggle .theme-icon-colorful {
+    display: none;
+}
+
+[data-theme="monochrome"] .theme-toggle .theme-icon-mono {
+    display: block;
+}
+
+/* Desktop navbar layout */
 .nav-theme-toggle-item {
     display: flex;
     align-items: center;
@@ -5059,28 +5042,25 @@ nav {
     margin-left: 4px;
 }
 
-/* Mobile nav: full-width style */
+/* Mobile nav styles */
 @media (max-width: 992px) {
     .nav-theme-toggle-item {
         padding-top: 15px;
         margin-top: 10px;
         border-top: 1px solid rgba(255, 255, 255, 0.08);
         width: 100%;
+        display: flex;
+        justify-content: center;
     }
     
     .nav-theme-toggle-item .theme-toggle {
-        width: 100%;
-        justify-content: center;
+        width: 42px;
         height: 42px;
-        min-width: auto;
-        padding: 6px 16px;
-        gap: 10px;
     }
 
-    .nav-theme-toggle-item .theme-toggle-icon {
-        width: 26px;
-        height: 26px;
-        font-size: 16px;
+    .nav-theme-toggle-item .theme-toggle svg {
+        width: 20px;
+        height: 20px;
     }
 }
 

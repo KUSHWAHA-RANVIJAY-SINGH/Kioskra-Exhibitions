@@ -34,9 +34,28 @@
                 <li><a href="index.html#contact-section">Contact</a></li>
                 <li class="nav-theme-toggle-item">
                     <button class="theme-toggle" id="theme-toggle" aria-label="Switch to monochrome theme" title="Switch theme">
-                        <span class="theme-toggle-icon theme-icon-colorful">☀</span>
-                        <span class="theme-toggle-slider"></span>
-                        <span class="theme-toggle-icon theme-icon-mono">◐</span>
+                        <!-- Sun (Colorful) Icon -->
+                        <svg class="theme-icon-colorful" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <defs>
+                                <linearGradient id="sun-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#38bdf8" />
+                                    <stop offset="100%" stop-color="#2dd4bf" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="12" cy="12" r="4" stroke="url(#sun-gradient)" fill="url(#sun-gradient)" fill-opacity="0.18"></circle>
+                            <path d="M12 2v2" stroke="url(#sun-gradient)"></path>
+                            <path d="M12 20v2" stroke="url(#sun-gradient)"></path>
+                            <path d="M4.93 4.93l1.41 1.41" stroke="url(#sun-gradient)"></path>
+                            <path d="M17.66 17.66l1.41 1.41" stroke="url(#sun-gradient)"></path>
+                            <path d="M2 12h2" stroke="url(#sun-gradient)"></path>
+                            <path d="M20 12h2" stroke="url(#sun-gradient)"></path>
+                            <path d="M6.34 17.66l-1.41 1.41" stroke="url(#sun-gradient)"></path>
+                            <path d="M19.07 4.93l-1.41 1.41" stroke="url(#sun-gradient)"></path>
+                        </svg>
+                        <!-- Moon (Monochrome) Icon -->
+                        <svg class="theme-icon-mono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" fill="currentColor" fill-opacity="0.18"></path>
+                        </svg>
                     </button>
                 </li>
             </ul>
