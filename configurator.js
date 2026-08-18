@@ -92,6 +92,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const halfW = pxW / 2;
         const halfD = pxD / 2;
 
+        // Resolve theme states
+        const isMono = document.documentElement.getAttribute('data-theme') === 'monochrome';
+        const displayColor = isMono ? '#a3a3a3' : brandColor;
+        const ledColor = isMono ? '#737373' : '#f43f5e';
+        const plantFill = isMono ? '#78716c' : '#10b981';
+        const plantStroke = isMono ? '#444440' : '#047857';
+        const plantDot = isMono ? '#292524' : '#064e3b';
+
         // Draw Booth Carpet/Floor
         const floor = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         floor.setAttribute('x', -halfW);
@@ -120,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         walls.setAttribute('d', wallPath);
         walls.setAttribute('fill', 'none');
-        walls.setAttribute('stroke', brandColor);
+        walls.setAttribute('stroke', displayColor);
         walls.setAttribute('stroke-width', '6');
         walls.setAttribute('stroke-linecap', 'square');
         svgDrawGroup.appendChild(walls);
@@ -134,14 +142,14 @@ document.addEventListener('DOMContentLoaded', () => {
             led.setAttribute('y1', -halfD + 1);
             led.setAttribute('x2', halfW * 0.6);
             led.setAttribute('y2', -halfD + 1);
-            led.setAttribute('stroke', '#f43f5e'); // red light accent
+            led.setAttribute('stroke', ledColor); // light accent
             led.setAttribute('stroke-width', '4');
             svgDrawGroup.appendChild(led);
 
             const ledLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             ledLabel.setAttribute('x', 0);
             ledLabel.setAttribute('y', -halfD - 8);
-            ledLabel.setAttribute('fill', '#f43f5e');
+            ledLabel.setAttribute('fill', ledColor);
             ledLabel.setAttribute('font-size', '9');
             ledLabel.setAttribute('font-weight', 'bold');
             ledLabel.setAttribute('text-anchor', 'middle');
@@ -160,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
             counter.setAttribute('width', cWidth);
             counter.setAttribute('height', cHeight);
             counter.setAttribute('rx', '2');
-            counter.setAttribute('fill', brandColor);
+            counter.setAttribute('fill', displayColor);
             counter.setAttribute('stroke', '#fff');
             counter.setAttribute('stroke-width', '1');
             svgDrawGroup.appendChild(counter);
@@ -230,7 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shelf.setAttribute('width', '6');
             shelf.setAttribute('height', halfD * 0.8);
             shelf.setAttribute('fill', 'rgba(255,255,255,0.3)');
-            shelf.setAttribute('stroke', brandColor);
+            shelf.setAttribute('stroke', displayColor);
             shelf.setAttribute('stroke-width', '1');
             svgDrawGroup.appendChild(shelf);
 
@@ -258,8 +266,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 plant.setAttribute('cx', pos.x);
                 plant.setAttribute('cy', pos.y);
                 plant.setAttribute('r', '7');
-                plant.setAttribute('fill', '#10b981'); // Green
-                plant.setAttribute('stroke', '#047857');
+                plant.setAttribute('fill', plantFill);
+                plant.setAttribute('stroke', plantStroke);
                 plant.setAttribute('stroke-width', '1');
                 svgDrawGroup.appendChild(plant);
 
@@ -267,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 centerDot.setAttribute('cx', pos.x);
                 centerDot.setAttribute('cy', pos.y);
                 centerDot.setAttribute('r', '2');
-                centerDot.setAttribute('fill', '#064e3b');
+                centerDot.setAttribute('fill', plantDot);
                 svgDrawGroup.appendChild(centerDot);
             });
         }
@@ -393,6 +401,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Theme Change Redraw
+    window.addEventListener('kioskra-theme-change', updateConfigurator);
 
     // Initial Trigger
     updateConfigurator();

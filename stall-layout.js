@@ -151,6 +151,20 @@ class StallLayoutSystem {
         this.btnWhatsAppQuote?.addEventListener('click', () => {
             this.openWhatsApp();
         });
+
+        // Redraw canvas dynamically on theme change
+        window.addEventListener('kioskra-theme-change', () => {
+            this.draw();
+        });
+    }
+
+    getThemeColor(varName, fallback) {
+        try {
+            const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            return val || fallback;
+        } catch (e) {
+            return fallback;
+        }
     }
 
     updateDimensions() {
@@ -211,12 +225,24 @@ class StallLayoutSystem {
         const cw = this.canvas.width;
         const ch = this.canvas.height;
 
+        // Resolve theme colors dynamically
+        const isMono = document.documentElement.getAttribute('data-theme') === 'monochrome';
+        const themeTeal = this.getThemeColor('--accent-teal', '#0d9488');
+        const themeCyan = this.getThemeColor('--accent-cyan', '#0ea5e9');
+        const bgWhite = this.getThemeColor('--bg-white', '#ffffff');
+        const bgLight = this.getThemeColor('--bg-light', '#fafafa');
+        const textDark = this.getThemeColor('--text-dark', '#111111');
+        const textMuted = this.getThemeColor('--text-muted', '#666666');
+        const cardBorder = this.getThemeColor('--card-border', '#e5e5e5');
+        const plantColor = isMono ? '#78716c' : '#22c55e';
+        const plantTextColor = isMono ? '#a3a3a3' : '#16a34a';
+
         // 1. Clear Canvas & Draw Blueprint Grid Backdrop
-        this.ctx.fillStyle = '#ffffff';
+        this.ctx.fillStyle = bgWhite;
         this.ctx.fillRect(0, 0, cw, ch);
 
         // Technical drafting grid lines
-        this.ctx.strokeStyle = '#f1f1f1';
+        this.ctx.strokeStyle = isMono ? '#f3f4f6' : '#f1f5f9';
         this.ctx.lineWidth = 1;
         const mainGridSize = 25;
         for (let x = 0; x < cw; x += mainGridSize) {
@@ -252,19 +278,19 @@ class StallLayoutSystem {
         const boothX = centerX - boothWidth / 2;
         const boothY = centerY - boothHeight / 2;
 
-        // 3. Draw Booth Border Floor Boundary (Dashed grey lines representing open sides)
-        this.ctx.strokeStyle = '#999999';
+        // 3. Draw Booth Border Floor Boundary (Dashed lines representing open sides)
+        this.ctx.strokeStyle = themeTeal;
         this.ctx.lineWidth = 1.5;
         this.ctx.setLineDash([5, 5]);
         this.ctx.strokeRect(boothX, boothY, boothWidth, boothHeight);
         this.ctx.setLineDash([]); // Reset to solid line
 
         // Draw light floor color inside the booth
-        this.ctx.fillStyle = '#fafafa';
+        this.ctx.fillStyle = bgLight;
         this.ctx.fillRect(boothX, boothY, boothWidth, boothHeight);
 
         // 4. Draw Proportional Internal Grid inside the booth boundary
-        this.ctx.strokeStyle = '#e5e5e5';
+        this.ctx.strokeStyle = cardBorder;
         this.ctx.lineWidth = 1;
         
         // Define grid intervals based on unit & dimensions
@@ -289,9 +315,9 @@ class StallLayoutSystem {
             this.ctx.stroke();
         }
 
-        // 5. Draw Walls based on Layout Shape (solid, thick dark-grey structures)
-        this.ctx.strokeStyle = '#222222';
-        this.ctx.fillStyle = '#222222';
+        // 5. Draw Walls based on Layout Shape (solid, thick structures)
+        this.ctx.strokeStyle = textDark;
+        this.ctx.fillStyle = textDark;
         this.ctx.lineWidth = 5;
 
         // Shapes: square (island, 4 open sides, no walls), l-shape, 3-side-open
@@ -310,7 +336,7 @@ class StallLayoutSystem {
             this.ctx.stroke();
         } else if (this.layoutShape === 'square') {
             // Island setup: no outer solid walls, draw 4 corner support pillars
-            this.ctx.fillStyle = '#111111';
+            this.ctx.fillStyle = textDark;
             const pillarSize = Math.max(6, Math.min(10, scale * 0.4));
             this.ctx.fillRect(boothX - pillarSize/2, boothY - pillarSize/2, pillarSize, pillarSize);
             this.ctx.fillRect(boothX + boothWidth - pillarSize/2, boothY - pillarSize/2, pillarSize, pillarSize);
@@ -330,15 +356,15 @@ class StallLayoutSystem {
             const ledX = centerX - ledWidth / 2;
             const ledY = boothY - 4;
             
-            // Draw LED blue glowing bar
-            this.ctx.fillStyle = '#0066cc';
+            // Draw LED blue/accent glowing bar
+            this.ctx.fillStyle = themeCyan;
             this.ctx.fillRect(ledX, ledY, ledWidth, ledHeight);
-            this.ctx.strokeStyle = '#ffffff';
+            this.ctx.strokeStyle = bgWhite;
             this.ctx.lineWidth = 1;
             this.ctx.strokeRect(ledX, ledY, ledWidth, ledHeight);
             
             // Text Label
-            this.ctx.fillStyle = '#0066cc';
+            this.ctx.fillStyle = themeCyan;
             this.ctx.font = 'bold 9px sans-serif';
             this.ctx.fillText('LED VIDEO WALL', centerX, boothY - 14);
         }
@@ -357,8 +383,8 @@ class StallLayoutSystem {
             }
 
             // Draw desk shape
-            this.ctx.fillStyle = '#e0e0e0';
-            this.ctx.strokeStyle = '#333333';
+            this.ctx.fillStyle = bgLight;
+            this.ctx.strokeStyle = textDark;
             this.ctx.lineWidth = 1.5;
             this.ctx.beginPath();
             this.ctx.roundRect(counterX, counterY, counterW, counterH, 4);
@@ -366,7 +392,7 @@ class StallLayoutSystem {
             this.ctx.stroke();
 
             // Label text
-            this.ctx.fillStyle = '#111111';
+            this.ctx.fillStyle = textDark;
             this.ctx.font = '9px sans-serif';
             this.ctx.fillText('REC', counterX + counterW / 2, counterY + counterH / 2);
         }
@@ -385,8 +411,8 @@ class StallLayoutSystem {
             }
 
             // Draw table circle
-            this.ctx.fillStyle = '#ffffff';
-            this.ctx.strokeStyle = '#666666';
+            this.ctx.fillStyle = bgWhite;
+            this.ctx.strokeStyle = textMuted;
             this.ctx.lineWidth = 1.5;
             this.ctx.beginPath();
             this.ctx.arc(loungeX, loungeY, loungeRadius, 0, 2 * Math.PI);
@@ -394,7 +420,7 @@ class StallLayoutSystem {
             this.ctx.stroke();
 
             // Draw chairs (small circles around table)
-            this.ctx.fillStyle = '#333333';
+            this.ctx.fillStyle = themeTeal;
             const chairRadius = loungeRadius * 0.35;
             const angles = [0, 2.1, 4.2]; // 120 deg apart
             angles.forEach(angle => {
@@ -406,7 +432,7 @@ class StallLayoutSystem {
             });
 
             // Label
-            this.ctx.fillStyle = '#666666';
+            this.ctx.fillStyle = textMuted;
             this.ctx.font = '8px sans-serif';
             this.ctx.fillText('LOUNGE', loungeX, loungeY);
         }
@@ -421,8 +447,8 @@ class StallLayoutSystem {
             const rightShelfX = boothX + boothWidth - shelfW - 10;
             const midShelfY = boothY + boothHeight / 2 - shelfH / 2;
 
-            this.ctx.fillStyle = '#ffffff';
-            this.ctx.strokeStyle = '#888888';
+            this.ctx.fillStyle = bgWhite;
+            this.ctx.strokeStyle = textMuted;
             this.ctx.lineWidth = 1.5;
 
             // Draw Left shelf
@@ -433,7 +459,7 @@ class StallLayoutSystem {
             this.ctx.fillRect(rightShelfX, midShelfY, shelfW, shelfH);
             this.ctx.strokeRect(rightShelfX, midShelfY, shelfW, shelfH);
 
-            this.ctx.fillStyle = '#777777';
+            this.ctx.fillStyle = textMuted;
             this.ctx.font = '8px sans-serif';
             this.ctx.fillText('DSP', leftShelfX + shelfW / 2, midShelfY + shelfH / 2);
             this.ctx.fillText('DSP', rightShelfX + shelfW / 2, midShelfY + shelfH / 2);
@@ -446,9 +472,9 @@ class StallLayoutSystem {
             // Placed in empty corners (bottom corners)
             const leftPlantX = boothX + plantR + 10;
             const rightPlantX = boothX + boothWidth - plantR - 10;
-            const plantY = boothY + boothHeight - plantR - 10;
+            const plantY = boothY + plantR + 10; // Top corner placement to not overlap counter
 
-            this.ctx.fillStyle = '#22c55e'; // Green color for plant
+            this.ctx.fillStyle = plantColor;
             
             this.ctx.beginPath();
             this.ctx.arc(leftPlantX, plantY, plantR, 0, 2 * Math.PI);
@@ -458,7 +484,7 @@ class StallLayoutSystem {
             this.ctx.arc(rightPlantX, plantY, plantR, 0, 2 * Math.PI);
             this.ctx.fill();
 
-            this.ctx.fillStyle = '#16a34a';
+            this.ctx.fillStyle = plantTextColor;
             this.ctx.font = '8px sans-serif';
             this.ctx.fillText('PLANT', leftPlantX, plantY - plantR - 4);
             this.ctx.fillText('PLANT', rightPlantX, plantY - plantR - 4);
@@ -472,21 +498,21 @@ class StallLayoutSystem {
             const panelY = boothY + boothHeight - 40;
 
             // Draw panel icon stand
-            this.ctx.fillStyle = '#444444';
+            this.ctx.fillStyle = themeTeal;
             this.ctx.fillRect(panelX, panelY, panelW, panelH);
-            this.ctx.strokeStyle = '#ffffff';
+            this.ctx.strokeStyle = bgWhite;
             this.ctx.lineWidth = 1;
             this.ctx.strokeRect(panelX, panelY, panelW, panelH);
 
-            this.ctx.fillStyle = '#666666';
+            this.ctx.fillStyle = textMuted;
             this.ctx.font = '7px sans-serif';
             this.ctx.fillText('TOUCH', panelX + panelW / 2, panelY + panelH / 2);
         }
 
         // 7. Draw Technical Dimension Labels outside boundary
-        this.ctx.fillStyle = '#111111';
+        this.ctx.fillStyle = textDark;
         this.ctx.font = '500 11px sans-serif';
-        this.ctx.strokeStyle = '#666666';
+        this.ctx.strokeStyle = textMuted;
         this.ctx.lineWidth = 1;
 
         const labelOffset = 25;
@@ -513,9 +539,9 @@ class StallLayoutSystem {
 
         // Text label
         const widthText = `${this.width} ${this.unit === 'meter' ? 'm' : 'ft'}`;
-        this.ctx.fillStyle = '#ffffff';
+        this.ctx.fillStyle = bgWhite;
         this.ctx.fillRect(centerX - 25, dimY - 7, 50, 14); // Text backdrop box
-        this.ctx.fillStyle = '#111111';
+        this.ctx.fillStyle = textDark;
         this.ctx.fillText(widthText, centerX, dimY);
 
         // B. Length Dimension Line (drawn to the left side)
@@ -542,9 +568,9 @@ class StallLayoutSystem {
         this.ctx.save();
         this.ctx.translate(dimX, centerY);
         this.ctx.rotate(-Math.PI / 2);
-        this.ctx.fillStyle = '#ffffff';
+        this.ctx.fillStyle = bgWhite;
         this.ctx.fillRect(-25, -7, 50, 14);
-        this.ctx.fillStyle = '#111111';
+        this.ctx.fillStyle = textDark;
         this.ctx.fillText(lengthText, 0, 0);
         this.ctx.restore();
     }
@@ -552,7 +578,7 @@ class StallLayoutSystem {
     drawArrowhead(x, y, angle) {
         if (!this.ctx) return;
         const size = 5;
-        this.ctx.fillStyle = '#666666';
+        this.ctx.fillStyle = this.getThemeColor('--accent-teal', '#666666');
         this.ctx.save();
         this.ctx.translate(x, y);
         this.ctx.rotate(angle);

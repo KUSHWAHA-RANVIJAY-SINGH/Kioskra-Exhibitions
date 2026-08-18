@@ -7,6 +7,7 @@
     <meta name="description" content="Explore detailed case studies of exhibition booth projects by Kioskra Exhibitions. See challenges, solutions, and measurable results for brands like Livguard, Voltas, Milton, and Okaya Power." />
     <link rel="icon" type="image/png" href="Source Images/LOGOS/Kioskra Transparent.png" />
     <link rel="stylesheet" href="style.css">
+    <script src="theme-init.js"></script>
     <script type="application/ld+json">
     {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://kioskra.com"},{"@type":"ListItem","position":2,"name":"Case Studies","item":"https://kioskra.com/case-studies.html"}]}
     </script>
@@ -31,6 +32,13 @@
                 <!-- <li><a href="blog.html">Blog</a></li> -->
                 <li><a href="index.html#about">About</a></li>
                 <li><a href="index.html#contact-section">Contact</a></li>
+                <li class="nav-theme-toggle-item">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Switch to monochrome theme" title="Switch theme">
+                        <span class="theme-toggle-icon theme-icon-colorful">☀</span>
+                        <span class="theme-toggle-slider"></span>
+                        <span class="theme-toggle-icon theme-icon-mono">◐</span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
@@ -223,6 +231,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+    <script src="theme-toggle.js"></script>
     <script src="script.js"></script>
     <script>
         // Case study industry filter

@@ -19,6 +19,7 @@
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="icon" type="image/png" href="Source Images/LOGOS/Kioskra Transparent.png" />
     <link rel="stylesheet" href="style.css">
+    <script src="theme-init.js"></script>
 </head>
 <body>
 
@@ -44,6 +45,13 @@
                 <!-- <li><a href="blog.html">Blog</a></li> -->
                 <li><a href="index.html#about">About</a></li>
                 <li><a href="#contact-section">Contact</a></li>
+                <li class="nav-theme-toggle-item">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Switch to monochrome theme" title="Switch theme">
+                        <span class="theme-toggle-icon theme-icon-colorful">☀</span>
+                        <span class="theme-toggle-slider"></span>
+                        <span class="theme-toggle-icon theme-icon-mono">◐</span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
@@ -680,6 +688,7 @@
     <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
     <!-- JS -->
     <script src="portfolio-filters.js"></script>
+    <script src="theme-toggle.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -7,6 +7,7 @@
     <meta name="description" content="Get an instant estimate for your exhibition booth cost. Select booth size, type, and features to calculate pricing for your next trade show." />
     <link rel="icon" type="image/png" href="Source Images/LOGOS/Kioskra Transparent.png" />
     <link rel="stylesheet" href="style.css">
+    <script src="theme-init.js"></script>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -38,6 +39,13 @@
                 <!-- <li><a href="blog.html">Blog</a></li> -->
                 <li><a href="index.html#about">About</a></li>
                 <li><a href="index.html#contact-section">Contact</a></li>
+                <li class="nav-theme-toggle-item">
+                    <button class="theme-toggle" id="theme-toggle" aria-label="Switch to monochrome theme" title="Switch theme">
+                        <span class="theme-toggle-icon theme-icon-colorful">☀</span>
+                        <span class="theme-toggle-slider"></span>
+                        <span class="theme-toggle-icon theme-icon-mono">◐</span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
@@ -197,6 +205,7 @@
     <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="calculator.js"></script>
+    <script src="theme-toggle.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
