@@ -226,23 +226,25 @@ class StallLayoutSystem {
         const ch = this.canvas.height;
 
         // Resolve theme colors dynamically
-        const isMono = document.documentElement.getAttribute('data-theme') === 'monochrome';
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const isDark = currentTheme !== 'light' && currentTheme !== 'monochrome';
         const themeTeal = this.getThemeColor('--accent-teal', '#0d9488');
         const themeCyan = this.getThemeColor('--accent-cyan', '#0ea5e9');
-        const bgWhite = this.getThemeColor('--bg-white', '#ffffff');
-        const bgLight = this.getThemeColor('--bg-light', '#fafafa');
-        const textDark = this.getThemeColor('--text-dark', '#111111');
-        const textMuted = this.getThemeColor('--text-muted', '#666666');
-        const cardBorder = this.getThemeColor('--card-border', '#e5e5e5');
-        const plantColor = isMono ? '#78716c' : '#22c55e';
-        const plantTextColor = isMono ? '#a3a3a3' : '#16a34a';
+        const bgCanvas = isDark ? '#0a101d' : '#ffffff';
+        const bgLight = isDark ? '#111a2e' : '#f8fafc';
+        const textDark = isDark ? '#f8fafc' : '#0f172a';
+        const textMuted = isDark ? '#94a3b8' : '#64748b';
+        const cardBorder = isDark ? 'rgba(255, 255, 255, 0.08)' : '#e2e8f0';
+        const wallColor = isDark ? '#38bdf8' : '#0f172a';
+        const plantColor = isDark ? '#10b981' : '#16a34a';
+        const plantTextColor = isDark ? '#34d399' : '#15803d';
 
         // 1. Clear Canvas & Draw Blueprint Grid Backdrop
-        this.ctx.fillStyle = bgWhite;
+        this.ctx.fillStyle = bgCanvas;
         this.ctx.fillRect(0, 0, cw, ch);
 
         // Technical drafting grid lines
-        this.ctx.strokeStyle = isMono ? '#f3f4f6' : '#f1f5f9';
+        this.ctx.strokeStyle = isDark ? 'rgba(14, 165, 233, 0.08)' : '#f1f5f9';
         this.ctx.lineWidth = 1;
         const mainGridSize = 25;
         for (let x = 0; x < cw; x += mainGridSize) {
@@ -316,8 +318,8 @@ class StallLayoutSystem {
         }
 
         // 5. Draw Walls based on Layout Shape (solid, thick structures)
-        this.ctx.strokeStyle = textDark;
-        this.ctx.fillStyle = textDark;
+        this.ctx.strokeStyle = wallColor;
+        this.ctx.fillStyle = wallColor;
         this.ctx.lineWidth = 5;
 
         // Shapes: square (island, 4 open sides, no walls), l-shape, 3-side-open
@@ -336,7 +338,7 @@ class StallLayoutSystem {
             this.ctx.stroke();
         } else if (this.layoutShape === 'square') {
             // Island setup: no outer solid walls, draw 4 corner support pillars
-            this.ctx.fillStyle = textDark;
+            this.ctx.fillStyle = wallColor;
             const pillarSize = Math.max(6, Math.min(10, scale * 0.4));
             this.ctx.fillRect(boothX - pillarSize/2, boothY - pillarSize/2, pillarSize, pillarSize);
             this.ctx.fillRect(boothX + boothWidth - pillarSize/2, boothY - pillarSize/2, pillarSize, pillarSize);
@@ -539,7 +541,7 @@ class StallLayoutSystem {
 
         // Text label
         const widthText = `${this.width} ${this.unit === 'meter' ? 'm' : 'ft'}`;
-        this.ctx.fillStyle = bgWhite;
+        this.ctx.fillStyle = bgCanvas;
         this.ctx.fillRect(centerX - 25, dimY - 7, 50, 14); // Text backdrop box
         this.ctx.fillStyle = textDark;
         this.ctx.fillText(widthText, centerX, dimY);
@@ -568,7 +570,7 @@ class StallLayoutSystem {
         this.ctx.save();
         this.ctx.translate(dimX, centerY);
         this.ctx.rotate(-Math.PI / 2);
-        this.ctx.fillStyle = bgWhite;
+        this.ctx.fillStyle = bgCanvas;
         this.ctx.fillRect(-25, -7, 50, 14);
         this.ctx.fillStyle = textDark;
         this.ctx.fillText(lengthText, 0, 0);

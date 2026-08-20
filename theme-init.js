@@ -4,14 +4,23 @@
 // =============================================================
 (function() {
     'use strict';
-    var saved = null;
     try {
-        saved = localStorage.getItem('kioskra-theme');
+        var saved = localStorage.getItem('kioskra-theme');
+        var theme = 'dark'; // Default premium theme for Kioskra
+
+        if (saved === 'light' || saved === 'dark') {
+            theme = saved;
+        } else if (saved === 'monochrome') {
+            theme = 'light';
+        } else if (saved === 'colorful') {
+            theme = 'dark';
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+            theme = 'light';
+        }
+
+        document.documentElement.setAttribute('data-theme', theme);
     } catch (e) {
-        // localStorage unavailable (private browsing, etc.)
-    }
-    // Default is colorful — only apply attribute if monochrome
-    if (saved === 'monochrome') {
-        document.documentElement.setAttribute('data-theme', 'monochrome');
+        // Fallback if localStorage or matchMedia is restricted
+        document.documentElement.setAttribute('data-theme', 'dark');
     }
 })();

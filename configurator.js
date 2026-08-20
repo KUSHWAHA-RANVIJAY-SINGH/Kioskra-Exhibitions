@@ -93,12 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const halfD = pxD / 2;
 
         // Resolve theme states
-        const isMono = document.documentElement.getAttribute('data-theme') === 'monochrome';
-        const displayColor = isMono ? '#a3a3a3' : brandColor;
-        const ledColor = isMono ? '#737373' : '#f43f5e';
-        const plantFill = isMono ? '#78716c' : '#10b981';
-        const plantStroke = isMono ? '#444440' : '#047857';
-        const plantDot = isMono ? '#292524' : '#064e3b';
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const isDark = currentTheme !== 'light' && currentTheme !== 'monochrome';
+        const displayColor = brandColor || (isDark ? '#38bdf8' : '#0ea5e9');
+        const ledColor = '#f43f5e';
+        const plantFill = '#10b981';
+        const plantStroke = '#047857';
+        const plantDot = '#064e3b';
 
         // Draw Booth Carpet/Floor
         const floor = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -106,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
         floor.setAttribute('y', -halfD);
         floor.setAttribute('width', pxW);
         floor.setAttribute('height', pxD);
-        floor.setAttribute('fill', 'rgba(255, 255, 255, 0.08)');
-        floor.setAttribute('stroke', 'rgba(255, 255, 255, 0.2)');
+        floor.setAttribute('fill', isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.04)');
+        floor.setAttribute('stroke', isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(15, 23, 42, 0.15)');
         floor.setAttribute('stroke-width', '1.5');
         svgDrawGroup.appendChild(floor);
 

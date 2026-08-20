@@ -1,77 +1,76 @@
 // =============================================================
-// KIOSKRA THEME TOGGLE — Handles theme switching + persistence
+// KIOSKRA THEME TOGGLE — Handles Dark/Light Mode Switching & Persistence
 // =============================================================
 (function() {
     'use strict';
 
     /**
      * Get the current active theme.
-     * @returns {'colorful'|'monochrome'}
+     * @returns {'dark'|'light'}
      */
     function getCurrentTheme() {
-        return document.documentElement.getAttribute('data-theme') === 'monochrome'
-            ? 'monochrome'
-            : 'colorful';
+        var current = document.documentElement.getAttribute('data-theme');
+        if (current === 'light') return 'light';
+        return 'dark'; // default
     }
 
     /**
-     * Apply a theme to the document.
-     * @param {'colorful'|'monochrome'} theme
+     * Apply a theme to the document and persist.
+     * @param {'dark'|'light'} theme
      */
     function applyTheme(theme) {
-        if (theme === 'monochrome') {
-            document.documentElement.setAttribute('data-theme', 'monochrome');
-        } else {
-            document.documentElement.removeAttribute('data-theme');
-        }
+        var activeTheme = theme === 'light' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', activeTheme);
+        
         // Persist preference
         try {
-            localStorage.setItem('kioskra-theme', theme);
+            localStorage.setItem('kioskra-theme', activeTheme);
         } catch (e) {
-            // localStorage unavailable
+            // localStorage unavailable (e.g. private browsing)
         }
-        updateAllToggles(theme);
+        
+        updateAllToggles(activeTheme);
+
+        // Dispatch custom event for canvas/SVG interactive tools
+        window.dispatchEvent(new CustomEvent('kioskra-theme-change', {
+            detail: { theme: activeTheme }
+        }));
     }
 
     /**
-     * Update all toggle buttons on the page to reflect the current theme.
-     * @param {'colorful'|'monochrome'} theme
+     * Update all toggle buttons on the page to reflect current theme.
+     * @param {'dark'|'light'} theme
      */
     function updateAllToggles(theme) {
+        var isDark = theme === 'dark';
         var toggles = document.querySelectorAll('.theme-toggle');
+        
         toggles.forEach(function(toggle) {
-            var isMono = theme === 'monochrome';
-            toggle.setAttribute('aria-label',
-                isMono ? 'Switch to colorful theme' : 'Switch to monochrome theme'
-            );
-            toggle.setAttribute('title',
-                isMono ? 'Switch to colorful theme' : 'Switch to monochrome theme'
-            );
-            // Toggle the active class for visual state
-            if (isMono) {
-                toggle.classList.add('theme-toggle--mono');
+            var label = isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode';
+            toggle.setAttribute('aria-label', label);
+            toggle.setAttribute('title', label);
+            
+            if (isDark) {
+                toggle.classList.add('theme-toggle--dark');
+                toggle.classList.remove('theme-toggle--light');
             } else {
-                toggle.classList.remove('theme-toggle--mono');
+                toggle.classList.add('theme-toggle--light');
+                toggle.classList.remove('theme-toggle--dark');
             }
         });
     }
 
     /**
-     * Toggle between themes.
+     * Toggle between dark and light themes.
      */
     function toggleTheme() {
         var current = getCurrentTheme();
-        var next = current === 'colorful' ? 'monochrome' : 'colorful';
+        var next = current === 'dark' ? 'light' : 'dark';
         applyTheme(next);
-
-        // Dispatch custom event so other scripts (canvas, SVG) can react
-        window.dispatchEvent(new CustomEvent('kioskra-theme-change', {
-            detail: { theme: next }
-        }));
     }
 
     /**
-     * Initialize toggle buttons.
+     * Initialize theme listeners.
      */
     function init() {
         var toggles = document.querySelectorAll('.theme-toggle');
@@ -91,11 +90,26 @@
             });
         });
 
-        // Set initial state of toggles
+        // Sync with OS preference changes if user hasn't explicitly set preference
+        if (window.matchMedia) {
+            var mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+            mediaQuery.addEventListener('change', function(e) {
+                var hasManualPref = false;
+                try {
+                    hasManualPref = !!localStorage.getItem('kioskra-theme');
+                } catch (err) {}
+                
+                if (!hasManualPref) {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        }
+
+        // Set initial toggle states
         updateAllToggles(getCurrentTheme());
     }
 
-    // Run on DOMContentLoaded or immediately if DOM already loaded
+    // Run on DOMContentLoaded or immediately if DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
