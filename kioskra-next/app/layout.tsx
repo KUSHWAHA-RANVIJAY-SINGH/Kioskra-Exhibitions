@@ -21,9 +21,10 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Kioskra Exhibitions – Premium Exhibition Design & Execution in India",
+  metadataBase: new URL("https://kioskra.com"),
+  title: "Kioskra Exhibitions | Premium Exhibition Stall Design & Turnkey Fabrication Pan-India",
   description:
-    "Kioskra Exhibitions offers premium, futuristic exhibition design, 3D visualization, booth fabrication, and turnkey solutions. Serving India with office in Delhi.",
+    "Award-winning exhibition stall designers and turnkey booth fabricators based in Delhi, executing bespoke spatial structures across India.",
   keywords: [
     "exhibition design",
     "booth fabrication",
@@ -34,6 +35,9 @@ export const metadata: Metadata = {
     "exhibition contractor",
     "event design India",
   ],
+  alternates: {
+    canonical: "https://kioskra.com",
+  },
   icons: {
     icon: "/images/LOGOS/Kioskra Transparent.png",
     shortcut: "/images/LOGOS/Kioskra Transparent.png",
@@ -42,9 +46,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: "https://kioskra.com",
-    title: "Kioskra Exhibitions – Premium Exhibition Design & Execution",
+    title: "Kioskra Exhibitions | Premium Exhibition Stall Design & Turnkey Fabrication Pan-India",
     description:
-      "Design-first approach with seamless execution for premium exhibition experiences.",
+      "Award-winning exhibition stall designers and turnkey booth fabricators based in Delhi, executing bespoke spatial structures across India.",
     siteName: "Kioskra Exhibitions",
     images: [
       {
@@ -57,9 +61,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Kioskra Exhibitions – Premium Exhibition Solutions",
+    title: "Kioskra Exhibitions | Premium Exhibition Stall Design & Turnkey Fabrication Pan-India",
     description:
-      "Premium exhibition design, 3D visualization, and booth fabrication services in Delhi and pan-India.",
+      "Award-winning exhibition stall designers and turnkey booth fabricators based in Delhi, executing bespoke spatial structures across India.",
   },
 };
 

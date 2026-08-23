@@ -127,7 +127,7 @@ export default function HeroSection() {
             href="/configurator"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 border border-white/20 text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-white/20 backdrop-blur-md transition-all"
           >
-            <span>Launch 2D Configurator</span>
+            <span>Launch 3D Configurator</span>
           </Link>
         </motion.div>
 

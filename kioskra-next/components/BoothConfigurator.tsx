@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { CheckCircle2, Download, Send, Sparkles, Layers, Sliders, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Download, Send, Sparkles, Layers, Sliders, ShieldCheck, ArrowRight } from "lucide-react";
 import dynamic from "next/dynamic";
+import Toast from "./Toast";
 
 const Booth3DCanvas = dynamic(() => import("./Booth3DCanvas"), {
   ssr: false,
@@ -59,6 +60,15 @@ export default function BoothConfigurator() {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
   const [preset, setPreset] = useState<"perspective" | "front" | "top">("perspective");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState<"success" | "error">("success");
+
+  const triggerToast = (msg: string, type: "success" | "error") => {
+    setToastMessage(msg);
+    setToastType(type);
+    setShowToast(true);
+  };
 
   // Base calculation logic ported from configurator.js
   const { minCost, maxCost, areaSqFt } = useMemo(() => {
@@ -154,13 +164,12 @@ export default function BoothConfigurator() {
       }
 
       setStatus("success");
+      triggerToast("Stall specifications and 3D preview saved successfully!", "success");
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErrorMessage(err.message);
-      } else {
-        setErrorMessage("An error occurred during submission.");
-      }
+      const msg = err instanceof Error ? err.message : "An error occurred during submission.";
+      setErrorMessage(msg);
       setStatus("error");
+      triggerToast(msg, "error");
     }
   };
 
@@ -182,7 +191,7 @@ export default function BoothConfigurator() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 sm:pb-32">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Controls */}
         <div className="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-stone shadow-xl flex flex-col gap-6">
@@ -339,9 +348,28 @@ export default function BoothConfigurator() {
               />
             </div>
           </div>
+
+          {/* High Intent CTA Button */}
+          <div className="pt-4 border-t border-stone mt-2">
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById("quote-request-form");
+                if (el) {
+                  el.scrollIntoView({ behavior: "smooth" });
+                  const nameInput = el.querySelector('input[placeholder*="Name"]') as HTMLInputElement | null;
+                  if (nameInput) nameInput.focus();
+                }
+              }}
+              className="w-full inline-flex items-center justify-center gap-2 bg-brand-deepBlack text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl hover:bg-neutral-800 transition-all shadow-md mt-2 cursor-pointer"
+            >
+              <span>Request Detailed 3D Render & Quote</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
-        {/* Right Column: Live 2D Top-Down Canvas & Inquiry */}
+        {/* Right Column: Live 3D Real-Time Preview & Inquiry */}
         <div className="lg:col-span-6 flex flex-col gap-6">
           {/* Live 3D Real-Time Preview Container */}
           <div className="bg-dark text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl flex flex-col items-center gap-6">
@@ -359,6 +387,11 @@ export default function BoothConfigurator() {
 
             {/* 3D Canvas Box */}
             <div className="w-full h-80 sm:h-96 bg-charcoal rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden shadow-inner group">
+              {/* 3D Guidance Badge */}
+              <div className="absolute top-4 left-4 bg-charcoal/80 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-xl text-[9px] font-extrabold tracking-wide text-white/70 uppercase select-none pointer-events-none z-10">
+                🖱️ Drag to Rotate • Scroll to Zoom • Right-click to Pan
+              </div>
+
               <Booth3DCanvas config={config} preset={preset} />
 
               {/* Floating Camera Control Panel */}
@@ -401,7 +434,7 @@ export default function BoothConfigurator() {
           </div>
 
           {/* Inquiry / Quote Request Form */}
-          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone shadow-xl">
+          <div id="quote-request-form" className="bg-white rounded-3xl p-6 sm:p-8 border border-stone shadow-xl">
             {status === "success" ? (
               <div className="py-8 text-center flex flex-col items-center gap-4">
                 <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
@@ -488,6 +521,14 @@ export default function BoothConfigurator() {
           </div>
         </div>
       </div>
+
+      {/* Reusable Toast Notification */}
+      <Toast
+        show={showToast}
+        message={toastMessage}
+        type={toastType}
+        onClose={() => setShowToast(false)}
+      />
     </div>
   );
 }

@@ -113,7 +113,7 @@ export default function Footer() {
                 Exhibition Services
               </Link>
               <Link href="/configurator" className="hover:text-white hover:translate-x-0.5 transition-all">
-                2D Configurator
+                3D Configurator
               </Link>
               <Link href="/#contact" className="hover:text-white hover:translate-x-0.5 transition-all">
                 Contact & Brief

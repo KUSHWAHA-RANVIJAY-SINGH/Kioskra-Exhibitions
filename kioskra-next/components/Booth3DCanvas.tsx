@@ -86,7 +86,7 @@ export default function Booth3DCanvas({ config, preset }: Booth3DCanvasProps) {
   const controlsRef = useRef<OrbitControlsImpl>(null);
 
   return (
-    <div className="w-full h-full relative" style={{ minHeight: "320px" }}>
+    <div className="w-full h-full relative touch-none" style={{ minHeight: "320px" }}>
       <Canvas
         shadows
         gl={{ preserveDrawingBuffer: true, antialias: true }}

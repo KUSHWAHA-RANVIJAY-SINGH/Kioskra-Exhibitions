@@ -5,22 +5,22 @@ import Section from "@/components/Section";
 import Heading from "@/components/Heading";
 
 export const metadata: Metadata = {
-  title: "Interactive 2D Booth Configurator | Kioskra Exhibitions",
+  title: "Interactive 3D Stall Configurator | Kioskra Exhibitions",
   description:
-    "Design and visualize your custom exhibition stall in real-time. Pick layouts, dimensions, features, and brand colors with instant starting cost estimates.",
+    "Design and visualize your custom exhibition stall in real-time 3D. Pick layouts, dimensions, features, and brand colors with instant starting cost estimates.",
 };
 
 export default function ConfiguratorPage() {
   return (
-    <div className="pt-24 min-h-screen bg-warm text-dark">
+    <div className="pt-32 md:pt-40 min-h-screen bg-warm text-dark pb-24 sm:pb-32">
       {/* Header Banner */}
       <Section className="pb-4">
         <Heading
-          badge="Interactive Architectural Tool"
-          sansPrefix="2D Booth"
-          serifAccent="Spatial"
+          badge="Interactive 3D Spatial Tool"
+          sansPrefix="3D Stall"
+          serifAccent="Real-Time"
           sansSuffix="Configurator"
-          subtitle="Select booth dimensions, shape, features, and brand colors to generate real-time top-down blueprints and instant pricing estimates."
+          subtitle="Customize booth layout, dimensions, structural accessories, and brand theme colors in real-time 3D to generate instant quotes."
           size="xl"
         />
       </Section>

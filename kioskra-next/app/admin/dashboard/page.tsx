@@ -108,7 +108,7 @@ export default function AdminDashboardPage() {
           <div>
             <span className="text-2xl font-extrabold block">{leads.length}</span>
             <span className="text-xs text-dark/60 uppercase font-bold tracking-wider">
-              Total Inquiries & 2D Configs
+              Total Inquiries & 3D Configs
             </span>
           </div>
         </div>
@@ -185,7 +185,7 @@ export default function AdminDashboardPage() {
                 {filteredLeads.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="py-8 text-center text-dark/50">
-                      No leads recorded yet. Submissions from the contact section or 2D Configurator will appear here.
+                      No leads recorded yet. Submissions from the contact section or 3D Configurator will appear here.
                     </td>
                   </tr>
                 ) : (

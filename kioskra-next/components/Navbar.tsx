@@ -167,7 +167,9 @@ export default function Navbar() {
             <div className="bg-black/95 backdrop-blur-2xl text-white rounded-3xl p-6 shadow-2xl flex flex-col gap-5 border border-white/10">
               <nav className="flex flex-col gap-2">
                 {navLinks.map((link) => {
-                  const isActive = pathname === link.href;
+                  const isActive = link.href.startsWith("/#")
+                    ? pathname === "/" && activeSection === link.href.substring(1)
+                    : pathname === link.href;
                   return (
                     <Link
                       key={link.label}
