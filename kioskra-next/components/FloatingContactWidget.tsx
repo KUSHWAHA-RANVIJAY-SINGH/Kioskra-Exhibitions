@@ -8,7 +8,7 @@ export default function FloatingContactWidget() {
   const [showWhatsAppTooltip, setShowWhatsAppTooltip] = useState(false);
 
   const message =
-    "Hi Kioskra, I want to get a quote for an exhibition stall.";
+    "Hi Kioskra Team, I am interested in designing and fabricating an exhibition stall for an upcoming trade show. Please share your portfolio and pricing details.";
   const whatsappUrl = `https://wa.me/919643378735?text=${encodeURIComponent(message)}`;
 
   return (
