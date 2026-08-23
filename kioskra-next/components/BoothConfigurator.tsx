@@ -2,6 +2,16 @@
 
 import React, { useState, useMemo } from "react";
 import { CheckCircle2, Download, Send, Sparkles, Layers, Sliders, ShieldCheck } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const Booth3DCanvas = dynamic(() => import("./Booth3DCanvas"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-charcoal text-white/50 text-xs font-semibold animate-pulse">
+      Initializing 3D Viewport...
+    </div>
+  ),
+});
 
 export interface BoothConfigState {
   shape: "square" | "l-shape" | "open-three";
@@ -48,6 +58,7 @@ export default function BoothConfigurator() {
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const [preset, setPreset] = useState<"perspective" | "front" | "top">("perspective");
 
   // Base calculation logic ported from configurator.js
   const { minCost, maxCost, areaSqFt } = useMemo(() => {
@@ -104,13 +115,22 @@ export default function BoothConfigurator() {
         .filter(([, active]) => active)
         .map(([k]) => k.toUpperCase());
 
+      // Capture 3D Canvas Snapshot
+      let snapshot: string | null = null;
+      if (typeof window !== "undefined") {
+        const canvasEl = document.querySelector(".lg\\:col-span-6 canvas") as HTMLCanvasElement | null;
+        if (canvasEl) {
+          snapshot = canvasEl.toDataURL("image/png");
+        }
+      }
+
       const payload = {
         clientName: leadForm.name,
         email: leadForm.email,
         phone: leadForm.phone,
         company: leadForm.company,
         eventCity: leadForm.city,
-        requirement: `2D Configurator Inquiry - ${config.width}x${config.depth} ft (${config.shape})`,
+        requirement: `3D Configurator Inquiry - ${config.width}x${config.depth}x${config.height} ft (${config.shape})`,
         configuredLayout: {
           shape: config.shape,
           width: config.width,
@@ -119,7 +139,7 @@ export default function BoothConfigurator() {
           themeColor: config.color,
           features: activeFeaturesList,
           estimatedPriceRange: `₹${toIndianFormat(minCost)} - ₹${toIndianFormat(maxCost)}`,
-          specsJson: JSON.stringify(config, null, 2),
+          specsJson: JSON.stringify({ ...config, snapshot }, null, 2),
         },
       };
 
@@ -323,141 +343,45 @@ export default function BoothConfigurator() {
 
         {/* Right Column: Live 2D Top-Down Canvas & Inquiry */}
         <div className="lg:col-span-6 flex flex-col gap-6">
-          {/* Live 2D SVG Canvas Container */}
+          {/* Live 3D Real-Time Preview Container */}
           <div className="bg-dark text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl flex flex-col items-center gap-6">
             <div className="w-full flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-accent-blue" />
+                <Layers className="w-4 h-4 text-accent-blue animate-pulse" />
                 <span className="text-xs font-bold uppercase tracking-widest text-accent-blue">
-                  Live 2D Top-Down Blueprint
+                  Interactive 3D Stall Preview
                 </span>
               </div>
               <span className="text-[11px] text-white/50 font-mono">
-                {config.width}ft × {config.depth}ft ({areaSqFt} sq ft)
+                {config.width}ft × {config.depth}ft × {config.height}ft ({areaSqFt} sq ft)
               </span>
             </div>
 
-            {/* SVG Render Box */}
-            <div className="w-full h-72 sm:h-80 bg-charcoal rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden">
-              <svg width="340" height="280" viewBox="-170 -140 340 280">
-                {/* Floor Carpet */}
-                <rect
-                  x={-halfW}
-                  y={-halfD}
-                  width={pxW}
-                  height={pxD}
-                  fill="rgba(255, 255, 255, 0.06)"
-                  stroke="rgba(255, 255, 255, 0.25)"
-                  strokeWidth="1.5"
-                  strokeDasharray="4 2"
-                />
+            {/* 3D Canvas Box */}
+            <div className="w-full h-80 sm:h-96 bg-charcoal rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden shadow-inner group">
+              <Booth3DCanvas config={config} preset={preset} />
 
-                {/* Walls */}
-                <path
-                  d={wallPath}
-                  fill="none"
-                  stroke={config.color}
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                />
-
-                {/* LED Wall */}
-                {config.features.led && (
-                  <g>
-                    <line
-                      x1={-halfW * 0.6}
-                      y1={-halfD + 1}
-                      x2={halfW * 0.6}
-                      y2={-halfD + 1}
-                      stroke="#F43F5E"
-                      strokeWidth="5"
-                    />
-                    <text
-                      x="0"
-                      y={-halfD - 8}
-                      fill="#F43F5E"
-                      fontSize="9"
-                      fontWeight="bold"
-                      textAnchor="middle"
-                    >
-                      LED VIDEO WALL
-                    </text>
-                  </g>
-                )}
-
-                {/* Reception Counter */}
-                {config.features.counter && (
-                  <g>
-                    <rect
-                      x={-pxW * 0.15}
-                      y={halfD * 0.4}
-                      width={pxW * 0.3}
-                      height={Math.max(12, pxD * 0.12)}
-                      rx="3"
-                      fill={config.color}
-                      stroke="#FFFFFF"
-                      strokeWidth="1"
-                    />
-                    <text
-                      x="0"
-                      y={halfD * 0.4 + 10}
-                      fill="#FFFFFF"
-                      fontSize="8"
-                      fontWeight="bold"
-                      textAnchor="middle"
-                    >
-                      RECEPTION
-                    </text>
-                  </g>
-                )}
-
-                {/* Discussion Lounge */}
-                {config.features.lounge && (
-                  <g>
-                    <circle
-                      cx={halfW * 0.4}
-                      cy="0"
-                      r="16"
-                      fill="rgba(255,255,255,0.2)"
-                      stroke="#FFF"
-                      strokeWidth="1"
-                    />
-                    {[0, 120, 240].map((angle) => {
-                      const rad = (angle * Math.PI) / 180;
-                      const cx = halfW * 0.4 + 24 * Math.cos(rad);
-                      const cy = 24 * Math.sin(rad);
-                      return (
-                        <circle
-                          key={angle}
-                          cx={cx}
-                          cy={cy}
-                          r="5"
-                          fill="rgba(255,255,255,0.5)"
-                          stroke="#FFF"
-                        />
-                      );
-                    })}
-                    <text
-                      x={halfW * 0.4}
-                      y="3"
-                      fill="#FFF"
-                      fontSize="7"
-                      fontWeight="bold"
-                      textAnchor="middle"
-                    >
-                      LOUNGE
-                    </text>
-                  </g>
-                )}
-
-                {/* Green Planters */}
-                {config.features.plants && (
-                  <g>
-                    <circle cx={halfW - 14} cy={-halfD + 14} r="8" fill="#10B981" />
-                    <circle cx={-halfW + 14} cy={halfD - 14} r="8" fill="#10B981" />
-                  </g>
-                )}
-              </svg>
+              {/* Floating Camera Control Panel */}
+              <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center gap-2 bg-charcoal/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 shadow-lg z-10 opacity-90 group-hover:opacity-100 transition-opacity">
+                {[
+                  { id: "perspective", label: "Perspective 3D" },
+                  { id: "front", label: "Front View" },
+                  { id: "top", label: "Top View 2D" },
+                ].map((p) => (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setPreset(p.id as "perspective" | "front" | "top")}
+                    className={`px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider transition-all cursor-pointer ${
+                      preset === p.id
+                        ? "bg-accent-blue text-white shadow-md"
+                        : "text-white/60 hover:text-white hover:bg-white/5"
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Estimated Price Range Banner */}

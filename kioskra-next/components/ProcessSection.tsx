@@ -8,7 +8,7 @@ interface ProcessStep {
   step: string;
   title: string;
   description: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 const steps: ProcessStep[] = [

@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import FloatingContactWidget from "@/components/FloatingContactWidget";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -72,11 +73,13 @@ export default function RootLayout({
       lang="en"
       className={`${jakarta.variable} ${playfair.variable}`}
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
     >
       <body className="bg-brand-warmOffWhite text-brand-deepBlack antialiased min-h-screen flex flex-col font-sans">
         <Navbar />
         <main className="flex-grow">{children}</main>
         <Footer />
+        <FloatingContactWidget />
       </body>
     </html>
   );

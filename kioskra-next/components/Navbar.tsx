@@ -17,40 +17,43 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 40);
+
+      if (pathname !== "/") {
+        setActiveSection("");
+        return;
+      }
+
+      // If at the very top (Hero section), no section link should be active
+      if (window.scrollY < 300) {
+        setActiveSection("");
+        return;
+      }
+
+      const sections = ["portfolio", "about", "contact"];
+      const scrollPos = window.scrollY + 250; // offset for scroll height
+      let matched = false;
+
+      for (const section of sections) {
+        const el = document.getElementById(section);
+        if (el) {
+          const top = el.offsetTop;
+          const height = el.offsetHeight;
+          if (scrollPos >= top && scrollPos < top + height) {
+            setActiveSection(`#${section}`);
+            matched = true;
+            break;
+          }
+        }
+      }
+
+      if (!matched) {
+        setActiveSection("");
+      }
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  useEffect(() => {
-    if (pathname !== "/") {
-      setActiveSection("");
-      return;
-    }
-
-    const sections = ["portfolio", "about", "contact"];
-    const observers = sections.map((id) => {
-      const el = document.getElementById(id);
-      if (!el) return null;
-
-      const observer = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${id}`);
-          }
-        },
-        { rootMargin: "-25% 0px -55% 0px" }
-      );
-      observer.observe(el);
-      return { observer, el };
-    });
-
-    return () => {
-      observers.forEach((obs) => {
-        if (obs) obs.observer.unobserve(obs.el);
-      });
-    };
   }, [pathname]);
 
   const navLinks = [
