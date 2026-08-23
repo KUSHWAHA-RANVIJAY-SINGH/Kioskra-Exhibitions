@@ -149,69 +149,65 @@ document.addEventListener("DOMContentLoaded", () => {
     } // end GSAP check
 
     // =========================================================
-    // HERO VIDEO SLIDESHOW
+    // HERO IMAGE SLIDESHOW CONTROLLER
     // =========================================================
-    const v1 = document.getElementById("hero-video-1");
-    const v2 = document.getElementById("hero-video-2");
+    const heroImages = document.querySelectorAll(".hero-bg-image");
+    const heroDots = document.querySelectorAll(".hero-dot");
+    const heroPrev = document.getElementById("hero-slider-prev");
+    const heroNext = document.getElementById("hero-slider-next");
+    const heroCaption = document.getElementById("hero-caption-text");
 
-    if (v1 && v2) {
-        v1.muted = true;
-        v2.muted = true;
+    const heroCaptions = [
+        "Double-Decker Spatial Engineering",
+        "Bespoke Exhibition Architecture",
+        "Turnkey Trade Show Fabrication"
+    ];
 
-        const playVideo = async (video) => {
-            try {
-                video.muted = true;
-                await video.play();
-            } catch (err) {
-                console.warn("Autoplay prevented on this device:", err);
+    if (heroImages.length > 0) {
+        let currentHeroSlide = 0;
+        let slideTimer;
+
+        function showHeroSlide(index) {
+            heroImages.forEach((img, i) => {
+                img.classList.toggle("active", i === index);
+            });
+            heroDots.forEach((dot, i) => {
+                dot.classList.toggle("active", i === index);
+            });
+            if (heroCaption && heroCaptions[index]) {
+                heroCaption.textContent = heroCaptions[index];
             }
-        };
+            currentHeroSlide = index;
+        }
 
-        // Start playing the first video
-        playVideo(v1);
+        function nextHeroSlide() {
+            showHeroSlide((currentHeroSlide + 1) % heroImages.length);
+        }
 
-        // Listen for ended event on video 1
-        v1.addEventListener("ended", () => {
-            v2.currentTime = 0;
-            playVideo(v2);
-            v2.classList.add("active");
-            v1.classList.remove("active");
-            
-            // Pause the non-active video after fade transition (1.5s) completes
-            setTimeout(() => {
-                if (!v1.classList.contains("active")) {
-                    v1.pause();
-                }
-            }, 1500);
+        function prevHeroSlide() {
+            showHeroSlide((currentHeroSlide - 1 + heroImages.length) % heroImages.length);
+        }
+
+        if (heroPrev) heroPrev.addEventListener("click", () => { prevHeroSlide(); resetHeroTimer(); });
+        if (heroNext) heroNext.addEventListener("click", () => { nextHeroSlide(); resetHeroTimer(); });
+
+        heroDots.forEach((dot, i) => {
+            dot.addEventListener("click", () => {
+                showHeroSlide(i);
+                resetHeroTimer();
+            });
         });
 
-        // Listen for ended event on video 2
-        v2.addEventListener("ended", () => {
-            v1.currentTime = 0;
-            playVideo(v1);
-            v1.classList.add("active");
-            v2.classList.remove("active");
+        function startHeroTimer() {
+            slideTimer = setInterval(nextHeroSlide, 5000);
+        }
 
-            // Pause the non-active video after fade transition (1.5s) completes
-            setTimeout(() => {
-                if (!v2.classList.contains("active")) {
-                    v2.pause();
-                }
-            }, 1500);
-        });
+        function resetHeroTimer() {
+            clearInterval(slideTimer);
+            startHeroTimer();
+        }
 
-        // Autoplay bypass on first user interaction if blocked
-        const handleFirstInteraction = () => {
-            if (v1.paused && !v2.classList.contains("active")) {
-                playVideo(v1);
-            } else if (v2.paused && v2.classList.contains("active")) {
-                playVideo(v2);
-            }
-            document.removeEventListener("click", handleFirstInteraction);
-            document.removeEventListener("touchstart", handleFirstInteraction);
-        };
-        document.addEventListener("click", handleFirstInteraction);
-        document.addEventListener("touchstart", handleFirstInteraction);
+        startHeroTimer();
     }
 
     // =========================================================

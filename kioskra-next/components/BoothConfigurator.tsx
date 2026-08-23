@@ -1,0 +1,569 @@
+"use client";
+
+import React, { useState, useMemo } from "react";
+import { CheckCircle2, Download, Send, Sparkles, Layers, Sliders, ShieldCheck } from "lucide-react";
+
+export interface BoothConfigState {
+  shape: "square" | "l-shape" | "open-three";
+  width: number;
+  depth: number;
+  height: number;
+  color: string;
+  flooring: "carpet" | "wooden" | "raised-platform";
+  features: {
+    led: boolean;
+    counter: boolean;
+    lounge: boolean;
+    shelves: boolean;
+    plants: boolean;
+    touchScreen: boolean;
+  };
+}
+
+export default function BoothConfigurator() {
+  const [config, setConfig] = useState<BoothConfigState>({
+    shape: "square",
+    width: 20,
+    depth: 20,
+    height: 8,
+    color: "#2F6BFF",
+    flooring: "carpet",
+    features: {
+      led: true,
+      counter: true,
+      lounge: true,
+      shelves: false,
+      plants: true,
+      touchScreen: false,
+    },
+  });
+
+  const [leadForm, setLeadForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    city: "",
+  });
+
+  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // Base calculation logic ported from configurator.js
+  const { minCost, maxCost, areaSqFt } = useMemo(() => {
+    const area = config.width * config.depth;
+    let baseRate = 2500; // Base rate per sq ft in INR
+
+    if (config.height === 10) baseRate *= 1.1;
+    if (config.height === 12) baseRate *= 1.25;
+
+    if (config.shape === "l-shape") baseRate *= 1.15;
+    if (config.shape === "open-three") baseRate *= 1.1;
+
+    let featureAddons = 0;
+    if (config.features.led) featureAddons += 45000;
+    if (config.features.counter) featureAddons += 18000;
+    if (config.features.lounge) featureAddons += 35000;
+    if (config.features.shelves) featureAddons += 15000;
+    if (config.features.plants) featureAddons += 12000;
+    if (config.features.touchScreen) featureAddons += 25000;
+
+    if (config.flooring === "wooden") featureAddons += area * 150;
+    if (config.flooring === "raised-platform") featureAddons += area * 300;
+
+    const baseCost = area * baseRate + featureAddons;
+    const min = Math.round(baseCost * 0.9);
+    const max = Math.round(baseCost * 1.15);
+
+    return {
+      areaSqFt: area,
+      minCost: min,
+      maxCost: max,
+    };
+  }, [config]);
+
+  const toIndianFormat = (num: number) => num.toLocaleString("en-IN");
+
+  const handleFeatureToggle = (key: keyof BoothConfigState["features"]) => {
+    setConfig((prev) => ({
+      ...prev,
+      features: {
+        ...prev.features,
+        [key]: !prev.features[key],
+      },
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("submitting");
+    setErrorMessage("");
+
+    try {
+      const activeFeaturesList = Object.entries(config.features)
+        .filter(([, active]) => active)
+        .map(([k]) => k.toUpperCase());
+
+      const payload = {
+        clientName: leadForm.name,
+        email: leadForm.email,
+        phone: leadForm.phone,
+        company: leadForm.company,
+        eventCity: leadForm.city,
+        requirement: `2D Configurator Inquiry - ${config.width}x${config.depth} ft (${config.shape})`,
+        configuredLayout: {
+          shape: config.shape,
+          width: config.width,
+          depth: config.depth,
+          height: config.height,
+          themeColor: config.color,
+          features: activeFeaturesList,
+          estimatedPriceRange: `₹${toIndianFormat(minCost)} - ₹${toIndianFormat(maxCost)}`,
+          specsJson: JSON.stringify(config, null, 2),
+        },
+      };
+
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to record configuration specs. Please try again.");
+      }
+
+      setStatus("success");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMessage(err.message);
+      } else {
+        setErrorMessage("An error occurred during submission.");
+      }
+      setStatus("error");
+    }
+  };
+
+  // Render 2D SVG preview coordinates
+  const maxDim = Math.max(config.width, config.depth);
+  const scale = Math.min(280 / maxDim, 7);
+  const pxW = config.width * scale;
+  const pxD = config.depth * scale;
+  const halfW = pxW / 2;
+  const halfD = pxD / 2;
+
+  let wallPath = "";
+  if (config.shape === "square") {
+    wallPath = `M ${-halfW} ${halfD} L ${-halfW} ${-halfD} L ${halfW} ${-halfD}`;
+  } else if (config.shape === "l-shape") {
+    wallPath = `M ${-halfW} ${halfD} L ${-halfW} ${-halfD} L ${halfW} ${-halfD}`;
+  } else {
+    wallPath = `M ${-halfW} ${-halfD} L ${halfW} ${-halfD}`;
+  }
+
+  return (
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Column: Controls */}
+        <div className="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-stone shadow-xl flex flex-col gap-6">
+          <div className="flex items-center gap-2 text-accent-blue text-xs font-extrabold uppercase tracking-widest">
+            <Sliders className="w-4 h-4" />
+            <span>Interactive Controls</span>
+          </div>
+
+          <h2 className="text-2xl font-extrabold text-dark tracking-tight">
+            Customize Booth Layout Specs
+          </h2>
+
+          {/* Step 1: Shape */}
+          <div className="flex flex-col gap-2.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+              Step 1: Booth Layout Shape
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { id: "square", label: "Square / Rect" },
+                { id: "l-shape", label: "L-Shape Corner" },
+                { id: "open-three", label: "3-Side Open" },
+              ].map((s) => (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setConfig({ ...config, shape: s.id as BoothConfigState["shape"] })}
+                  className={`py-3 px-3 rounded-xl text-xs font-bold transition-all border text-center cursor-pointer ${
+                    config.shape === s.id
+                      ? "bg-dark text-white border-dark shadow-md"
+                      : "bg-warm text-dark border-stone hover:bg-stone"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Step 2: Dimensions */}
+          <div className="flex flex-col gap-2.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+              Step 2: Dimensions & Height
+            </label>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="flex flex-col gap-1">
+                <span className="text-[11px] font-semibold text-dark/60">Width (ft)</span>
+                <input
+                  type="number"
+                  min={10}
+                  max={60}
+                  step={2}
+                  value={config.width}
+                  onChange={(e) =>
+                    setConfig({ ...config, width: Math.max(10, Number(e.target.value)) })
+                  }
+                  suppressHydrationWarning
+                  className="w-full px-3 py-2.5 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="text-[11px] font-semibold text-dark/60">Depth (ft)</span>
+                <input
+                  type="number"
+                  min={10}
+                  max={60}
+                  step={2}
+                  value={config.depth}
+                  onChange={(e) =>
+                    setConfig({ ...config, depth: Math.max(10, Number(e.target.value)) })
+                  }
+                  suppressHydrationWarning
+                  className="w-full px-3 py-2.5 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="text-[11px] font-semibold text-dark/60">Height (ft)</span>
+                <select
+                  value={config.height}
+                  onChange={(e) => setConfig({ ...config, height: Number(e.target.value) })}
+                  suppressHydrationWarning
+                  className="w-full px-3 py-2.5 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue"
+                >
+                  <option value={8}>8 ft (Standard)</option>
+                  <option value={10}>10 ft (Elevated)</option>
+                  <option value={12}>12 ft (High Structural)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Step 3: Elements & Flooring */}
+          <div className="flex flex-col gap-2.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+              Step 3: Features & Branding Elements
+            </label>
+            <div className="grid grid-cols-2 gap-2.5">
+              {[
+                { key: "led", label: "LED Video Wall" },
+                { key: "counter", label: "Reception Desk" },
+                { key: "lounge", label: "Discussion Lounge" },
+                { key: "shelves", label: "Product Displays" },
+                { key: "plants", label: "Green Planters" },
+                { key: "touchScreen", label: "Touch Kiosk" },
+              ].map((item) => {
+                const k = item.key as keyof BoothConfigState["features"];
+                const isChecked = config.features[k];
+                return (
+                  <button
+                    key={item.key}
+                    type="button"
+                    onClick={() => handleFeatureToggle(k)}
+                    className={`p-3 rounded-xl text-xs font-bold flex items-center justify-between border transition-all cursor-pointer ${
+                      isChecked
+                        ? "bg-accent-blue/10 border-accent-blue text-accent-blue"
+                        : "bg-warm border-stone text-dark/70 hover:bg-stone"
+                    }`}
+                  >
+                    <span>{item.label}</span>
+                    <CheckCircle2
+                      className={`w-4 h-4 ${isChecked ? "text-accent-blue" : "text-dark/20"}`}
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 4: Color Picker */}
+          <div className="flex flex-col gap-2.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+              Step 4: Primary Theme Color
+            </label>
+            <div className="flex items-center gap-3">
+              {["#2F6BFF", "#111111", "#E11D48", "#059669", "#7C3AED"].map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => setConfig({ ...config, color: c })}
+                  style={{ backgroundColor: c }}
+                  className={`w-9 h-9 rounded-full transition-transform cursor-pointer border-2 ${
+                    config.color === c ? "scale-110 border-black shadow-md" : "border-transparent"
+                  }`}
+                />
+              ))}
+              <input
+                type="color"
+                value={config.color}
+                onChange={(e) => setConfig({ ...config, color: e.target.value })}
+                suppressHydrationWarning
+                className="w-9 h-9 rounded-full cursor-pointer border-none bg-transparent"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Live 2D Top-Down Canvas & Inquiry */}
+        <div className="lg:col-span-6 flex flex-col gap-6">
+          {/* Live 2D SVG Canvas Container */}
+          <div className="bg-dark text-white rounded-3xl p-6 sm:p-8 border border-white/10 shadow-2xl flex flex-col items-center gap-6">
+            <div className="w-full flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4 text-accent-blue" />
+                <span className="text-xs font-bold uppercase tracking-widest text-accent-blue">
+                  Live 2D Top-Down Blueprint
+                </span>
+              </div>
+              <span className="text-[11px] text-white/50 font-mono">
+                {config.width}ft × {config.depth}ft ({areaSqFt} sq ft)
+              </span>
+            </div>
+
+            {/* SVG Render Box */}
+            <div className="w-full h-72 sm:h-80 bg-charcoal rounded-2xl border border-white/10 flex items-center justify-center relative overflow-hidden">
+              <svg width="340" height="280" viewBox="-170 -140 340 280">
+                {/* Floor Carpet */}
+                <rect
+                  x={-halfW}
+                  y={-halfD}
+                  width={pxW}
+                  height={pxD}
+                  fill="rgba(255, 255, 255, 0.06)"
+                  stroke="rgba(255, 255, 255, 0.25)"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 2"
+                />
+
+                {/* Walls */}
+                <path
+                  d={wallPath}
+                  fill="none"
+                  stroke={config.color}
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                />
+
+                {/* LED Wall */}
+                {config.features.led && (
+                  <g>
+                    <line
+                      x1={-halfW * 0.6}
+                      y1={-halfD + 1}
+                      x2={halfW * 0.6}
+                      y2={-halfD + 1}
+                      stroke="#F43F5E"
+                      strokeWidth="5"
+                    />
+                    <text
+                      x="0"
+                      y={-halfD - 8}
+                      fill="#F43F5E"
+                      fontSize="9"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                    >
+                      LED VIDEO WALL
+                    </text>
+                  </g>
+                )}
+
+                {/* Reception Counter */}
+                {config.features.counter && (
+                  <g>
+                    <rect
+                      x={-pxW * 0.15}
+                      y={halfD * 0.4}
+                      width={pxW * 0.3}
+                      height={Math.max(12, pxD * 0.12)}
+                      rx="3"
+                      fill={config.color}
+                      stroke="#FFFFFF"
+                      strokeWidth="1"
+                    />
+                    <text
+                      x="0"
+                      y={halfD * 0.4 + 10}
+                      fill="#FFFFFF"
+                      fontSize="8"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                    >
+                      RECEPTION
+                    </text>
+                  </g>
+                )}
+
+                {/* Discussion Lounge */}
+                {config.features.lounge && (
+                  <g>
+                    <circle
+                      cx={halfW * 0.4}
+                      cy="0"
+                      r="16"
+                      fill="rgba(255,255,255,0.2)"
+                      stroke="#FFF"
+                      strokeWidth="1"
+                    />
+                    {[0, 120, 240].map((angle) => {
+                      const rad = (angle * Math.PI) / 180;
+                      const cx = halfW * 0.4 + 24 * Math.cos(rad);
+                      const cy = 24 * Math.sin(rad);
+                      return (
+                        <circle
+                          key={angle}
+                          cx={cx}
+                          cy={cy}
+                          r="5"
+                          fill="rgba(255,255,255,0.5)"
+                          stroke="#FFF"
+                        />
+                      );
+                    })}
+                    <text
+                      x={halfW * 0.4}
+                      y="3"
+                      fill="#FFF"
+                      fontSize="7"
+                      fontWeight="bold"
+                      textAnchor="middle"
+                    >
+                      LOUNGE
+                    </text>
+                  </g>
+                )}
+
+                {/* Green Planters */}
+                {config.features.plants && (
+                  <g>
+                    <circle cx={halfW - 14} cy={-halfD + 14} r="8" fill="#10B981" />
+                    <circle cx={-halfW + 14} cy={halfD - 14} r="8" fill="#10B981" />
+                  </g>
+                )}
+              </svg>
+            </div>
+
+            {/* Estimated Price Range Banner */}
+            <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <span className="text-[11px] font-bold uppercase tracking-widest text-white/50 block">
+                  Estimated Fabrication Range
+                </span>
+                <span className="text-xl sm:text-2xl font-extrabold text-accent-blue">
+                  ₹{toIndianFormat(minCost)} – ₹{toIndianFormat(maxCost)}
+                </span>
+              </div>
+              <div className="text-[11px] text-white/60 font-medium max-w-xs">
+                *Includes 3D renders, modular booth structure, lighting & on-site installation.
+              </div>
+            </div>
+          </div>
+
+          {/* Inquiry / Quote Request Form */}
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-stone shadow-xl">
+            {status === "success" ? (
+              <div className="py-8 text-center flex flex-col items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-extrabold text-dark">Configuration Received!</h3>
+                <p className="text-xs text-dark/70 max-w-sm">
+                  Our exhibition architects have logged your custom booth specifications. We will send you initial 3D renders matching your size & features within 24 hours.
+                </p>
+                <button
+                  onClick={() => setStatus("idle")}
+                  className="mt-2 px-6 py-2.5 rounded-full bg-dark text-white text-xs font-bold uppercase tracking-wider hover:bg-charcoal transition-colors cursor-pointer"
+                >
+                  Configure Another Booth
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="text-lg font-extrabold text-dark">Request Official 3D Mock-up</h3>
+                  <div className="flex items-center gap-1 text-[11px] font-bold text-accent-blue">
+                    <ShieldCheck className="w-3.5 h-3.5" />
+                    <span>Free Consultation</span>
+                  </div>
+                </div>
+
+                {status === "error" && (
+                  <div className="p-3 rounded-xl bg-red-50 text-red-600 text-xs font-medium">
+                    {errorMessage}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    type="text"
+                    required
+                    placeholder="Full Name *"
+                    value={leadForm.name}
+                    onChange={(e) => setLeadForm({ ...leadForm, name: e.target.value })}
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
+                  />
+                  <input
+                    type="email"
+                    required
+                    placeholder="Business Email *"
+                    value={leadForm.email}
+                    onChange={(e) => setLeadForm({ ...leadForm, email: e.target.value })}
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Phone Number *"
+                    value={leadForm.phone}
+                    onChange={(e) => setLeadForm({ ...leadForm, phone: e.target.value })}
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Company / Brand Name"
+                    value={leadForm.company}
+                    onChange={(e) => setLeadForm({ ...leadForm, company: e.target.value })}
+                    suppressHydrationWarning
+                    className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={status === "submitting"}
+                  className="w-full inline-flex items-center justify-center gap-2 bg-accent-blue text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl hover:bg-blue-600 transition-all shadow-lg shadow-blue-500/20 cursor-pointer disabled:opacity-50 mt-1"
+                >
+                  <span>{status === "submitting" ? "Submitting Specs..." : "Send Layout Specs & Get 3D Quote"}</span>
+                  <Send className="w-4 h-4" />
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

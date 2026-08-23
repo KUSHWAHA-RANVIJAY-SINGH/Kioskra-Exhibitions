@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-warmOffWhite: #F5F4F1;
+  --color-softStone: #E9E8E4;
+  --color-deepBlack: #111111;
+  --color-charcoal: #191A1A;
+  --color-electricBlue: #2F6BFF;
+
+  --color-brand-warmOffWhite: #F5F4F1;
+  --color-brand-softStone: #E9E8E4;
+  --color-brand-deepBlack: #111111;
+  --color-brand-charcoal: #191A1A;
+  --color-brand-electricBlue: #2F6BFF;
+
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+  --font-serif: var(--font-playfair), Georgia, serif;
+}
+
+@layer base {
+  :root {
+    --bg-warm: #F5F4F1;
+    --bg-stone: #E9E8E4;
+    --text-dark: #111111;
+    --text-charcoal: #191A1A;
+    --accent-blue: #2F6BFF;
+  }
+
+  body {
+    background-color: var(--bg-warm);
+    color: var(--text-dark);
+    font-family: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom Design Token Classes to guarantee exact colors */
+.bg-warm { background-color: #F5F4F1; }
+.bg-stone { background-color: #E9E8E4; }
+.bg-dark { background-color: #111111; }
+.bg-charcoal { background-color: #191A1A; }
+.bg-accent-blue { background-color: #2F6BFF; }
+
+.text-dark { color: #111111; }
+.text-charcoal-muted { color: rgba(25, 26, 26, 0.7); }
+.text-accent-blue { color: #2F6BFF; }
+
+.border-stone { border-color: rgba(233, 232, 228, 0.8); }
+
+/* Glass Effects */
+.glass-nav {
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.glass-nav-scrolled {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(17, 17, 17, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Editorial Serif Accent */
+.font-serif-italic {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

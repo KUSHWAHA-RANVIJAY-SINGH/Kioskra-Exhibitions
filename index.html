@@ -176,30 +176,56 @@
     <!-- HERO SECTION -->
     <section class="video-hero" id="home" aria-label="Hero Section">
         <div class="hero-video-container">
-            <video id="hero-video-1" class="hero-bg-video active" autoplay muted playsinline preload="auto">
-                <source src="Video/hero.webm" type="video/webm">
-                <source src="Video/hero.mp4" type="video/mp4">
-            </video>
-            <video id="hero-video-2" class="hero-bg-video" muted playsinline preload="auto">
-                <source src="Video/Hero2.webm" type="video/webm">
-                <source src="Video/Hero2.mp4" type="video/mp4">
-            </video>
+            <img src="images/hero_slider_2.png" alt="Double-Decker Spatial Engineering" class="hero-bg-image active" id="hero-img-0">
+            <img src="images/hero_slider_1.png" alt="Bespoke Exhibition Architecture" class="hero-bg-image" id="hero-img-1">
+            <img src="images/Designs/51.png" alt="Turnkey Trade Show Fabrication" class="hero-bg-image" id="hero-img-2">
         </div>
         <div class="video-hero-overlay"></div>
         <div class="hero-grid-animation"></div>
 
         <div class="hero-content">
-            <h1>Design-First <span class="text-gradient">Exhibition Stall</span> Solutions</h1>
+            <!-- Badge -->
+            <div class="hero-partner-badge">
+                <span class="badge-sparkle">✨</span>
+                <span class="badge-accent">PREMIUM EXHIBITION PARTNER</span>
+                <span class="badge-dot">•</span>
+                <span class="badge-location">Delhi • Pan-India</span>
+            </div>
+
+            <!-- Headline -->
+            <h1><span class="hero-accent-text">Design-First </span><span class="hero-serif-italic">Exhibition </span><span>Solutions</span></h1>
+
+            <!-- Subtitle -->
             <p>Premium • Futuristic • Turnkey Stall Fabrication & Execution Across India</p>
+
+            <!-- CTA Buttons -->
             <div class="hero-buttons">
-                <a href="#stall-layout-section" class="btn-primary">Design Your Stall → <span
-                        class="btn-sub">Interactive Planner</span></a>
-                <a href="#contact-section" class="btn-secondary"
-                    style="border-color: rgba(255, 255, 255, 0.4); color: white;">Get Free 3D Mock-up & Quote →</a>
+                <a href="#portfolio" class="btn-primary">
+                    <span>Explore Portfolio</span>
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 6px;"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+                <a href="#contact-section" class="btn-secondary">Get Free 3D Mock-up</a>
             </div>
-            <div class="hero-trust-badge">
-                <span class="trust-star">⭐</span> 150+ Projects Completed &nbsp;|&nbsp; 8+ Years Experience
+
+            <!-- Slider Controls & Indicators -->
+            <div class="hero-slider-controls">
+                <button class="hero-slider-btn" id="hero-slider-prev" aria-label="Previous Slide">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                </button>
+
+                <div class="hero-slider-dots">
+                    <button class="hero-dot active" data-slide="0" aria-label="Slide 1"></button>
+                    <button class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
+                    <button class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
+                </div>
+
+                <button class="hero-slider-btn" id="hero-slider-next" aria-label="Next Slide">
+                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
             </div>
+
+            <!-- Caption -->
+            <div class="hero-caption" id="hero-caption-text">Double-Decker Spatial Engineering</div>
         </div>
 
         <!-- Scroll Indicator -->
@@ -603,7 +629,7 @@
 
     <!-- STATS COUNTER -->
     <section class="stats-section" aria-label="Our Achievements">
-        <h2 class="center-title reveal" style="color: var(--text-white);">Our Impact in Numbers</h2>
+        <h2 class="center-title reveal">Our Impact in Numbers</h2>
         <div class="stats-grid">
             <div class="stat-card reveal">
                 <div class="stat-number" data-target="150">0</div>
