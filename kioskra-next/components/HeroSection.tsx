@@ -43,7 +43,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative w-full min-h-screen flex items-center justify-center bg-dark overflow-hidden pt-20">
+    <section className="relative w-full min-h-screen flex items-center justify-center bg-[#111111] overflow-hidden pt-20">
       {/* Hero Image Slider Background */}
       <div className="absolute inset-0 w-full h-full z-0">
         <AnimatePresence mode="wait">
@@ -53,7 +53,7 @@ export default function HeroSection() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 w-full h-full"
+            className="absolute inset-0 w-full h-full bg-[#111111]"
           >
             <Image
               src={sliderImages[currentSlide].src}
@@ -66,7 +66,8 @@ export default function HeroSection() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Dark Vignette Overlay */}
+        {/* Contrast Gradients Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-[#191A1A]/30 z-10 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-b from-dark/90 via-dark/70 to-dark z-10 pointer-events-none" />
       </div>
 
@@ -92,7 +93,7 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-tight max-w-4xl"
+          className="text-2xl sm:text-4xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight sm:leading-snug lg:leading-tight max-w-4xl"
         >
           <span>Design-First </span>
           <span className="font-serif-italic text-accent-blue">Exhibition </span>
@@ -117,7 +118,7 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pt-2"
         >
           <Link
-            href="/#portfolio"
+            href="/projects"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-accent-blue text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-blue-600 transition-all shadow-xl shadow-blue-500/25 group"
           >
             <span>Explore Portfolio</span>

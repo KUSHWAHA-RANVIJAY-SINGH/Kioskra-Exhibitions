@@ -1,63 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import { Send, CheckCircle2, Phone, Mail, MapPin, Clock, Shield } from "lucide-react";
+import React from "react";
+import { Phone, Mail, MapPin, Clock, Shield } from "lucide-react";
+import ContactForm from "./ContactForm";
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: "",
-    company: "",
-    email: "",
-    phone: "",
-    eventCity: "",
-    stallRequirement: "",
-    message: "",
-  });
-
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("submitting");
-    setErrorMessage("");
-
-    try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit enquiry. Please try again.");
-      }
-
-      setStatus("success");
-      setFormData({
-        name: "",
-        company: "",
-        email: "",
-        phone: "",
-        eventCity: "",
-        stallRequirement: "",
-        message: "",
-      });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setErrorMessage(err.message);
-      } else {
-        setErrorMessage("An unexpected error occurred.");
-      }
-      setStatus("error");
-    }
-  };
 
   return (
     <section id="contact" className="py-20 sm:py-28 bg-warm text-dark">
@@ -83,6 +30,37 @@ export default function ContactSection() {
               <h3 className="text-xs uppercase tracking-widest text-accent-blue font-bold">
                 Kioskra Headquarters
               </h3>
+
+              {/* Clickable Map Integration */}
+              <div className="relative w-full h-44 rounded-2xl overflow-hidden border border-white/10 group cursor-pointer">
+                {/* Base Map - Pointer events disabled so overlay gets the click */}
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14002.868735235882!2d77.1645065487771!3d28.66820546687002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d03b0d2d38dfd%3A0xc3f1737e6f6630f9!2sShastri+Nagar%2C+Delhi%2C+110052!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen={false}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="opacity-95 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+                ></iframe>
+                
+                {/* Clickable Overlay Link */}
+                <a 
+                  href="https://maps.google.com/?q=L2/86,+Shastri+Nagar,+New+Delhi+%E2%80%93+110052" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <span className="bg-neutral-900/80 backdrop-blur-md text-white text-[10px] font-semibold px-4 py-2 rounded-full border border-white/20 flex items-center gap-1.5">
+                    <svg className="w-3.5 h-3.5 text-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Open in Google Maps
+                  </span>
+                </a>
+              </div>
+
               <div className="flex flex-col gap-4 text-xs text-white/80 font-medium">
                 <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-accent-blue flex-shrink-0 mt-0.5" />
@@ -118,162 +96,7 @@ export default function ContactSection() {
           {/* Right Form Column */}
           <div className="lg:col-span-7">
             <div className="p-8 sm:p-10 rounded-3xl bg-white border border-stone shadow-xl">
-              {status === "success" ? (
-                <div className="py-12 text-center flex flex-col items-center gap-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                    <CheckCircle2 className="w-10 h-10" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-dark">
-                    Inquiry Submitted Successfully!
-                  </h3>
-                  <p className="text-xs text-dark/70 max-w-md">
-                    Thank you for reaching out. Our exhibition specialists will review your requirements and get back to you within 24 hours.
-                  </p>
-                  <button
-                    onClick={() => setStatus("idle")}
-                    className="mt-4 px-6 py-2.5 rounded-full bg-dark text-white text-xs font-bold uppercase tracking-wider hover:bg-charcoal transition-colors cursor-pointer"
-                  >
-                    Submit Another Inquiry
-                  </button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-                  <h3 className="text-xl font-extrabold text-dark mb-2">
-                    Spatial Consultation Form
-                  </h3>
-
-                  {status === "error" && (
-                    <div className="p-4 rounded-xl bg-red-50 text-red-600 text-xs font-medium">
-                      {errorMessage}
-                    </div>
-                  )}
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-dark">
-                        Full Name *
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        required
-                        value={formData.name}
-                        onChange={handleChange}
-                        placeholder="Enter your full name"
-                        suppressHydrationWarning
-                        className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-dark">
-                        Company Name
-                      </label>
-                      <input
-                        type="text"
-                        name="company"
-                        value={formData.company}
-                        onChange={handleChange}
-                        placeholder="Your company name"
-                        suppressHydrationWarning
-                        className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-dark">
-                        Business Email *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        required
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="you@company.com"
-                        suppressHydrationWarning
-                        className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-dark">
-                        Phone Number *
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        required
-                        value={formData.phone}
-                        onChange={handleChange}
-                        placeholder="+91 XXXXXXXXXX"
-                        suppressHydrationWarning
-                        className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-dark">
-                        Exhibition / Event City
-                      </label>
-                      <input
-                        type="text"
-                        name="eventCity"
-                        value={formData.eventCity}
-                        onChange={handleChange}
-                        placeholder="e.g. Delhi, Mumbai, Bengaluru"
-                        suppressHydrationWarning
-                        className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
-                      />
-                    </div>
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[11px] font-bold uppercase tracking-wider text-dark">
-                        Stall Dimension / Size
-                      </label>
-                      <select
-                        name="stallRequirement"
-                        value={formData.stallRequirement}
-                        onChange={handleChange}
-                        suppressHydrationWarning
-                        className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
-                      >
-                        <option value="">Select Stall Requirement</option>
-                        <option value="10x10 (100 sq ft)">10×10 sq ft (Basic)</option>
-                        <option value="20x20 (400 sq ft)">20×20 sq ft (Custom Stall)</option>
-                        <option value="30x30 (900 sq ft)">30×30 sq ft (Pavilion)</option>
-                        <option value="Double Decker Pavilion">Double Decker Pavilion</option>
-                        <option value="Custom Requirement">Custom Requirement</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold uppercase tracking-wider text-dark">
-                      Message / Requirements
-                    </label>
-                    <textarea
-                      name="message"
-                      rows={4}
-                      value={formData.message}
-                      onChange={handleChange}
-                      placeholder="Tell us about your event dates, budget, or specific 3D design preferences..."
-                      suppressHydrationWarning
-                      className="w-full px-4 py-3 rounded-xl bg-warm border border-stone text-dark text-xs focus:outline-none focus:border-accent-blue"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    disabled={status === "submitting"}
-                    className="w-full inline-flex items-center justify-center gap-2 bg-accent-blue text-white font-bold text-xs py-4 rounded-xl hover:bg-blue-600 transition-all shadow-lg shadow-blue-500/20 cursor-pointer disabled:opacity-50 mt-2"
-                  >
-                    <span>{status === "submitting" ? "Sending Inquiry..." : "Submit Inquiry"}</span>
-                    <Send className="w-4 h-4" />
-                  </button>
-                </form>
-              )}
+              <ContactForm />
             </div>
           </div>
         </div>

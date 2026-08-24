@@ -16,8 +16,38 @@ export async function GET() {
   }
 }
 
+// In-memory rate limiting map (IP -> timestamps)
+const rateLimitMap = new Map<string, number[]>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const oneHourAgo = now - 60 * 60 * 1000;
+
+  const timestamps = rateLimitMap.get(ip) || [];
+  // Filter out timestamps older than 1 hour
+  const recentTimestamps = timestamps.filter((t) => t > oneHourAgo);
+
+  if (recentTimestamps.length >= 3) {
+    return true; // Limit exceeded
+  }
+
+  recentTimestamps.push(now);
+  rateLimitMap.set(ip, recentTimestamps);
+  return false;
+}
+
 export async function POST(request: Request) {
   try {
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded ? forwarded.split(",")[0].trim() : "127.0.0.1";
+
+    if (checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: "Too many submissions. Please try again or call +91 9643378735" },
+        { status: 429 }
+      );
+    }
+
     await connectDB();
     const body = await request.json();
 

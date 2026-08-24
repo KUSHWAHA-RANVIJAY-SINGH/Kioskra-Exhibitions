@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function ConfiguratorPage() {
   return (
-    <div className="pt-32 md:pt-40 min-h-screen bg-warm text-dark pb-24 sm:pb-32">
+    <div className="pt-20 md:pt-24 min-h-screen bg-warm text-dark pb-24 sm:pb-32">
       {/* Header Banner */}
       <Section className="pb-4">
         <Heading

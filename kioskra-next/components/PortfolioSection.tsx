@@ -155,7 +155,7 @@ export default function PortfolioSection() {
               className="group flex flex-col rounded-3xl overflow-hidden bg-warm border border-stone hover:border-accent-blue/50 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
             >
               {/* Card Image Container */}
-              <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone">
+              <div className="relative aspect-video w-full overflow-hidden bg-stone">
                 <Image
                   src={project.image}
                   alt={project.title}
@@ -185,7 +185,7 @@ export default function PortfolioSection() {
                     <Layers className="w-3.5 h-3.5 text-dark/40" />
                     {project.clientName}
                   </span>
-                  <span className="inline-flex items-center gap-1 text-accent-blue group-hover:translate-x-1 transition-transform">
+                  <span className="inline-flex items-center gap-1 text-accent-blue transition-all duration-300 md:opacity-0 md:group-hover:opacity-100 group-hover:translate-x-1">
                     Explore
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </span>

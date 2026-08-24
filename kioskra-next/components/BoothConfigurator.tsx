@@ -70,34 +70,26 @@ export default function BoothConfigurator() {
     setShowToast(true);
   };
 
-  // Base calculation logic ported from configurator.js
-  const { minCost, maxCost, areaSqFt } = useMemo(() => {
+  // Base calculation logic updated for Change 5 pricing requirements
+  const { minCost, maxCost, areaSqFt, runningTotal } = useMemo(() => {
     const area = config.width * config.depth;
-    let baseRate = 2500; // Base rate per sq ft in INR
 
-    if (config.height === 10) baseRate *= 1.1;
-    if (config.height === 12) baseRate *= 1.25;
-
-    if (config.shape === "l-shape") baseRate *= 1.15;
-    if (config.shape === "open-three") baseRate *= 1.1;
-
+    const baseBoothPrice = 999000;
     let featureAddons = 0;
-    if (config.features.led) featureAddons += 45000;
-    if (config.features.counter) featureAddons += 18000;
+    if (config.features.led) featureAddons += 80000;
+    if (config.features.counter) featureAddons += 25000;
     if (config.features.lounge) featureAddons += 35000;
     if (config.features.shelves) featureAddons += 15000;
     if (config.features.plants) featureAddons += 12000;
     if (config.features.touchScreen) featureAddons += 25000;
 
-    if (config.flooring === "wooden") featureAddons += area * 150;
-    if (config.flooring === "raised-platform") featureAddons += area * 300;
-
-    const baseCost = area * baseRate + featureAddons;
-    const min = Math.round(baseCost * 0.9);
-    const max = Math.round(baseCost * 1.15);
+    const total = baseBoothPrice + featureAddons;
+    const min = total;
+    const max = Math.round(total * 1.15);
 
     return {
       areaSqFt: area,
+      runningTotal: total,
       minCost: min,
       maxCost: max,
     };
@@ -206,9 +198,12 @@ export default function BoothConfigurator() {
 
           {/* Step 1: Shape */}
           <div className="flex flex-col gap-2.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
-              Step 1: Booth Layout Shape
-            </label>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">1</span>
+              <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+                Step 1: Booth Layout Shape
+              </label>
+            </div>
             <div className="grid grid-cols-3 gap-3">
               {[
                 { id: "square", label: "Square / Rect" },
@@ -232,50 +227,87 @@ export default function BoothConfigurator() {
           </div>
 
           {/* Step 2: Dimensions */}
-          <div className="flex flex-col gap-2.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
-              Step 2: Dimensions & Height
-            </label>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="flex flex-col gap-1">
-                <span className="text-[11px] font-semibold text-dark/60">Width (ft)</span>
-                <input
-                  type="number"
-                  min={10}
-                  max={60}
-                  step={2}
-                  value={config.width}
-                  onChange={(e) =>
-                    setConfig({ ...config, width: Math.max(10, Number(e.target.value)) })
-                  }
-                  suppressHydrationWarning
-                  className="w-full px-3 py-2.5 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue"
-                />
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">2</span>
+              <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+                Step 2: Dimensions & Height
+              </label>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {/* Width Slider Control */}
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-[11px] font-bold text-dark/60">Width: <strong className="text-dark font-extrabold">{config.width} ft</strong></span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setConfig(prev => ({ ...prev, width: Math.max(5, prev.width - 5) }))}
+                    className="w-7 h-7 rounded-lg bg-warm hover:bg-stone text-dark text-xs font-bold border border-stone flex items-center justify-center cursor-pointer select-none"
+                  >
+                    −
+                  </button>
+                  <input
+                    type="range"
+                    min={5}
+                    max={50}
+                    step={5}
+                    value={config.width}
+                    onChange={(e) => setConfig(prev => ({ ...prev, width: Number(e.target.value) }))}
+                    className="flex-grow accent-accent-blue cursor-pointer h-1.5 bg-stone rounded-lg appearance-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setConfig(prev => ({ ...prev, width: Math.min(50, prev.width + 5) }))}
+                    className="w-7 h-7 rounded-lg bg-warm hover:bg-stone text-dark text-xs font-bold border border-stone flex items-center justify-center cursor-pointer select-none"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <span className="text-[11px] font-semibold text-dark/60">Depth (ft)</span>
-                <input
-                  type="number"
-                  min={10}
-                  max={60}
-                  step={2}
-                  value={config.depth}
-                  onChange={(e) =>
-                    setConfig({ ...config, depth: Math.max(10, Number(e.target.value)) })
-                  }
-                  suppressHydrationWarning
-                  className="w-full px-3 py-2.5 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue"
-                />
+              {/* Depth Slider Control */}
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <span className="text-[11px] font-bold text-dark/60">Depth: <strong className="text-dark font-extrabold">{config.depth} ft</strong></span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => setConfig(prev => ({ ...prev, depth: Math.max(5, prev.depth - 5) }))}
+                    className="w-7 h-7 rounded-lg bg-warm hover:bg-stone text-dark text-xs font-bold border border-stone flex items-center justify-center cursor-pointer select-none"
+                  >
+                    −
+                  </button>
+                  <input
+                    type="range"
+                    min={5}
+                    max={50}
+                    step={5}
+                    value={config.depth}
+                    onChange={(e) => setConfig(prev => ({ ...prev, depth: Number(e.target.value) }))}
+                    className="flex-grow accent-accent-blue cursor-pointer h-1.5 bg-stone rounded-lg appearance-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setConfig(prev => ({ ...prev, depth: Math.min(50, prev.depth + 5) }))}
+                    className="w-7 h-7 rounded-lg bg-warm hover:bg-stone text-dark text-xs font-bold border border-stone flex items-center justify-center cursor-pointer select-none"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <span className="text-[11px] font-semibold text-dark/60">Height (ft)</span>
+              {/* Height dropdown */}
+              <div className="flex flex-col gap-2">
+                <span className="text-[11px] font-bold text-dark/60">Height (ft)</span>
                 <select
                   value={config.height}
                   onChange={(e) => setConfig({ ...config, height: Number(e.target.value) })}
                   suppressHydrationWarning
-                  className="w-full px-3 py-2.5 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue"
+                  className="w-full px-3 py-2 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue h-9"
                 >
                   <option value={8}>8 ft (Standard)</option>
                   <option value={10}>10 ft (Elevated)</option>
@@ -287,17 +319,20 @@ export default function BoothConfigurator() {
 
           {/* Step 3: Elements & Flooring */}
           <div className="flex flex-col gap-2.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
-              Step 3: Features & Branding Elements
-            </label>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">3</span>
+              <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+                Step 3: Features & Branding Elements
+              </label>
+            </div>
             <div className="grid grid-cols-2 gap-2.5">
               {[
-                { key: "led", label: "LED Video Wall" },
-                { key: "counter", label: "Reception Desk" },
-                { key: "lounge", label: "Discussion Lounge" },
-                { key: "shelves", label: "Product Displays" },
-                { key: "plants", label: "Green Planters" },
-                { key: "touchScreen", label: "Touch Kiosk" },
+                { key: "led", label: "LED Video Wall (+₹80k)" },
+                { key: "counter", label: "Reception Desk (+₹25k)" },
+                { key: "lounge", label: "Discussion Lounge (+₹35k)" },
+                { key: "shelves", label: "Product Displays (+₹15k)" },
+                { key: "plants", label: "Green Planters (+₹12k)" },
+                { key: "touchScreen", label: "Touch Kiosk (+₹25k)" },
               ].map((item) => {
                 const k = item.key as keyof BoothConfigState["features"];
                 const isChecked = config.features[k];
@@ -320,32 +355,108 @@ export default function BoothConfigurator() {
                 );
               })}
             </div>
+
+            {/* Running Total Summary display */}
+            <div className="mt-3 p-4 rounded-2xl border border-stone bg-warm flex flex-col gap-2 text-xs font-semibold text-dark">
+              <div className="flex justify-between items-center text-[10px] uppercase font-bold text-dark/50 tracking-wider">
+                <span>Base Booth Structure</span>
+                <span>₹9,99,000</span>
+              </div>
+
+              {Object.entries(config.features).some(([, active]) => active) && (
+                <div className="flex flex-col gap-1.5 border-t border-stone pt-2.5 text-[11px] text-dark/80">
+                  {config.features.led && (
+                    <div className="flex justify-between">
+                      <span>• LED Video Wall Addon</span>
+                      <span>+₹80,000</span>
+                    </div>
+                  )}
+                  {config.features.counter && (
+                    <div className="flex justify-between">
+                      <span>• Reception Desk Addon</span>
+                      <span>+₹25,000</span>
+                    </div>
+                  )}
+                  {config.features.lounge && (
+                    <div className="flex justify-between">
+                      <span>• Discussion Lounge Addon</span>
+                      <span>+₹35,000</span>
+                    </div>
+                  )}
+                  {config.features.shelves && (
+                    <div className="flex justify-between">
+                      <span>• Product Displays Addon</span>
+                      <span>+₹15,000</span>
+                    </div>
+                  )}
+                  {config.features.plants && (
+                    <div className="flex justify-between">
+                      <span>• Green Planters Addon</span>
+                      <span>+₹12,000</span>
+                    </div>
+                  )}
+                  {config.features.touchScreen && (
+                    <div className="flex justify-between">
+                      <span>• Touch Kiosk Addon</span>
+                      <span>+₹25,000</span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="flex justify-between items-center border-t border-stone pt-2.5 text-sm font-extrabold text-accent-blue">
+                <span>Running Total Cost</span>
+                <span>₹{toIndianFormat(runningTotal)}</span>
+              </div>
+            </div>
           </div>
 
-          {/* Step 4: Color Picker */}
-          <div className="flex flex-col gap-2.5">
-            <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
-              Step 4: Primary Theme Color
-            </label>
-            <div className="flex items-center gap-3">
-              {["#2F6BFF", "#111111", "#E11D48", "#059669", "#7C3AED"].map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  onClick={() => setConfig({ ...config, color: c })}
-                  style={{ backgroundColor: c }}
-                  className={`w-9 h-9 rounded-full transition-transform cursor-pointer border-2 ${
-                    config.color === c ? "scale-110 border-black shadow-md" : "border-transparent"
-                  }`}
+          {/* Step 4: Color Swatches & Custom Picker */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">4</span>
+              <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+                Step 4: Primary Theme Color
+              </label>
+            </div>
+            
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Selected Color hex preview */}
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-stone bg-warm text-dark">
+                <div
+                  style={{ backgroundColor: config.color }}
+                  className="w-5 h-5 rounded-full border border-black/10 shadow-sm"
                 />
-              ))}
-              <input
-                type="color"
-                value={config.color}
-                onChange={(e) => setConfig({ ...config, color: e.target.value })}
-                suppressHydrationWarning
-                className="w-9 h-9 rounded-full cursor-pointer border-none bg-transparent"
-              />
+                <span className="text-xs font-bold font-mono tracking-wide uppercase">{config.color}</span>
+              </div>
+
+              {/* Swatches selection */}
+              <div className="flex items-center gap-2">
+                {["#2F6BFF", "#111111", "#E11D48", "#059669", "#7C3AED"].map((c) => (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => setConfig({ ...config, color: c })}
+                    style={{ backgroundColor: c }}
+                    className={`w-8 h-8 rounded-full transition-all cursor-pointer border-2 ${
+                      config.color.toLowerCase() === c.toLowerCase()
+                        ? "scale-110 border-black shadow-md"
+                        : "border-transparent opacity-80 hover:opacity-100"
+                    }`}
+                    title={c}
+                  />
+                ))}
+                {/* Custom Color Picker input */}
+                <div className="relative w-8 h-8 rounded-full border border-stone hover:bg-stone flex items-center justify-center cursor-pointer overflow-hidden bg-warm">
+                  <input
+                    type="color"
+                    value={config.color}
+                    onChange={(e) => setConfig({ ...config, color: e.target.value })}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  />
+                  <span className="text-xs font-bold text-dark/60">+</span>
+                </div>
+              </div>
             </div>
           </div>
 

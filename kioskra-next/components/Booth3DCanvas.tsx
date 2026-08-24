@@ -84,14 +84,55 @@ const CameraPresetController = ({
 // ----------------------------------------------------
 export default function Booth3DCanvas({ config, preset }: Booth3DCanvasProps) {
   const controlsRef = useRef<OrbitControlsImpl>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleOrientationOrResize = () => {
+      // Trigger resize events with timeouts to ensure layout has reflowed on mobile devices
+      const timers = [50, 150, 300].map((delay) =>
+        setTimeout(() => {
+          window.dispatchEvent(new Event("resize"));
+        }, delay)
+      );
+
+      return () => timers.forEach(clearTimeout);
+    };
+
+    window.addEventListener("orientationchange", handleOrientationOrResize);
+    window.addEventListener("resize", handleOrientationOrResize);
+
+    // Set up ResizeObserver on the container to detect size modifications
+    let observer: ResizeObserver | null = null;
+    if (containerRef.current) {
+      observer = new ResizeObserver(() => {
+        window.dispatchEvent(new Event("resize"));
+      });
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientationOrResize);
+      window.removeEventListener("resize", handleOrientationOrResize);
+      if (observer) {
+        observer.disconnect();
+      }
+    };
+  }, []);
 
   return (
-    <div className="w-full h-full relative touch-none" style={{ minHeight: "320px" }}>
+    <div
+      ref={containerRef}
+      className="w-full h-full relative touch-none select-none"
+      style={{ touchAction: "none", minHeight: "320px" }}
+    >
       <Canvas
         shadows
         gl={{ preserveDrawingBuffer: true, antialias: true }}
         camera={{ position: [8, 7, 8], fov: 45 }}
-        className="w-full h-full"
+        className="w-full h-full touch-none"
+        style={{ touchAction: "none" }}
       >
         {/* Studio Lighting */}
         <ambientLight intensity={0.55} />

@@ -25,7 +25,7 @@ export default function Footer() {
             </h3>
           </div>
           <Link
-            href="/#contact"
+            href="/contact"
             className="inline-flex items-center justify-center gap-2 bg-accent-blue hover:bg-blue-600 text-white font-bold text-[10px] uppercase tracking-widest px-6 py-3 rounded-full transition-all shadow-md group self-start sm:self-auto"
           >
             <span>Request Consultation</span>
@@ -103,10 +103,10 @@ export default function Footer() {
               Navigation
             </h4>
             <nav className="flex flex-col gap-2 text-[11px] text-white/70">
-              <Link href="/#portfolio" className="hover:text-white hover:translate-x-0.5 transition-all">
+              <Link href="/projects" className="hover:text-white hover:translate-x-0.5 transition-all">
                 Portfolio & Gallery
               </Link>
-              <Link href="/#about" className="hover:text-white hover:translate-x-0.5 transition-all">
+              <Link href="/about" className="hover:text-white hover:translate-x-0.5 transition-all">
                 About Studio
               </Link>
               <Link href="/services" className="hover:text-white hover:translate-x-0.5 transition-all">
@@ -115,7 +115,7 @@ export default function Footer() {
               <Link href="/configurator" className="hover:text-white hover:translate-x-0.5 transition-all">
                 3D Configurator
               </Link>
-              <Link href="/#contact" className="hover:text-white hover:translate-x-0.5 transition-all">
+              <Link href="/contact" className="hover:text-white hover:translate-x-0.5 transition-all">
                 Contact & Brief
               </Link>
             </nav>
@@ -161,7 +161,7 @@ export default function Footer() {
 
             <div className="pt-1">
               <Link
-                href="/#contact"
+                href="/contact"
                 className="inline-flex items-center gap-1 text-[11px] font-bold text-accent-blue hover:text-white transition-colors group"
               >
                 <span>Request Free Quote</span>
