@@ -2,8 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import { Phone } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 export default function FloatingContactWidget() {
+  const pathname = usePathname();
+
+  // Hide contact widget on admin routes
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
   const [showPhoneTooltip, setShowPhoneTooltip] = useState(false);
   const [showWhatsAppTooltip, setShowWhatsAppTooltip] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);

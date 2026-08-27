@@ -13,6 +13,11 @@ export default function Navbar() {
   const [width, setWidth] = useState(1200);
   const pathname = usePathname();
 
+  // Hide main navbar on admin routes
+  if (pathname.startsWith("/admin")) {
+    return null;
+  }
+
   // Dynamic window width listener
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -131,7 +136,7 @@ export default function Navbar() {
               <div className={`relative overflow-hidden w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 ${
                 isDarkBackground
                   ? "bg-white/10 border-white/20 group-hover:border-blue-400 backdrop-blur-md"
-                  : "bg-black/5 border-black/15 group-hover:border-blue-600"
+                  : "bg-neutral-950 border-neutral-800 group-hover:border-blue-600"
               }`}>
                 <Image
                   src="/images/LOGOS/Kioskra Transparent.png"

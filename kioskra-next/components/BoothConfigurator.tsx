@@ -29,14 +29,22 @@ export interface BoothConfigState {
     plants: boolean;
     touchScreen: boolean;
   };
+  tier: "octanorm" | "basic" | "premium" | "luxury";
 }
+
+export const TIERS = [
+  { id: "octanorm", label: "Octanorm / Modular", price: 5500, limit: 10, desc: "Modular aluminum system" },
+  { id: "basic", label: "Basic Stand", price: 7500, limit: 12, desc: "Custom wooden construction" },
+  { id: "premium", label: "Premium Stand", price: 10500, limit: 12, desc: "High-end bespoke fabrication" },
+  { id: "luxury", label: "Luxury Stand", price: 13000, limit: 15, desc: "Double height & top finishes" },
+] as const;
 
 export default function BoothConfigurator() {
   const [config, setConfig] = useState<BoothConfigState>({
     shape: "square",
     width: 20,
     depth: 20,
-    height: 8,
+    height: 12,
     color: "#2F6BFF",
     flooring: "carpet",
     features: {
@@ -47,6 +55,7 @@ export default function BoothConfigurator() {
       plants: true,
       touchScreen: false,
     },
+    tier: "premium",
   });
 
   const [leadForm, setLeadForm] = useState({
@@ -70,11 +79,18 @@ export default function BoothConfigurator() {
     setShowToast(true);
   };
 
-  // Base calculation logic updated for Change 5 pricing requirements
-  const { minCost, maxCost, areaSqFt, runningTotal } = useMemo(() => {
-    const area = config.width * config.depth;
+  // Base calculation logic based on selected tier and square meters area
+  const { minCost, maxCost, areaSqFt, areaSqm, runningTotal, baseBoothPrice } = useMemo(() => {
+    const sqft = config.width * config.depth;
+    
+    // Feet to meters conversion: 1 ft = 0.3048 m
+    const wMeters = config.width * 0.3048;
+    const dMeters = config.depth * 0.3048;
+    const sqm = wMeters * dMeters;
 
-    const baseBoothPrice = 999000;
+    const tierInfo = TIERS.find((t) => t.id === config.tier) || TIERS[2];
+    const basePrice = Math.round(sqm * tierInfo.price);
+
     let featureAddons = 0;
     if (config.features.led) featureAddons += 80000;
     if (config.features.counter) featureAddons += 25000;
@@ -83,12 +99,14 @@ export default function BoothConfigurator() {
     if (config.features.plants) featureAddons += 12000;
     if (config.features.touchScreen) featureAddons += 25000;
 
-    const total = baseBoothPrice + featureAddons;
+    const total = basePrice + featureAddons;
     const min = total;
     const max = Math.round(total * 1.15);
 
     return {
-      areaSqFt: area,
+      areaSqFt: sqft,
+      areaSqm: sqm,
+      baseBoothPrice: basePrice,
       runningTotal: total,
       minCost: min,
       maxCost: max,
@@ -226,12 +244,55 @@ export default function BoothConfigurator() {
             </div>
           </div>
 
-          {/* Step 2: Dimensions */}
-          <div className="flex flex-col gap-3">
+          {/* Step 2: Stall Quality Tier */}
+          <div className="flex flex-col gap-2.5">
             <div className="flex items-center gap-2">
               <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">2</span>
               <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
-                Step 2: Dimensions & Height
+                Step 2: Stall Quality Tier
+              </label>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {TIERS.map((tier) => {
+                const isSelected = config.tier === tier.id;
+                return (
+                  <button
+                    key={tier.id}
+                    type="button"
+                    onClick={() => {
+                      const limit = tier.limit;
+                      setConfig((prev) => ({
+                        ...prev,
+                        tier: tier.id,
+                        height: prev.height > limit ? limit : prev.height,
+                      }));
+                    }}
+                    className={`p-4 rounded-xl text-left border transition-all cursor-pointer flex flex-col justify-between ${
+                      isSelected
+                        ? "bg-accent-blue/10 border-accent-blue text-accent-blue shadow-sm"
+                        : "bg-warm text-dark border-stone hover:bg-stone"
+                    }`}
+                  >
+                    <div>
+                      <div className="text-xs font-extrabold">{tier.label}</div>
+                      <div className="text-[10px] font-medium text-dark/60 mt-0.5">{tier.desc}</div>
+                    </div>
+                    <div className="mt-2.5 flex items-center justify-between w-full border-t border-stone/30 pt-1.5">
+                      <span className="text-[10px] font-bold text-accent-blue">Starts from ₹{tier.price.toLocaleString("en-IN")}/sqm</span>
+                      <span className="text-[9px] font-bold bg-dark/5 text-dark px-1.5 py-0.5 rounded-sm">Max {tier.limit}ft</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 3: Dimensions & Height */}
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">3</span>
+              <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
+                Step 3: Dimensions & Height
               </label>
             </div>
             
@@ -300,29 +361,36 @@ export default function BoothConfigurator() {
                 </div>
               </div>
 
-              {/* Height dropdown */}
+              {/* Height dropdown (dynamically limited by selected tier) */}
               <div className="flex flex-col gap-2">
-                <span className="text-[11px] font-bold text-dark/60">Height (ft)</span>
+                <span className="text-[11px] font-bold text-dark/60 flex flex-wrap items-center gap-1">
+                  <span>Height (ft)</span>
+                  <span className="text-[9px] text-dark/40 font-semibold italic">*(organizer guidelines)*</span>
+                </span>
                 <select
                   value={config.height}
                   onChange={(e) => setConfig({ ...config, height: Number(e.target.value) })}
                   suppressHydrationWarning
                   className="w-full px-3 py-2 rounded-xl bg-warm border border-stone text-dark text-xs font-bold focus:outline-none focus:border-accent-blue h-9"
                 >
-                  <option value={8}>8 ft (Standard)</option>
-                  <option value={10}>10 ft (Elevated)</option>
-                  <option value={12}>12 ft (High Structural)</option>
+                  {[8, 10, 12, 15]
+                    .filter((h) => h <= (TIERS.find(t => t.id === config.tier)?.limit || 12))
+                    .map((h) => (
+                      <option key={h} value={h}>
+                        {h} ft {h === 8 ? "(Standard)" : h === 10 ? "(Elevated)" : h === 12 ? "(High Structural)" : h === 15 ? "(Max Elevation)" : ""}
+                      </option>
+                    ))}
                 </select>
               </div>
             </div>
           </div>
 
-          {/* Step 3: Elements & Flooring */}
+          {/* Step 4: Features & Branding Elements */}
           <div className="flex flex-col gap-2.5">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">3</span>
+              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">4</span>
               <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
-                Step 3: Features & Branding Elements
+                Step 4: Features & Branding Elements
               </label>
             </div>
             <div className="grid grid-cols-2 gap-2.5">
@@ -359,8 +427,8 @@ export default function BoothConfigurator() {
             {/* Running Total Summary display */}
             <div className="mt-3 p-4 rounded-2xl border border-stone bg-warm flex flex-col gap-2 text-xs font-semibold text-dark">
               <div className="flex justify-between items-center text-[10px] uppercase font-bold text-dark/50 tracking-wider">
-                <span>Base Booth Structure</span>
-                <span>₹9,99,000</span>
+                <span>Base Booth ({TIERS.find(t => t.id === config.tier)?.label || "Premium"})</span>
+                <span>₹{toIndianFormat(baseBoothPrice)}</span>
               </div>
 
               {Object.entries(config.features).some(([, active]) => active) && (
@@ -411,12 +479,12 @@ export default function BoothConfigurator() {
             </div>
           </div>
 
-          {/* Step 4: Color Swatches & Custom Picker */}
+          {/* Step 5: Color Swatches & Custom Picker */}
           <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">4</span>
+              <span className="inline-flex items-center justify-center w-5.5 h-5.5 rounded-full bg-accent-blue text-white text-[10px] font-bold">5</span>
               <label className="text-xs font-bold uppercase tracking-wider text-dark/70">
-                Step 4: Primary Theme Color
+                Step 5: Primary Theme Color
               </label>
             </div>
             
@@ -472,7 +540,7 @@ export default function BoothConfigurator() {
                   if (nameInput) nameInput.focus();
                 }
               }}
-              className="w-full inline-flex items-center justify-center gap-2 bg-brand-deepBlack text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl hover:bg-neutral-800 transition-all shadow-md mt-2 cursor-pointer"
+              className="w-full inline-flex items-center justify-center gap-2 bg-brand-deepBlack text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl hover:bg-neutral-800 transition-all shadow-md mt-2 cursor-pointer border-none"
             >
               <span>Request Detailed 3D Render & Quote</span>
               <ArrowRight className="w-4 h-4" />
@@ -492,7 +560,7 @@ export default function BoothConfigurator() {
                 </span>
               </div>
               <span className="text-[11px] text-white/50 font-mono">
-                {config.width}ft × {config.depth}ft × {config.height}ft ({areaSqFt} sq ft)
+                {config.width}ft × {config.depth}ft × {config.height}ft ({areaSqFt} sq ft / {areaSqm.toFixed(1)} sqm)
               </span>
             </div>
 
@@ -532,7 +600,7 @@ export default function BoothConfigurator() {
             <div className="w-full bg-white/5 border border-white/10 rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-white/50 block">
-                  Estimated Fabrication Range
+                  Estimated Stall Cost Starting From
                 </span>
                 <span className="text-xl sm:text-2xl font-extrabold text-accent-blue">
                   ₹{toIndianFormat(minCost)} – ₹{toIndianFormat(maxCost)}

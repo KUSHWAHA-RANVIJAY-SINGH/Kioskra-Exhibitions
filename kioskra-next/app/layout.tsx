@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingContactWidget from "@/components/FloatingContactWidget";
+import AuthProvider from "@/components/AuthProvider";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -80,10 +81,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="bg-brand-warmOffWhite text-brand-deepBlack antialiased min-h-screen flex flex-col font-sans">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <FloatingContactWidget />
+        <AuthProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          <FloatingContactWidget />
+        </AuthProvider>
       </body>
     </html>
   );
