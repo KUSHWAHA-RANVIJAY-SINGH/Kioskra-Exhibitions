@@ -44,7 +44,7 @@ export default function Navbar() {
     { label: "Projects", href: "/projects" },
     { label: "About us", href: "/about" },
     { label: "Services", href: "/services" },
-    { label: "Configurator", href: "/configurator" },
+    { label: "3D Configurator", href: "/configurator" },
     { label: "Contact", href: "/contact" },
   ];
 
@@ -57,7 +57,7 @@ export default function Navbar() {
 
   const hScoop = scrolled ? 48 : (isTablet ? 52 : 58); // height of center solid white scoop
   const r = isMobile ? 0 : (isTablet ? 32 : 44); // transition curve radius
-  const wCenter = isMobile ? 0 : (isTablet ? 460 : 520); // center scoop flat bottom width
+  const wCenter = isMobile ? 0 : (isTablet ? 480 : 540); // center scoop flat bottom width
 
   // SVG Path Formulas
   const cx = width / 2;
@@ -130,28 +130,26 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative pointer-events-auto">
         <div className="flex items-center justify-between relative h-14 sm:h-16">
           
-          {/* Left: Brand Identity (Adaptive Text Color for 100% Contrast) */}
+          {/* Left: Brand Identity (Logo Icon without circle + Adaptive Text) */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className={`relative overflow-hidden w-9 h-9 rounded-full flex items-center justify-center border transition-all duration-300 ${
-                isDarkBackground
-                  ? "bg-white/10 border-white/20 group-hover:border-blue-400 backdrop-blur-md"
-                  : "bg-neutral-950 border-neutral-800 group-hover:border-blue-600"
-              }`}>
-                <Image
-                  src="/images/LOGOS/Kioskra Transparent.png"
-                  alt="Kioskra Logo"
-                  width={30}
-                  height={30}
-                  className="w-7 h-7 object-contain group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-              <span className={`font-extrabold tracking-widest text-lg font-sans transition-colors ${
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <Image
+                src={
+                  isDarkBackground
+                    ? "/images/LOGOS/Kioskra Transparent.png"
+                    : "/images/LOGOS/Kioskra Exhibition Logo White With Trasparent.png"
+                }
+                alt="Kioskra Logo Icon"
+                width={36}
+                height={36}
+                className="w-8 h-8 md:w-9 md:h-9 object-contain group-hover:scale-105 transition-transform duration-300"
+              />
+              <span className={`font-serif text-xl md:text-2xl tracking-wide font-medium transition-colors ${
                 isDarkBackground
                   ? "text-white hover:text-blue-300 drop-shadow-md"
                   : "text-neutral-950 hover:text-blue-600"
               }`}>
-                KIOSKRA
+                Kioskra Exhibitions
               </span>
             </Link>
           </div>

@@ -261,7 +261,7 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
             href="/configurator"
             className="inline-flex items-center justify-center gap-2 bg-brand-electricBlue hover:bg-blue-600 text-white font-extrabold text-xs uppercase tracking-widest px-6 py-4 rounded-full transition-all shadow-md group self-start md:self-auto z-10"
           >
-            <span>Launch Booth Configurator</span>
+            <span>Launch 3D Booth Configurator</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

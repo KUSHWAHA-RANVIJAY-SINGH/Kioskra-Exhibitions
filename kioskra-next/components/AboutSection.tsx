@@ -95,23 +95,23 @@ export default function AboutSection() {
 
         {/* Client Logos Row */}
         <div className="flex flex-col gap-6 pt-8 border-t border-stone">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-dark/60">
+          <div className="flex items-center gap-2 text-sm sm:text-base font-extrabold uppercase tracking-wider text-dark/80">
             <span>🏆 Trusted by Leading Brands Pan-India</span>
           </div>
 
           <div className="overflow-hidden relative py-4">
-            <div className="animate-marquee items-center gap-12">
+            <div className="animate-marquee items-center gap-8 sm:gap-10">
               {[...clientLogos, ...clientLogos].map((logo, idx) => (
                 <div
                   key={idx}
-                  className="flex-shrink-0 bg-white px-6 py-3 rounded-xl border border-stone shadow-sm flex items-center justify-center h-16 w-36"
+                  className="flex-shrink-0 bg-white px-8 py-4 rounded-2xl border border-stone shadow-sm hover:shadow-md transition-shadow flex items-center justify-center h-20 w-44 sm:w-48"
                 >
                   <Image
                     src={logo.src}
                     alt={logo.alt}
-                    width={100}
-                    height={40}
-                    className="max-h-8 w-auto object-contain"
+                    width={140}
+                    height={60}
+                    className="max-h-11 sm:max-h-12 w-auto object-contain"
                   />
                 </div>
               ))}

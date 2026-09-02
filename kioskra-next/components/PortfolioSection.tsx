@@ -57,7 +57,7 @@ const projectsData: Project[] = [
     category: "Custom Stalls",
     clientName: "ProCook",
     location: "BIEC, Bengaluru",
-    image: "/images/Delivered/1 (3).jpeg",
+    image: "/images/Designs/53.png",
     tag: "Custom Stall",
   },
   {
