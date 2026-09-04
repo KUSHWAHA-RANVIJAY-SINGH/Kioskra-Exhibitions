@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Calendar, Clock, ArrowRight, BookOpen, Sparkles } from "lucide-react";
+import { Search, Calendar, Clock, BookOpen, Sparkles } from "lucide-react";
 import { BlogPost } from "@/lib/blogData";
 
 interface BlogCatalogClientProps {
@@ -84,68 +84,60 @@ export default function BlogCatalogClient({ posts }: BlogCatalogClientProps) {
       {/* Featured Headline Guide Card (If showing 'All' and no search filter) */}
       {selectedCategory === "All" && !searchQuery && featuredPost && (
         <div className="relative group overflow-hidden rounded-3xl bg-neutral-900 text-white border border-white/10 shadow-2xl transition-all hover:shadow-blue-900/20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
-            {/* Image Side */}
-            <div className="lg:col-span-6 relative h-64 sm:h-80 lg:h-[420px] overflow-hidden">
-              <Image
-                src={featuredPost.heroImage}
-                alt={featuredPost.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-neutral-900 via-neutral-900/40 to-transparent" />
-              
-              <div className="absolute top-6 left-6 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-600/90 backdrop-blur-md text-white text-[10px] font-extrabold uppercase tracking-widest shadow-lg">
-                <Sparkles className="w-3 h-3 text-amber-300" />
-                <span>Featured Guide 2026</span>
+          <Link href={`/blog/${featuredPost.slug}`} className="block">
+            <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+              {/* Image Side */}
+              <div className="lg:col-span-6 relative h-64 sm:h-80 lg:h-[420px] overflow-hidden">
+                <Image
+                  src={featuredPost.heroImage}
+                  alt={featuredPost.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-700 opacity-90"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-neutral-900 via-neutral-900/40 to-transparent" />
+                
+                <div className="absolute top-6 left-6 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-blue-600/90 backdrop-blur-md text-white text-[10px] font-extrabold uppercase tracking-widest shadow-lg">
+                  <Sparkles className="w-3 h-3 text-amber-300" />
+                  <span>Featured Guide 2026</span>
+                </div>
               </div>
-            </div>
 
-            {/* Details Side */}
-            <div className="lg:col-span-6 p-8 sm:p-10 lg:p-12 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-4 text-xs font-semibold text-white/60">
-                  <span className="inline-flex items-center gap-1">
-                    <Calendar className="w-3.5 h-3.5 text-blue-400" />
-                    {featuredPost.publishDate}
-                  </span>
-                  <span>•</span>
-                  <span className="inline-flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-blue-400" />
-                    {featuredPost.readTime}
-                  </span>
-                  <span>•</span>
-                  <span className="text-blue-400 font-bold uppercase tracking-wider text-[10px]">
-                    {featuredPost.category}
-                  </span>
+              {/* Details Side */}
+              <div className="lg:col-span-6 p-8 sm:p-10 lg:p-12 flex flex-col justify-between space-y-6">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4 text-xs font-semibold text-white/60">
+                    <span className="inline-flex items-center gap-1">
+                      <Calendar className="w-3.5 h-3.5 text-blue-400" />
+                      {featuredPost.publishDate}
+                    </span>
+                    <span>•</span>
+                    <span className="inline-flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-blue-400" />
+                      {featuredPost.readTime}
+                    </span>
+                    <span>•</span>
+                    <span className="text-blue-400 font-bold uppercase tracking-wider text-[10px]">
+                      {featuredPost.category}
+                    </span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight font-sans group-hover:text-blue-300 transition-colors">
+                    {featuredPost.title}
+                  </h2>
+
+                  <p className="text-sm text-neutral-300 line-clamp-3 leading-relaxed font-normal">
+                    {featuredPost.excerpt}
+                  </p>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight font-sans group-hover:text-blue-300 transition-colors">
-                  <Link href={`/blog/${featuredPost.slug}`}>
-                    {featuredPost.title}
-                  </Link>
-                </h2>
-
-                <p className="text-sm text-neutral-300 line-clamp-3 leading-relaxed font-normal">
-                  {featuredPost.excerpt}
-                </p>
-              </div>
-
-              <div className="pt-2 flex items-center justify-between border-t border-white/10">
-                <span className="text-xs text-neutral-400 font-medium">
-                  By {featuredPost.author}
-                </span>
-
-                <Link
-                  href={`/blog/${featuredPost.slug}`}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold uppercase tracking-wider transition-all group/btn shadow-lg shadow-blue-600/30"
-                >
-                  <span>Read Full Guide</span>
-                  <ArrowRight className="w-3.5 h-3.5 group-hover/btn:translate-x-1 transition-transform" />
-                </Link>
+                <div className="pt-4 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-xs text-neutral-400 font-medium">
+                    By {featuredPost.author}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       )}
 
@@ -180,57 +172,51 @@ export default function BlogCatalogClient({ posts }: BlogCatalogClientProps) {
                 key={post.id}
                 className="group flex flex-col bg-white rounded-3xl border border-black/5 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
-                {/* Image Container */}
-                <div className="relative h-52 w-full overflow-hidden bg-neutral-100">
-                  <Image
-                    src={post.heroImage}
-                    alt={post.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <span className="absolute top-4 left-4 px-3 py-1 bg-black/70 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
-                    {post.category}
-                  </span>
-                </div>
+                <Link href={`/blog/${post.slug}`} className="flex flex-col h-full">
+                  {/* Image Container */}
+                  <div className="relative h-52 w-full overflow-hidden bg-neutral-100">
+                    <Image
+                      src={post.heroImage}
+                      alt={post.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <span className="absolute top-4 left-4 px-3 py-1 bg-black/70 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider rounded-full">
+                      {post.category}
+                    </span>
+                  </div>
 
-                {/* Body Content */}
-                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-[11px] font-medium text-neutral-500">
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-blue-600" />
-                        {post.publishDate}
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-blue-600" />
-                        {post.readTime}
-                      </span>
+                  {/* Body Content */}
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3 text-[11px] font-medium text-neutral-500">
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3 text-blue-600" />
+                          {post.publishDate}
+                        </span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1">
+                          <Clock className="w-3 h-3 text-blue-600" />
+                          {post.readTime}
+                        </span>
+                      </div>
+
+                      <h4 className="text-lg font-bold text-neutral-900 line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">
+                        {post.title}
+                      </h4>
+
+                      <p className="text-xs text-neutral-600 line-clamp-3 leading-relaxed">
+                        {post.excerpt}
+                      </p>
                     </div>
 
-                    <h4 className="text-lg font-bold text-neutral-900 line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">
-                      <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-                    </h4>
-
-                    <p className="text-xs text-neutral-600 line-clamp-3 leading-relaxed">
-                      {post.excerpt}
-                    </p>
+                    <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
+                      <span className="text-[11px] font-medium text-neutral-500">
+                        By {post.author}
+                      </span>
+                    </div>
                   </div>
-
-                  <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
-                    <span className="text-[11px] font-medium text-neutral-500">
-                      By {post.author}
-                    </span>
-
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 hover:text-blue-700 tracking-wider uppercase"
-                    >
-                      <span>Read</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
+                </Link>
               </article>
             ))}
           </div>
