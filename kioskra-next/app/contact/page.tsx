@@ -51,7 +51,7 @@ export default function ContactPage() {
               <div className="relative w-full h-48 rounded-2xl overflow-hidden border border-white/10 group cursor-pointer">
                 {/* Base Map - Pointer events disabled so overlay gets the click */}
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14002.868735235882!2d77.1645065487771!3d28.66820546687002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d03b0d2d38dfd%3A0xc3f1737e6f6630f9!2sShastri+Nagar%2C+Delhi%2C+110052!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
+                  src="https://maps.google.com/maps?q=L2/86,+near+Nag+Mandir+Road,+Block+L+2,+Shastri+Nagar,+New+Delhi,+Delhi,+110052&t=&z=16&ie=UTF8&iwloc=&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -63,7 +63,7 @@ export default function ContactPage() {
                 
                 {/* Clickable Overlay Link */}
                 <a 
-                  href="https://maps.google.com/?q=L2/86,+Shastri+Nagar,+New+Delhi+%E2%80%93+110052" 
+                  href="https://maps.google.com/?q=L2/86,+near+Nag+Mandir+Road,+Block+L+2,+Shastri+Nagar,+New+Delhi,+Delhi,+110052" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -81,13 +81,13 @@ export default function ContactPage() {
                 <div className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-brand-electricBlue flex-shrink-0 mt-0.5" />
                   <span>
-                    Global Exhibition Services & Fabrication Units (India, UAE, Germany)
+                    L2/86, near Nag Mandir Road, Block L 2, Shastri Nagar, New Delhi, Delhi, 110052
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="w-5 h-5 text-brand-electricBlue flex-shrink-0" />
-                  <a href="mailto:inquiries@kioskra.com" className="hover:text-white transition-colors">
-                    inquiries@kioskra.com
+                  <a href="mailto:sales@kioskra.com" className="hover:text-white transition-colors">
+                    sales@kioskra.com
                   </a>
                 </div>
                 <div className="flex items-center gap-3">

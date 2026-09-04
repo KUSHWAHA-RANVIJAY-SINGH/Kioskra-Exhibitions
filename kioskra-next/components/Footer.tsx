@@ -55,8 +55,8 @@ export default function Footer() {
                 height={32}
                 className="w-8 h-8 object-contain"
               />
-              <span className="font-extrabold tracking-widest text-xl text-white">
-                KIOSKRA
+              <span className="font-serif text-xl sm:text-2xl tracking-wide font-medium text-white">
+                Kioskra Exhibitions
               </span>
             </div>
             <p className="text-[11px] text-white/70 leading-relaxed max-w-sm">
@@ -124,6 +124,9 @@ export default function Footer() {
               <Link href="/configurator" className="hover:text-white hover:translate-x-0.5 transition-all">
                 3D Configurator
               </Link>
+              <Link href="/blog" className="hover:text-white hover:translate-x-0.5 transition-all">
+                Exhibition Blog
+              </Link>
               <Link href="/contact" className="hover:text-white hover:translate-x-0.5 transition-all">
                 Contact & Brief
               </Link>
@@ -152,12 +155,12 @@ export default function Footer() {
             <div className="flex flex-col gap-2 text-[11px] text-white/70">
               <div className="flex items-start gap-2">
                 <MapPin className="w-3.5 h-3.5 text-accent-blue flex-shrink-0 mt-0.5" />
-                <span>L2/86, Shastri Nagar, New Delhi – 110052</span>
+                <span>L2/86, near Nag Mandir Road, Block L 2, Shastri Nagar, New Delhi, Delhi, 110052</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-accent-blue flex-shrink-0" />
-                <a href="mailto:info@kioskra.com" className="hover:text-white transition-colors">
-                  info@kioskra.com
+                <a href="mailto:sales@kioskra.com" className="hover:text-white transition-colors">
+                  sales@kioskra.com
                 </a>
               </div>
               <div className="flex items-center gap-2">

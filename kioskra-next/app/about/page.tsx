@@ -8,10 +8,10 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About Us & Leadership | Kioskra Exhibitions",
-  description: "Discover Kioskra's spatial design philosophy, our premium exhibition stall fabrication capabilities, and the leadership vision of Piush Gupta & Sourav Sharma.",
+  description: "Discover Kioskra's spatial design philosophy, our premium exhibition stall fabrication capabilities, and the leadership vision of Piyush Gupta & Sourav Sharma.",
   keywords: [
     "Kioskra directors",
-    "Piush Gupta",
+    "Piyush Gupta",
     "Sourav Sharma",
     "exhibition designers Delhi",
     "stall fabrication specialists",
@@ -29,10 +29,10 @@ export default function AboutPage() {
 
   const leadership = [
     {
-      name: "Piush Gupta",
+      name: "Piyush Gupta",
       role: "Director of Design & Strategy",
       image: "/images/piyush_gupta.png",
-      bio: "Piush heads the architectural design and spatial strategy division at Kioskra. With a focus on modern structural aesthetics and visual merchandising, he transforms raw corporate briefs into striking, high-impact spatial statements.",
+      bio: "Piyush heads the architectural design and spatial strategy division at Kioskra. With a focus on modern structural aesthetics and visual merchandising, he transforms raw corporate briefs into striking, high-impact spatial statements.",
       specialty: "Parametric Design, Client Relations & Spatial Planning",
     },
     {
@@ -162,17 +162,17 @@ export default function AboutPage() {
                 className="group flex flex-col rounded-3xl bg-white border border-brand-softStone overflow-hidden shadow-sm hover:shadow-lg hover:border-brand-electricBlue/35 transition-all duration-300"
               >
                 {/* Photo Frame */}
-                <div className="relative aspect-[4/3] w-full bg-brand-softStone overflow-hidden">
+                <div className="relative aspect-[4/5] w-full bg-brand-softStone overflow-hidden">
                   <Image
                     src={leader.image}
                     alt={leader.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80" />
                   <div className="absolute bottom-4 left-6 text-white">
-                    <h3 className="text-lg font-bold">{leader.name}</h3>
+                    <h3 className="text-xl font-bold">{leader.name}</h3>
                     <p className="text-xs text-brand-electricBlue font-semibold uppercase tracking-wider mt-0.5">
                       {leader.role}
                     </p>

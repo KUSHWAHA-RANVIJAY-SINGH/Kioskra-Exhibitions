@@ -45,6 +45,7 @@ export default function Navbar() {
     { label: "About us", href: "/about" },
     { label: "Services", href: "/services" },
     { label: "3D Configurator", href: "/configurator" },
+    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ];
 
@@ -146,8 +147,8 @@ export default function Navbar() {
               />
               <span className={`font-serif text-xl md:text-2xl tracking-wide font-medium transition-colors ${
                 isDarkBackground
-                  ? "text-white hover:text-blue-300 drop-shadow-md"
-                  : "text-neutral-950 hover:text-blue-600"
+                  ? "text-white drop-shadow-md"
+                  : "text-neutral-950"
               }`}>
                 Kioskra Exhibitions
               </span>
