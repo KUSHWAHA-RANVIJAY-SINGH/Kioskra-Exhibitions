@@ -41,11 +41,11 @@ export default function ProjectDetailClient({ project }: ProjectDetailClientProp
       {/* Top Breadcrumb Navigation */}
       <Section className="pb-4">
         <Link 
-          href="/projects" 
+          href="/portfolio" 
           className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-charcoal/70 hover:text-brand-electricBlue transition-colors group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5" />
-          <span>Back to Projects</span>
+          <span>Back to Portfolio</span>
         </Link>
       </Section>
 

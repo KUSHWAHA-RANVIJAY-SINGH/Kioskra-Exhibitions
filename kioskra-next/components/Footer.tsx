@@ -112,7 +112,7 @@ export default function Footer() {
               Navigation
             </h4>
             <nav className="flex flex-col gap-2 text-[11px] text-white/70">
-              <Link href="/projects" className="hover:text-white hover:translate-x-0.5 transition-all">
+              <Link href="/portfolio" className="hover:text-white hover:translate-x-0.5 transition-all">
                 Portfolio & Gallery
               </Link>
               <Link href="/about" className="hover:text-white hover:translate-x-0.5 transition-all">

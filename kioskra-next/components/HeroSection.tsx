@@ -118,7 +118,7 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto pt-2"
         >
           <Link
-            href="/projects"
+            href="/portfolio"
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-accent-blue text-white font-bold text-xs uppercase tracking-widest px-8 py-4 rounded-full hover:bg-blue-600 transition-all shadow-xl shadow-blue-500/25 group"
           >
             <span>Explore Portfolio</span>

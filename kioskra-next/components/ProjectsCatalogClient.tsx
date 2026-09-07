@@ -114,7 +114,7 @@ export default function ProjectsCatalogClient({ projects }: ProjectsCatalogClien
                   </span>
                   
                   <Link 
-                    href={`/projects/${project.slug}`}
+                    href={`/portfolio/${project.slug}`}
                     className="inline-flex items-center gap-1.5 text-brand-electricBlue hover:text-blue-600 transition-colors"
                   >
                     <span>Explore</span>

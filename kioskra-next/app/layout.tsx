@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FloatingContactWidget from "@/components/FloatingContactWidget";
 import AuthProvider from "@/components/AuthProvider";
+import VisitorToast from "@/components/VisitorToast";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -82,6 +83,7 @@ export default function RootLayout({
     >
       <body className="bg-brand-warmOffWhite text-brand-deepBlack antialiased min-h-screen flex flex-col font-sans">
         <AuthProvider>
+          <VisitorToast />
           <Navbar />
           <main className="flex-grow">{children}</main>
           <Footer />

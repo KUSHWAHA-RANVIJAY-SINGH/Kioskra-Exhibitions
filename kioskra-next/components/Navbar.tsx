@@ -41,7 +41,7 @@ export default function Navbar() {
 
   // Navigation Links
   const navLinks = [
-    { label: "Projects", href: "/projects" },
+    { label: "Portfolio", href: "/portfolio" },
     { label: "About us", href: "/about" },
     { label: "Services", href: "/services" },
     { label: "3D Configurator", href: "/configurator" },
