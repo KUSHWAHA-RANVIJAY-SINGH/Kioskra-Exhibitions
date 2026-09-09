@@ -26,11 +26,29 @@ export async function connectDB() {
   if (!cached?.promise) {
     const opts = {
       bufferCommands: false,
+      serverSelectionTimeoutMS: 5000, // Fail fast after 5 seconds instead of 30 seconds
+      connectTimeoutMS: 5000,
     };
 
-    cached!.promise = mongoose.connect(MONGODB_URI, opts).then((mongooseInstance) => {
-      return mongooseInstance;
-    });
+    cached!.promise = mongoose
+      .connect(MONGODB_URI, opts)
+      .then((mongooseInstance) => {
+        console.log("✅ MongoDB Connected Successfully");
+        return mongooseInstance;
+      })
+      .catch((err) => {
+        console.error("❌ MongoDB Connection Error:", err.message);
+        if (
+          err.name === "MongooseServerSelectionError" ||
+          err.message.includes("selection timed out")
+        ) {
+          console.error(
+            "👉 Please check your MongoDB Atlas Network Access / IP Whitelist settings (allow 0.0.0.0/0 or add current IP)."
+          );
+        }
+        cached!.promise = null; // Reset promise so subsequent requests can retry
+        throw err;
+      });
   }
 
   try {

@@ -301,7 +301,7 @@ export default function ContactForm() {
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="w-full inline-flex items-center justify-center gap-2 bg-accent-blue text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl hover:bg-blue-600 transition-all shadow-lg shadow-blue-500/20 cursor-pointer disabled:opacity-50 mt-2 border-none"
+            className="w-full inline-flex items-center justify-center gap-2 bg-accent-blue text-white font-bold text-xs uppercase tracking-wider py-4 rounded-xl hover:bg-blue-600 transition-all shadow-lg shadow-blue-500/20 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none mt-2 border-none"
           >
             <span>{status === "submitting" ? "Sending..." : "Submit Inquiry"}</span>
             <Send className="w-4 h-4" />

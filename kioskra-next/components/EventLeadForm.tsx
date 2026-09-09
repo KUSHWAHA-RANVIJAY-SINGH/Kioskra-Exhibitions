@@ -262,7 +262,7 @@ export default function EventLeadForm({
           <button
             type="submit"
             disabled={status === "submitting"}
-            className="w-full inline-flex items-center justify-center gap-2 bg-brand-electricBlue text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl hover:brightness-110 transition-all shadow-lg shadow-brand-electricBlue/25 cursor-pointer disabled:opacity-50 mt-2 border-none"
+            className="w-full inline-flex items-center justify-center gap-2 bg-brand-electricBlue text-white font-bold text-xs uppercase tracking-wider py-3.5 rounded-xl hover:brightness-110 transition-all shadow-lg shadow-brand-electricBlue/25 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none mt-2 border-none"
           >
             <span>{status === "submitting" ? "Sending..." : "Request 3D Design"}</span>
             <Send className="w-3.5 h-3.5" />
