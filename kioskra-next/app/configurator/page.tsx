@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 
 export default function ConfiguratorPage() {
   return (
-    <div className="pt-20 md:pt-24 min-h-screen bg-warm text-dark pb-24 sm:pb-32">
+    <div className="pt-20 md:pt-24 min-h-screen bg-warm text-dark pb-16 sm:pb-20">
       {/* Header Banner */}
-      <Section className="pb-4">
+      <Section className="py-6 sm:py-8 pb-2 sm:pb-3">
         <Heading
           badge="Interactive 3D Spatial Tool"
           sansPrefix="3D Stall"
@@ -22,6 +22,7 @@ export default function ConfiguratorPage() {
           sansSuffix="Configurator"
           subtitle="Customize booth layout, dimensions, structural accessories, and brand theme colors in real-time 3D to generate instant quotes."
           size="xl"
+          className="mb-2 sm:mb-4"
         />
       </Section>
 

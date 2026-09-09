@@ -18,7 +18,7 @@ export default function VisitorToast() {
       try {
         const storedVisitorId = localStorage.getItem("visitorId");
         let firstTime = false;
-        let finalCount = 1;
+        let finalCount = 576;
 
         if (!storedVisitorId) {
           // Unique new visitor visit on this browser
@@ -38,8 +38,8 @@ export default function VisitorToast() {
           if (data?.success && typeof data.count === "number") {
             finalCount = data.count;
           } else {
-            const cached = parseInt(localStorage.getItem("visitorCount") || "1", 10);
-            finalCount = isNaN(cached) || cached === 200 ? 1 : cached;
+            const cached = parseInt(localStorage.getItem("visitorCount") || "576", 10);
+            finalCount = isNaN(cached) || cached < 576 ? 576 : cached;
           }
         } else {
           // Returning visit on this browser (refresh or revisit)
@@ -52,8 +52,8 @@ export default function VisitorToast() {
           if (data?.success && typeof data.count === "number") {
             finalCount = data.count;
           } else {
-            const cached = parseInt(localStorage.getItem("visitorCount") || "1", 10);
-            finalCount = isNaN(cached) || cached === 200 ? 1 : cached;
+            const cached = parseInt(localStorage.getItem("visitorCount") || "576", 10);
+            finalCount = isNaN(cached) || cached < 576 ? 576 : cached;
           }
         }
 

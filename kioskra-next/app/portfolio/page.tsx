@@ -27,7 +27,30 @@ export default async function PortfolioPage() {
 
   try {
     await connectDB();
-    const dbProjects = await Project.find({}).sort({ createdAt: -1 });
+    let dbProjects = await Project.find({}).sort({ createdAt: -1 });
+    
+    // Auto sync missing static projects
+    const existingSlugs = new Set(dbProjects.map((p) => p.slug));
+    const missingProjects = projectsData.filter((p) => !existingSlugs.has(p.slug));
+    if (missingProjects.length > 0) {
+      try {
+        const seedPayload = missingProjects.map((p) => ({
+          title: p.title,
+          slug: p.slug,
+          category: p.category,
+          clientName: p.client,
+          location: p.location,
+          featuredImage: p.heroImage,
+          galleryImages: p.galleryImages || [],
+          description: p.challenge || "",
+        }));
+        await Project.insertMany(seedPayload);
+        dbProjects = await Project.find({}).sort({ createdAt: -1 });
+      } catch (seedErr) {
+        console.warn("Portfolio auto seed error:", seedErr);
+      }
+    }
+    
     dbProjectsList = JSON.parse(JSON.stringify(dbProjects));
   } catch (err) {
     console.error("Failed to load projects from DB:", err);
@@ -51,13 +74,12 @@ export default async function PortfolioPage() {
     tag: project.category === "3D Renders" ? "3D Render" : project.category === "Double Decker" ? "Double Decker" : project.category === "Turnkey Solutions" ? "Turnkey Solution" : "Custom Stall"
   }));
 
-  // Combine custom database projects with default static ones
-  const combinedProjects = [...mappedDbProjects, ...projectsData];
+  const finalProjects = mappedDbProjects.length > 0 ? mappedDbProjects : projectsData;
 
   return (
     <div className="pt-20 md:pt-24 min-h-screen bg-brand-warmOffWhite">
       {/* Header Banner Section */}
-      <Section className="pb-4">
+      <Section className="py-6 sm:py-8 pb-2 sm:pb-3">
         <Heading
           badge="Exhibition Architecture Portfolio"
           sansPrefix="Selected"
@@ -65,12 +87,13 @@ export default async function PortfolioPage() {
           sansSuffix="Commissions"
           subtitle="Explore our curated catalog of bespoke exhibition pavilions, monolithic stands, and modular trade fair structures delivered pan-India."
           size="xl"
+          className="mb-2 sm:mb-4"
         />
       </Section>
 
       {/* Interactive Catalog Section */}
-      <Section className="pt-0 pb-20">
-        <ProjectsCatalogClient projects={combinedProjects} />
+      <Section className="pt-0 pb-12 sm:pb-16">
+        <ProjectsCatalogClient projects={finalProjects} />
       </Section>
     </div>
   );

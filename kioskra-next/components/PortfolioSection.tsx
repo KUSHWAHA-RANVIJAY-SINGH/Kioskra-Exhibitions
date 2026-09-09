@@ -2,10 +2,12 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { MapPin, ArrowUpRight, Layers } from "lucide-react";
 
 export interface Project {
   id: string;
+  slug: string;
   title: string;
   category: "Custom Stalls" | "Double Decker" | "Turnkey Solutions" | "3D Renders";
   clientName: string;
@@ -17,6 +19,7 @@ export interface Project {
 const projectsData: Project[] = [
   {
     id: "1",
+    slug: "prayag-bath-fittings-pavilion",
     title: "Prayag Bath Fittings Pavilion",
     category: "3D Renders",
     clientName: "Prayag",
@@ -26,6 +29,7 @@ const projectsData: Project[] = [
   },
   {
     id: "2",
+    slug: "milton-corporate-appliance-stall",
     title: "Milton Corporate Appliance Stall",
     category: "Custom Stalls",
     clientName: "Milton Appliances",
@@ -35,6 +39,7 @@ const projectsData: Project[] = [
   },
   {
     id: "3",
+    slug: "voltas-smart-living-pavilion",
     title: "Voltas Smart Living Pavilion",
     category: "Custom Stalls",
     clientName: "Voltas",
@@ -44,6 +49,7 @@ const projectsData: Project[] = [
   },
   {
     id: "4",
+    slug: "lg-electronics-smart-arena",
     title: "LG Electronics Smart Arena",
     category: "Turnkey Solutions",
     clientName: "LG Electronics",
@@ -53,6 +59,7 @@ const projectsData: Project[] = [
   },
   {
     id: "5",
+    slug: "apcpl-strong-girl-strong-india-stall",
     title: "APCPL Strong Girl Strong India Stall",
     category: "Custom Stalls",
     clientName: "APCPL (IGSTPP)",
@@ -62,6 +69,7 @@ const projectsData: Project[] = [
   },
   {
     id: "6",
+    slug: "okaya-power-tech-pavilion",
     title: "Okaya Power Tech Pavilion",
     category: "Double Decker",
     clientName: "Okaya Power",
@@ -71,6 +79,7 @@ const projectsData: Project[] = [
   },
   {
     id: "7",
+    slug: "bobcard-32nd-foundation-day-stage",
     title: "BOBCARD 32nd Foundation Day Stage",
     category: "Turnkey Solutions",
     clientName: "BOBCARD",
@@ -80,15 +89,17 @@ const projectsData: Project[] = [
   },
   {
     id: "8",
-    title: "Livguard Energy Storage Pavilion",
-    category: "Turnkey Solutions",
+    slug: "livguard-ev-energy-pavilion",
+    title: "Livguard EV & Energy Pavilion",
+    category: "Double Decker",
     clientName: "Livguard",
     location: "REI Expo, Greater Noida",
     image: "/images/Delivered/1 (5).jpeg",
-    tag: "Turnkey Solution",
+    tag: "Double Decker",
   },
   {
     id: "9",
+    slug: "apcpl-igstpp-brand-activation-setup",
     title: "APCPL IGSTPP Brand Activation Setup",
     category: "Turnkey Solutions",
     clientName: "APCPL (IGSTPP)",
@@ -150,9 +161,10 @@ export default function PortfolioSection() {
         {/* 3-Column Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project) => (
-            <div
+            <Link
               key={project.id}
-              className="group flex flex-col rounded-3xl overflow-hidden bg-warm border border-stone hover:border-accent-blue/50 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1"
+              href={`/portfolio/${project.slug}`}
+              className="group flex flex-col rounded-3xl overflow-hidden bg-warm border border-stone hover:border-accent-blue/50 transition-all duration-300 shadow-sm hover:shadow-xl hover:-translate-y-1 no-underline text-inherit"
             >
               {/* Card Image Container */}
               <div className="relative aspect-video w-full overflow-hidden bg-stone">
@@ -185,13 +197,15 @@ export default function PortfolioSection() {
                     <Layers className="w-3.5 h-3.5 text-dark/40" />
                     {project.clientName}
                   </span>
-                  <span className="inline-flex items-center gap-1 text-accent-blue transition-all duration-300 md:opacity-0 md:group-hover:opacity-100 group-hover:translate-x-1">
-                    Explore
+                  
+                  {/* Always Visible & Working Explore Button */}
+                  <span className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full bg-accent-blue/10 text-accent-blue font-extrabold group-hover:bg-accent-blue group-hover:text-white transition-all duration-300">
+                    <span>Explore</span>
                     <ArrowUpRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

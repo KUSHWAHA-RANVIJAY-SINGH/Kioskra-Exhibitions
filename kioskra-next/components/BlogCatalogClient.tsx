@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Search, Calendar, Clock, BookOpen, Sparkles } from "lucide-react";
-import { BlogPost } from "@/lib/blogData";
+import { BlogPost, blogPostsData } from "@/lib/blogData";
 
 interface BlogCatalogClientProps {
   posts: BlogPost[];
@@ -22,22 +22,44 @@ export default function BlogCatalogClient({ posts }: BlogCatalogClientProps) {
     "Planning",
   ];
 
-  const filteredPosts = posts.filter((post) => {
+  const safePosts = (Array.isArray(posts) && posts.length > 0 ? posts : blogPostsData).map((p, idx) => ({
+    id: p?.id || (p as any)?._id || p?.slug || `post-${idx}`,
+    slug: p?.slug || `post-${idx}`,
+    title: p?.title || "Exhibition Guide",
+    metaTitle: p?.metaTitle || p?.title || "Exhibition Guide",
+    metaDescription: p?.metaDescription || p?.excerpt || "",
+    focusKeyword: p?.focusKeyword || "",
+    category: p?.category || "Exhibitor Guides",
+    publishDate: p?.publishDate || "September 2026",
+    readTime: p?.readTime || "5 min read",
+    author: p?.author || "Kioskra Team",
+    heroImage: p?.heroImage && p.heroImage.trim() !== "" ? p.heroImage : "/images/hero_slider_1.png",
+    excerpt: p?.excerpt || "",
+    contentHtml: p?.contentHtml || "",
+  }));
+
+  const filteredPosts = safePosts.filter((post) => {
+    const category = post.category || "Exhibitor Guides";
+    const title = post.title || "";
+    const excerpt = post.excerpt || "";
+    const focusKeyword = post.focusKeyword || "";
+
     const matchesCategory =
-      selectedCategory === "All" || post.category === selectedCategory;
+      selectedCategory === "All" || category === selectedCategory;
     const matchesSearch =
-      post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      post.focusKeyword.toLowerCase().includes(searchQuery.toLowerCase());
+      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      focusKeyword.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  const featuredPost = posts.find(
-    (p) => p.slug === "upcoming-exhibitions-2026-delhi-ncr-pragati-maidan-yashobhumi-greater-noida"
-  ) || posts[0];
+  const featuredPost =
+    safePosts.find(
+      (p) => p.slug === "upcoming-exhibitions-2026-delhi-ncr-pragati-maidan-yashobhumi-greater-noida"
+    ) || safePosts[0];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-6 sm:space-y-8">
       {/* Search & Category Filter Controls */}
       <div className="flex flex-col md:flex-row items-center justify-between gap-6 bg-white/80 backdrop-blur-md p-4 sm:p-6 rounded-3xl border border-black/5 shadow-sm">
         {/* Category Pills */}
@@ -167,9 +189,9 @@ export default function BlogCatalogClient({ posts }: BlogCatalogClientProps) {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post) => (
+            {filteredPosts.map((post, index) => (
               <article
-                key={post.id}
+                key={post.id || (post as any)._id || post.slug || `blog-post-${index}`}
                 className="group flex flex-col bg-white rounded-3xl border border-black/5 overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
                 <Link href={`/blog/${post.slug}`} className="flex flex-col h-full">

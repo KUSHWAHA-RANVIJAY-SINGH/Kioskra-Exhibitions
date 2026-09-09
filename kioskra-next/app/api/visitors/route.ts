@@ -7,17 +7,18 @@ const rateLimitMap = new Map<string, number>();
 
 // Global memory counter fallback if DB is temporarily unreachable
 const globalObj = globalThis as unknown as { __visitorMemoryCount?: number };
-if (typeof globalObj.__visitorMemoryCount !== "number") {
-  globalObj.__visitorMemoryCount = 1;
+if (typeof globalObj.__visitorMemoryCount !== "number" || globalObj.__visitorMemoryCount < 576) {
+  globalObj.__visitorMemoryCount = 576;
 }
 
 function getMemoryCount(): number {
-  return globalObj.__visitorMemoryCount ?? 1;
+  return Math.max(globalObj.__visitorMemoryCount ?? 576, 576);
 }
 
 function setMemoryCount(val: number): number {
-  globalObj.__visitorMemoryCount = val;
-  return val;
+  const safeVal = Math.max(val, 576);
+  globalObj.__visitorMemoryCount = safeVal;
+  return safeVal;
 }
 
 async function getGlobalCount(): Promise<number> {
@@ -27,12 +28,12 @@ async function getGlobalCount(): Promise<number> {
     if (!visitorDoc) {
       visitorDoc = await Visitor.create({
         _id: "kioskra-main",
-        count: 1,
+        count: 576,
         lastUpdated: new Date(),
       });
-    } else if (visitorDoc.count === 200) {
-      // Reset legacy hardcoded 200 default to 1
-      visitorDoc.count = 1;
+    } else if (visitorDoc.count < 576) {
+      // Upgrade count to starting base 576 if lower
+      visitorDoc.count = 576;
       visitorDoc.lastUpdated = new Date();
       await visitorDoc.save();
     }
@@ -50,12 +51,12 @@ async function incrementGlobalCount(): Promise<number> {
     if (!visitorDoc) {
       visitorDoc = await Visitor.create({
         _id: "kioskra-main",
-        count: 1,
+        count: 576,
         lastUpdated: new Date(),
       });
     } else {
-      if (visitorDoc.count === 200) {
-        visitorDoc.count = 1;
+      if (visitorDoc.count < 576) {
+        visitorDoc.count = 576;
       } else {
         visitorDoc.count += 1;
       }

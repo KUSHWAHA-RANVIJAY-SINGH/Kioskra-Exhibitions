@@ -201,7 +201,7 @@ export default function BoothConfigurator() {
   }
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-24 sm:pb-32">
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 sm:pt-4 pb-16 sm:pb-20">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Controls */}
         <div className="lg:col-span-6 bg-white rounded-3xl p-6 sm:p-8 border border-stone shadow-xl flex flex-col gap-6">

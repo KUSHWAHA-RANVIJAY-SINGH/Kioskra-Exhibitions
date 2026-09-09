@@ -3,26 +3,39 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Calendar, Clock, ArrowLeft, ArrowRight, Share2, CheckCircle2, Building2 } from "lucide-react";
-import Section from "@/components/Section";
-import { blogPostsData } from "@/lib/blogData";
+import { Calendar, Clock, ArrowLeft, ArrowRight, Share2, Building2 } from "lucide-react";
+import { blogPostsData, BlogPost } from "@/lib/blogData";
+import connectDB from "@/lib/db";
+import Blog from "@/lib/models/Blog";
 
 interface BlogPostPageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
-export async function generateStaticParams() {
-  return blogPostsData.map((post) => ({
-    slug: post.slug,
-  }));
+async function getBlogPost(slug: string): Promise<{ post: BlogPost | null; allPosts: BlogPost[] }> {
+  try {
+    await connectDB();
+    const dbBlogs = await Blog.find({});
+    if (dbBlogs && dbBlogs.length > 0) {
+      const parsedBlogs: BlogPost[] = JSON.parse(JSON.stringify(dbBlogs));
+      const targetPost = parsedBlogs.find((p) => p.slug === slug);
+      return { post: targetPost || null, allPosts: parsedBlogs };
+    }
+  } catch (err) {
+    console.error("DB Blog fetch error:", err);
+  }
+
+  const fallbackPost = blogPostsData.find((p) => p.slug === slug);
+  return { post: fallbackPost || null, allPosts: blogPostsData };
 }
 
 export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
-  const post = blogPostsData.find((p) => p.slug === params.slug);
+  const { slug } = await params;
+  const { post } = await getBlogPost(slug);
 
   if (!post) {
     return {
@@ -31,25 +44,26 @@ export async function generateMetadata({
   }
 
   return {
-    title: `${post.metaTitle} | Kioskra Exhibitions`,
-    description: post.metaDescription,
-    keywords: [post.focusKeyword, post.category, "Kioskra Exhibitions", "Delhi NCR Trade Shows"],
+    title: `${post.metaTitle || post.title} | Kioskra Exhibitions`,
+    description: post.metaDescription || post.excerpt,
+    keywords: [post.focusKeyword || "", post.category, "Kioskra Exhibitions", "Delhi NCR Trade Shows"],
     openGraph: {
-      title: post.metaTitle,
-      description: post.metaDescription,
+      title: post.metaTitle || post.title,
+      description: post.metaDescription || post.excerpt,
       images: [{ url: post.heroImage }],
     },
   };
 }
 
-export default function BlogPostDetailPage({ params }: BlogPostPageProps) {
-  const post = blogPostsData.find((p) => p.slug === params.slug);
+export default async function BlogPostDetailPage({ params }: BlogPostPageProps) {
+  const { slug } = await params;
+  const { post, allPosts } = await getBlogPost(slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = blogPostsData
+  const relatedPosts = allPosts
     .filter((p) => p.slug !== post.slug)
     .slice(0, 2);
 
@@ -161,7 +175,7 @@ export default function BlogPostDetailPage({ params }: BlogPostPageProps) {
             <div className="flex items-center gap-2 text-xs font-semibold text-neutral-500">
               <span>Focus Keyword:</span>
               <span className="px-3 py-1 bg-neutral-100 rounded-full text-neutral-800 font-bold">
-                {post.focusKeyword}
+                {post.focusKeyword || post.category}
               </span>
             </div>
 
@@ -199,7 +213,7 @@ export default function BlogPostDetailPage({ params }: BlogPostPageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {relatedPosts.map((rPost) => (
               <div
-                key={rPost.id}
+                key={rPost.slug}
                 className="group bg-white rounded-3xl border border-black/5 overflow-hidden shadow-sm hover:shadow-lg transition-all p-6 space-y-4"
               >
                 <div className="relative h-44 w-full rounded-2xl overflow-hidden bg-neutral-100">

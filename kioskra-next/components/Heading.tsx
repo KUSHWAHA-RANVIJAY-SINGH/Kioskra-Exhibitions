@@ -35,9 +35,9 @@ export default function Heading({
   }[size];
 
   return (
-    <div className={`flex flex-col mb-10 sm:mb-14 ${alignClass} ${className}`}>
+    <div className={`flex flex-col mb-4 sm:mb-6 ${alignClass} ${className}`}>
       {badge && (
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-softStone/50 text-brand-charcoal text-[11px] font-bold uppercase tracking-[0.15em] mb-5 border border-brand-softStone/80">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-softStone/50 text-brand-charcoal text-[11px] font-bold uppercase tracking-[0.15em] mb-3 md:mb-4 border border-brand-softStone/80">
           <span className="w-1.5 h-1.5 rounded-full bg-brand-electricBlue inline-block" />
           {badge}
         </div>
@@ -56,7 +56,7 @@ export default function Heading({
       </h2>
 
       {subtitle && (
-        <p className="mt-5 text-base sm:text-lg text-brand-charcoal/70 max-w-2xl font-normal leading-[1.75]">
+        <p className="mt-3 md:mt-4 text-sm sm:text-base md:text-lg text-brand-charcoal/75 max-w-2xl md:max-w-3xl font-normal leading-relaxed">
           {subtitle}
         </p>
       )}

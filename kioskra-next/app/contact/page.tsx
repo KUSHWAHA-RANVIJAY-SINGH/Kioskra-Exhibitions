@@ -19,9 +19,9 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="pt-20 md:pt-24 min-h-screen pb-20">
+    <div className="pt-20 md:pt-24 min-h-screen pb-16">
       {/* Header Banner */}
-      <Section className="pb-8">
+      <Section className="py-6 sm:py-8 pb-2 sm:pb-3">
         <Heading
           badge="Direct Commission & Inquiries"
           sansPrefix="Initiate Your"
@@ -29,11 +29,12 @@ export default function ContactPage() {
           sansSuffix="Project"
           subtitle="Partner with Kioskra for your upcoming exhibition stall, pavilion architecture, or international trade fair presence."
           size="xl"
+          className="mb-2 sm:mb-4"
         />
       </Section>
 
       {/* 2-Column Contact & Form Scaffold */}
-      <Section className="pt-0 pb-16">
+      <Section className="pt-0 pb-12 sm:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           {/* Left Column: Direct Studio Information */}
           <div className="lg:col-span-5 space-y-8">
@@ -84,11 +85,16 @@ export default function ContactPage() {
                     L2/86, near Nag Mandir Road, Block L 2, Shastri Nagar, New Delhi, Delhi, 110052
                   </span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-brand-electricBlue flex-shrink-0" />
-                  <a href="mailto:sales@kioskra.com" className="hover:text-white transition-colors">
-                    sales@kioskra.com
-                  </a>
+                <div className="flex items-start gap-3">
+                  <Mail className="w-5 h-5 text-brand-electricBlue flex-shrink-0 mt-0.5" />
+                  <div className="flex flex-col gap-1">
+                    <a href="mailto:info@kioskra.com" className="hover:text-white transition-colors">
+                      info@kioskra.com
+                    </a>
+                    <a href="mailto:sales@kioskra.com" className="hover:text-white transition-colors">
+                      sales@kioskra.com
+                    </a>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-brand-electricBlue flex-shrink-0" />

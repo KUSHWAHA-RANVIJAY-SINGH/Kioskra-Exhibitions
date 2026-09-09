@@ -157,11 +157,16 @@ export default function Footer() {
                 <MapPin className="w-3.5 h-3.5 text-accent-blue flex-shrink-0 mt-0.5" />
                 <span>L2/86, near Nag Mandir Road, Block L 2, Shastri Nagar, New Delhi, Delhi, 110052</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Mail className="w-3.5 h-3.5 text-accent-blue flex-shrink-0" />
-                <a href="mailto:sales@kioskra.com" className="hover:text-white transition-colors">
-                  sales@kioskra.com
-                </a>
+              <div className="flex items-start gap-2">
+                <Mail className="w-3.5 h-3.5 text-accent-blue flex-shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-0.5">
+                  <a href="mailto:info@kioskra.com" className="hover:text-white transition-colors">
+                    info@kioskra.com
+                  </a>
+                  <a href="mailto:sales@kioskra.com" className="hover:text-white transition-colors">
+                    sales@kioskra.com
+                  </a>
+                </div>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-accent-blue flex-shrink-0" />

@@ -7,7 +7,7 @@ import ContactForm from "./ContactForm";
 export default function ContactSection() {
 
   return (
-    <section id="contact" className="py-20 sm:py-28 bg-warm text-dark">
+    <section id="contact" className="py-14 sm:py-20 bg-warm text-dark">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
           {/* Left Information Column */}
@@ -66,11 +66,16 @@ export default function ContactSection() {
                   <MapPin className="w-4 h-4 text-accent-blue flex-shrink-0 mt-0.5" />
                   <span>L2/86, near Nag Mandir Road, Block L 2, Shastri Nagar, New Delhi, Delhi, 110052</span>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Mail className="w-4 h-4 text-accent-blue flex-shrink-0" />
-                  <a href="mailto:sales@kioskra.com" className="hover:text-accent-blue transition-colors">
-                    sales@kioskra.com
-                  </a>
+                <div className="flex items-start gap-3">
+                  <Mail className="w-4 h-4 text-accent-blue flex-shrink-0 mt-0.5" />
+                  <div className="flex flex-col gap-1">
+                    <a href="mailto:info@kioskra.com" className="hover:text-accent-blue transition-colors">
+                      info@kioskra.com
+                    </a>
+                    <a href="mailto:sales@kioskra.com" className="hover:text-accent-blue transition-colors">
+                      sales@kioskra.com
+                    </a>
+                  </div>
                 </div>
                 <div className="flex items-center gap-3">
                   <Phone className="w-4 h-4 text-accent-blue flex-shrink-0" />

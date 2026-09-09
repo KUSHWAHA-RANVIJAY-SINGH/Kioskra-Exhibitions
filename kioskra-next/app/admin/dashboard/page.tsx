@@ -3,7 +3,22 @@
 import React, { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Plus, Search, Download, FolderKanban, Users, RefreshCw, LogOut, Calendar, X, Edit, Trash } from "lucide-react";
+import {
+  Plus,
+  Search,
+  Download,
+  FolderKanban,
+  Users,
+  RefreshCw,
+  LogOut,
+  Calendar,
+  X,
+  Edit,
+  Trash,
+  FileText,
+  Upload,
+} from "lucide-react";
+import CloudinaryDropzone from "@/components/CloudinaryDropzone";
 
 interface LeadItem {
   _id: string;
@@ -52,28 +67,47 @@ interface ExhibitionItem {
   createdAt: string;
 }
 
+interface BlogItem {
+  _id: string;
+  title: string;
+  slug: string;
+  category: string;
+  publishDate: string;
+  readTime: string;
+  author: string;
+  heroImage: string;
+  excerpt: string;
+  contentHtml: string;
+  createdAt: string;
+}
+
 export default function AdminDashboardPage() {
   const { status } = useSession();
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState<"leads" | "projects" | "events">("leads");
+  const [activeTab, setActiveTab] = useState<"leads" | "projects" | "events" | "blogs">("leads");
   const [searchQuery, setSearchQuery] = useState("");
-  
+
   // Data lists
   const [leads, setLeads] = useState<LeadItem[]>([]);
   const [projects, setProjects] = useState<ProjectItem[]>([]);
   const [exhibitions, setExhibitions] = useState<ExhibitionItem[]>([]);
-  
+  const [blogs, setBlogs] = useState<BlogItem[]>([]);
+
   // Loading states
   const [loadingLeads, setLoadingLeads] = useState(false);
   const [loadingProjects, setLoadingProjects] = useState(false);
   const [loadingExhibitions, setLoadingExhibitions] = useState(false);
+  const [loadingBlogs, setLoadingBlogs] = useState(false);
 
   // Modals state
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isExhibitionModalOpen, setIsExhibitionModalOpen] = useState(false);
+  const [isBlogModalOpen, setIsBlogModalOpen] = useState(false);
+
   const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false);
   const [isEditExhibitionModalOpen, setIsEditExhibitionModalOpen] = useState(false);
+  const [isEditBlogModalOpen, setIsEditBlogModalOpen] = useState(false);
 
   // Add Project Form State
   const [newProject, setNewProject] = useState({
@@ -117,6 +151,29 @@ export default function AdminDashboardPage() {
     descriptionMarkdown: "",
     featuredImage: "",
     status: "Published" as "Draft" | "Published",
+  });
+
+  // Add Blog Form State
+  const [newBlog, setNewBlog] = useState({
+    title: "",
+    category: "Exhibitor Guides",
+    readTime: "8 min read",
+    author: "Kioskra Team",
+    heroImage: "",
+    excerpt: "",
+    contentHtml: "",
+  });
+
+  // Edit Blog Form State
+  const [editingBlog, setEditingBlog] = useState({
+    _id: "",
+    title: "",
+    category: "Exhibitor Guides",
+    readTime: "8 min read",
+    author: "Kioskra Team",
+    heroImage: "",
+    excerpt: "",
+    contentHtml: "",
   });
 
   // Action feedback states
@@ -181,11 +238,29 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const fetchBlogs = async () => {
+    setLoadingBlogs(true);
+    try {
+      const res = await fetch("/api/blogs");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.blogs) {
+          setBlogs(data.blogs);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch blogs:", err);
+    } finally {
+      setLoadingBlogs(false);
+    }
+  };
+
   useEffect(() => {
     if (status === "authenticated") {
       fetchLeads();
       fetchProjects();
       fetchExhibitions();
+      fetchBlogs();
     }
   }, [status]);
 
@@ -201,8 +276,6 @@ export default function AdminDashboardPage() {
         setLeads((prev) =>
           prev.map((lead) => (lead._id === leadId ? { ...lead, status: newStatus } : lead))
         );
-      } else {
-        console.error("Failed to update status");
       }
     } catch (err) {
       console.error("Failed to update status:", err);
@@ -433,6 +506,107 @@ export default function AdminDashboardPage() {
     }
   };
 
+  // Add Blog Submission
+  const handleAddBlog = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setActionError("");
+    setActionSubmitting(true);
+
+    const slug = generateSlug(newBlog.title);
+    const payload = {
+      ...newBlog,
+      slug,
+      publishDate: new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+    };
+
+    try {
+      const res = await fetch("/api/blogs", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        setIsBlogModalOpen(false);
+        setNewBlog({
+          title: "",
+          category: "Exhibitor Guides",
+          readTime: "8 min read",
+          author: "Kioskra Team",
+          heroImage: "",
+          excerpt: "",
+          contentHtml: "",
+        });
+        fetchBlogs();
+      } else {
+        const errorData = await res.json();
+        setActionError(errorData.error || "Failed to create blog post.");
+      }
+    } catch (err) {
+      setActionError("Unexpected error occurred.");
+    } finally {
+      setActionSubmitting(false);
+    }
+  };
+
+  // Edit Blog Action Handlers
+  const openEditBlogModal = (blog: BlogItem) => {
+    setActionError("");
+    setEditingBlog({
+      _id: blog._id,
+      title: blog.title,
+      category: blog.category,
+      readTime: blog.readTime,
+      author: blog.author,
+      heroImage: blog.heroImage,
+      excerpt: blog.excerpt,
+      contentHtml: blog.contentHtml,
+    });
+    setIsEditBlogModalOpen(true);
+  };
+
+  const handleEditBlog = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setActionError("");
+    setActionSubmitting(true);
+
+    try {
+      const res = await fetch(`/api/blogs/${editingBlog._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editingBlog),
+      });
+
+      if (res.ok) {
+        setIsEditBlogModalOpen(false);
+        fetchBlogs();
+      } else {
+        const errorData = await res.json();
+        setActionError(errorData.error || "Failed to update blog post.");
+      }
+    } catch (err) {
+      setActionError("Unexpected error occurred.");
+    } finally {
+      setActionSubmitting(false);
+    }
+  };
+
+  const handleDeleteBlog = async (blogId: string) => {
+    if (!confirm("Are you sure you want to delete this blog post? This cannot be undone.")) return;
+    try {
+      const res = await fetch(`/api/blogs/${blogId}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        fetchBlogs();
+      } else {
+        alert("Failed to delete the blog post.");
+      }
+    } catch (err) {
+      console.error("Delete blog error:", err);
+    }
+  };
+
   // Filtering leads based on search query
   const filteredLeads = leads.filter((lead) => {
     const q = searchQuery.toLowerCase();
@@ -461,6 +635,16 @@ export default function AdminDashboardPage() {
       ex.title.toLowerCase().includes(q) ||
       ex.venue.toLowerCase().includes(q) ||
       ex.location.toLowerCase().includes(q)
+    );
+  });
+
+  // Filtering blogs based on search query
+  const filteredBlogs = blogs.filter((b) => {
+    const q = searchQuery.toLowerCase();
+    return (
+      b.title.toLowerCase().includes(q) ||
+      b.category.toLowerCase().includes(q) ||
+      b.excerpt.toLowerCase().includes(q)
     );
   });
 
@@ -517,11 +701,21 @@ export default function AdminDashboardPage() {
           >
             Events CMS ({exhibitions.length})
           </button>
+          <button
+            onClick={() => { setActiveTab("blogs"); setSearchQuery(""); }}
+            className={`px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+              activeTab === "blogs"
+                ? "bg-dark text-white shadow-md"
+                : "bg-white text-dark hover:bg-stone"
+            }`}
+          >
+            Blog CMS ({blogs.length})
+          </button>
 
           <hr className="w-px h-6 bg-stone border-none hidden sm:block" />
 
           <button
-            onClick={() => signOut({ callbackUrl: "/admin/login" })}
+            onClick={() => signOut({ callbackUrl: "/" })}
             className="flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider bg-rose-100 hover:bg-rose-200 text-rose-800 transition-all cursor-pointer border-none"
           >
             <LogOut className="w-3.5 h-3.5" />
@@ -531,7 +725,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-6 mb-10">
         <div className="p-6 rounded-2xl bg-white border border-stone shadow-sm flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#2F6BFF] flex items-center justify-center">
             <Users className="w-6 h-6" />
@@ -539,7 +733,7 @@ export default function AdminDashboardPage() {
           <div>
             <span className="text-2xl font-extrabold block">{leads.length}</span>
             <span className="text-xs text-dark/60 uppercase font-bold tracking-wider">
-              Total Inquiries & 3D Configs
+              Total Inquiries
             </span>
           </div>
         </div>
@@ -551,7 +745,7 @@ export default function AdminDashboardPage() {
           <div>
             <span className="text-2xl font-extrabold block">{projects.length}</span>
             <span className="text-xs text-dark/60 uppercase font-bold tracking-wider">
-              Active Projects
+              Portfolio Projects
             </span>
           </div>
         </div>
@@ -563,7 +757,19 @@ export default function AdminDashboardPage() {
           <div>
             <span className="text-2xl font-extrabold block">{exhibitions.length}</span>
             <span className="text-xs text-dark/60 uppercase font-bold tracking-wider">
-              SEO Exhibitions Calendar
+              SEO Events
+            </span>
+          </div>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-white border border-stone shadow-sm flex items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center">
+            <FileText className="w-6 h-6" />
+          </div>
+          <div>
+            <span className="text-2xl font-extrabold block">{blogs.length}</span>
+            <span className="text-xs text-dark/60 uppercase font-bold tracking-wider">
+              Blog Articles
             </span>
           </div>
         </div>
@@ -837,14 +1043,13 @@ export default function AdminDashboardPage() {
                   <th className="py-3 px-4">Venue & Location</th>
                   <th className="py-3 px-4">Date Range</th>
                   <th className="py-3 px-4">Status</th>
-                  <th className="py-3 px-4">Created Date</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone/60 text-dark font-medium">
                 {filteredExhibitions.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="py-8 text-center text-dark/50">
+                    <td colSpan={7} className="py-8 text-center text-dark/50">
                       No SEO exhibitions recorded yet. Click "+ Add Event" to publish one.
                     </td>
                   </tr>
@@ -878,9 +1083,6 @@ export default function AdminDashboardPage() {
                           {ex.status}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-dark/50">
-                        {new Date(ex.createdAt).toLocaleDateString("en-IN")}
-                      </td>
                       <td className="py-3 px-4 text-right">
                         <div className="flex items-center justify-end gap-1.5">
                           <button
@@ -908,12 +1110,117 @@ export default function AdminDashboardPage() {
         </div>
       )}
 
+      {/* Blog CMS Section */}
+      {activeTab === "blogs" && (
+        <div className="bg-white rounded-3xl border border-stone p-8 shadow-sm">
+          <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+            <div className="flex items-center gap-3">
+              <h3 className="text-xl font-extrabold text-dark">Blog Posts & Articles Management</h3>
+              <button
+                onClick={fetchBlogs}
+                className="p-2 rounded-full hover:bg-stone text-dark/60 transition-colors border-none cursor-pointer"
+                title="Refresh blogs"
+              >
+                <RefreshCw className={`w-4 h-4 ${loadingBlogs ? "animate-spin" : ""}`} />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+              <div className="relative flex-grow sm:flex-grow-0">
+                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-dark/40" />
+                <input
+                  type="text"
+                  placeholder="Search articles..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-9 pr-4 py-2 rounded-xl bg-warm border border-stone text-xs font-semibold focus:outline-none focus:border-[#2F6BFF]"
+                />
+              </div>
+
+              <button
+                onClick={() => setIsBlogModalOpen(true)}
+                className="inline-flex items-center gap-1.5 bg-[#2F6BFF] text-white font-semibold text-xs px-5 py-2.5 rounded-full hover:bg-blue-600 shadow-md cursor-pointer border-none"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Add Article</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-stone text-dark/60 font-bold uppercase tracking-wider">
+                  <th className="py-3 px-4">Hero Image</th>
+                  <th className="py-3 px-4">Article Title</th>
+                  <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4">Author</th>
+                  <th className="py-3 px-4">Read Time</th>
+                  <th className="py-3 px-4">Published Date</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone/60 text-dark font-medium">
+                {filteredBlogs.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="py-8 text-center text-dark/50">
+                      No blog articles recorded yet. Click "+ Add Article" to publish one.
+                    </td>
+                  </tr>
+                ) : (
+                  filteredBlogs.map((blog) => (
+                    <tr key={blog._id} className="hover:bg-warm/50 transition-colors">
+                      <td className="py-3 px-4">
+                        <div className="relative w-12 h-10 rounded-lg overflow-hidden bg-neutral-900 border border-stone">
+                          <img
+                            src={blog.heroImage}
+                            alt={blog.title}
+                            className="object-cover w-full h-full"
+                          />
+                        </div>
+                      </td>
+                      <td className="py-3 px-4 font-bold text-dark max-w-xs truncate">{blog.title}</td>
+                      <td className="py-3 px-4">
+                        <span className="px-2.5 py-1 rounded bg-stone/50 font-bold uppercase text-[9px]">
+                          {blog.category}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">{blog.author || "Kioskra Team"}</td>
+                      <td className="py-3 px-4">{blog.readTime || "5 min read"}</td>
+                      <td className="py-3 px-4 text-dark/50">{blog.publishDate}</td>
+                      <td className="py-3 px-4 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => openEditBlogModal(blog)}
+                            className="p-1.5 rounded-lg hover:bg-stone text-dark/70 hover:text-dark transition-all cursor-pointer border-none bg-transparent"
+                            title="Edit Article"
+                          >
+                            <Edit className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteBlog(blog._id)}
+                            className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 hover:text-rose-800 transition-all cursor-pointer border-none bg-transparent"
+                            title="Delete Article"
+                          >
+                            <Trash className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* ==================================================== */}
       {/* 1. ADD PORTFOLIO PROJECT MODAL */}
       {/* ==================================================== */}
       {isProjectModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-[#191A1A] border border-white/10 rounded-3xl p-6 sm:p-8 text-white relative shadow-2xl animate-fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="w-full max-w-lg bg-[#191A1A] border border-white/10 rounded-3xl p-6 sm:p-8 text-white relative shadow-2xl animate-fade-in my-8 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setIsProjectModalOpen(false)}
               className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors border-none bg-transparent cursor-pointer"
@@ -968,32 +1275,26 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Category *</label>
-                  <select
-                    value={newProject.category}
-                    onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-[#191A1A] border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  >
-                    <option value="Custom Stalls">Custom Stalls</option>
-                    <option value="Double Decker">Double Decker</option>
-                    <option value="Turnkey Solutions">Turnkey Solutions</option>
-                    <option value="3D Renders">3D Renders</option>
-                  </select>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Image URL *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newProject.featuredImage}
-                    onChange={(e) => setNewProject({ ...newProject, featuredImage: e.target.value })}
-                    placeholder="e.g. /images/Designs/1.png"
-                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  />
-                </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Category *</label>
+                <select
+                  value={newProject.category}
+                  onChange={(e) => setNewProject({ ...newProject, category: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl bg-[#191A1A] border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                >
+                  <option value="Custom Stalls">Custom Stalls</option>
+                  <option value="Double Decker">Double Decker</option>
+                  <option value="Turnkey Solutions">Turnkey Solutions</option>
+                  <option value="3D Renders">3D Renders</option>
+                </select>
               </div>
+
+              {/* Cloudinary Drag and Drop Component */}
+              <CloudinaryDropzone
+                label="Project Image"
+                value={newProject.featuredImage}
+                onChange={(url) => setNewProject({ ...newProject, featuredImage: url })}
+              />
 
               <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
                 <button
@@ -1005,7 +1306,7 @@ export default function AdminDashboardPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={actionSubmitting}
+                  disabled={actionSubmitting || !newProject.featuredImage}
                   className="px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2F6BFF] hover:brightness-110 text-white border-none cursor-pointer disabled:opacity-50"
                 >
                   {actionSubmitting ? "Creating..." : "Save Project"}
@@ -1020,8 +1321,8 @@ export default function AdminDashboardPage() {
       {/* 2. EDIT PORTFOLIO PROJECT MODAL */}
       {/* ==================================================== */}
       {isEditProjectModalOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-[#191A1A] border border-white/10 rounded-3xl p-6 sm:p-8 text-white relative shadow-2xl animate-fade-in">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="w-full max-w-lg bg-[#191A1A] border border-white/10 rounded-3xl p-6 sm:p-8 text-white relative shadow-2xl animate-fade-in my-8 max-h-[90vh] overflow-y-auto">
             <button
               onClick={() => setIsEditProjectModalOpen(false)}
               className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors border-none bg-transparent cursor-pointer"
@@ -1073,31 +1374,26 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Category *</label>
-                  <select
-                    value={editingProject.category}
-                    onChange={(e) => setEditingProject({ ...editingProject, category: e.target.value })}
-                    className="w-full px-3 py-2 rounded-xl bg-[#191A1A] border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  >
-                    <option value="Custom Stalls">Custom Stalls</option>
-                    <option value="Double Decker">Double Decker</option>
-                    <option value="Turnkey Solutions">Turnkey Solutions</option>
-                    <option value="3D Renders">3D Renders</option>
-                  </select>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Image URL *</label>
-                  <input
-                    type="text"
-                    required
-                    value={editingProject.featuredImage}
-                    onChange={(e) => setEditingProject({ ...editingProject, featuredImage: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  />
-                </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Category *</label>
+                <select
+                  value={editingProject.category}
+                  onChange={(e) => setEditingProject({ ...editingProject, category: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl bg-[#191A1A] border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                >
+                  <option value="Custom Stalls">Custom Stalls</option>
+                  <option value="Double Decker">Double Decker</option>
+                  <option value="Turnkey Solutions">Turnkey Solutions</option>
+                  <option value="3D Renders">3D Renders</option>
+                </select>
               </div>
+
+              {/* Cloudinary Drag and Drop Component */}
+              <CloudinaryDropzone
+                label="Project Image"
+                value={editingProject.featuredImage}
+                onChange={(url) => setEditingProject({ ...editingProject, featuredImage: url })}
+              />
 
               <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
                 <button
@@ -1109,7 +1405,7 @@ export default function AdminDashboardPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={actionSubmitting}
+                  disabled={actionSubmitting || !editingProject.featuredImage}
                   className="px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2F6BFF] hover:brightness-110 text-white border-none cursor-pointer disabled:opacity-50"
                 >
                   {actionSubmitting ? "Saving..." : "Update Project"}
@@ -1143,30 +1439,23 @@ export default function AdminDashboardPage() {
             )}
 
             <form onSubmit={handleAddExhibition} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Exhibition Title *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newExhibition.title}
-                    onChange={(e) => setNewExhibition({ ...newExhibition, title: e.target.value })}
-                    placeholder="e.g. Plastindia 2027"
-                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Banner Image URL *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newExhibition.featuredImage}
-                    onChange={(e) => setNewExhibition({ ...newExhibition, featuredImage: e.target.value })}
-                    placeholder="e.g. /images/Designs/51.png"
-                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  />
-                </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Exhibition Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={newExhibition.title}
+                  onChange={(e) => setNewExhibition({ ...newExhibition, title: e.target.value })}
+                  placeholder="e.g. Plastindia 2027"
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                />
               </div>
+
+              <CloudinaryDropzone
+                label="Banner Image"
+                value={newExhibition.featuredImage}
+                onChange={(url) => setNewExhibition({ ...newExhibition, featuredImage: url })}
+              />
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1">
@@ -1254,7 +1543,7 @@ export default function AdminDashboardPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={actionSubmitting}
+                  disabled={actionSubmitting || !newExhibition.featuredImage}
                   className="px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2F6BFF] hover:brightness-110 text-white border-none cursor-pointer disabled:opacity-50"
                 >
                   {actionSubmitting ? "Publishing..." : "Save Event"}
@@ -1288,28 +1577,22 @@ export default function AdminDashboardPage() {
             )}
 
             <form onSubmit={handleEditExhibition} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Exhibition Title *</label>
-                  <input
-                    type="text"
-                    required
-                    value={editingExhibition.title}
-                    onChange={(e) => setEditingExhibition({ ...editingExhibition, title: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  />
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Banner Image URL *</label>
-                  <input
-                    type="text"
-                    required
-                    value={editingExhibition.featuredImage}
-                    onChange={(e) => setEditingExhibition({ ...editingExhibition, featuredImage: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
-                  />
-                </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Exhibition Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={editingExhibition.title}
+                  onChange={(e) => setEditingExhibition({ ...editingExhibition, title: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                />
               </div>
+
+              <CloudinaryDropzone
+                label="Banner Image"
+                value={editingExhibition.featuredImage}
+                onChange={(url) => setEditingExhibition({ ...editingExhibition, featuredImage: url })}
+              />
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1">
@@ -1392,10 +1675,259 @@ export default function AdminDashboardPage() {
                 </button>
                 <button
                   type="submit"
-                  disabled={actionSubmitting}
+                  disabled={actionSubmitting || !editingExhibition.featuredImage}
                   className="px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2F6BFF] hover:brightness-110 text-white border-none cursor-pointer disabled:opacity-50"
                 >
                   {actionSubmitting ? "Saving..." : "Update Event"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ==================================================== */}
+      {/* 5. ADD BLOG POST ARTICLE MODAL */}
+      {/* ==================================================== */}
+      {isBlogModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="w-full max-w-2xl bg-[#191A1A] border border-white/10 rounded-3xl p-6 sm:p-8 text-white relative shadow-2xl my-8 max-h-[90vh] overflow-y-auto animate-fade-in">
+            <button
+              onClick={() => setIsBlogModalOpen(false)}
+              className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors border-none bg-transparent cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h3 className="text-xl font-extrabold mb-1">Publish Blog Article</h3>
+            <p className="text-xs text-white/60 mb-6">Create an SEO-optimized blog guide for exhibition clients.</p>
+
+            {actionError && (
+              <div className="p-3 rounded-lg bg-red-950/50 border border-red-500/25 text-red-400 text-xs font-semibold text-center mb-4">
+                {actionError}
+              </div>
+            )}
+
+            <form onSubmit={handleAddBlog} className="space-y-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={newBlog.title}
+                  onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
+                  placeholder="e.g. 10 Stall Design Secrets for Pragati Maidan 2026"
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="flex flex-col gap-1">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Category *</label>
+                  <select
+                    value={newBlog.category}
+                    onChange={(e) => setNewBlog({ ...newBlog, category: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-[#191A1A] border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                  >
+                    <option value="Exhibitor Guides">Exhibitor Guides</option>
+                    <option value="Cost Guide">Cost Guide</option>
+                    <option value="Design Tips">Design Tips</option>
+                    <option value="Planning">Planning</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Read Time *</label>
+                  <input
+                    type="text"
+                    required
+                    value={newBlog.readTime}
+                    onChange={(e) => setNewBlog({ ...newBlog, readTime: e.target.value })}
+                    placeholder="e.g. 8 min read"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Author *</label>
+                  <input
+                    type="text"
+                    required
+                    value={newBlog.author}
+                    onChange={(e) => setNewBlog({ ...newBlog, author: e.target.value })}
+                    placeholder="e.g. Kioskra Team"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                  />
+                </div>
+              </div>
+
+              {/* Cloudinary Drag & Drop */}
+              <CloudinaryDropzone
+                label="Article Hero Image"
+                value={newBlog.heroImage}
+                onChange={(url) => setNewBlog({ ...newBlog, heroImage: url })}
+              />
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Excerpt *</label>
+                <textarea
+                  required
+                  rows={2}
+                  value={newBlog.excerpt}
+                  onChange={(e) => setNewBlog({ ...newBlog, excerpt: e.target.value })}
+                  placeholder="Short summary displayed on blog catalog cards..."
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF] resize-none"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Content (HTML / Text) *</label>
+                <textarea
+                  required
+                  rows={6}
+                  value={newBlog.contentHtml}
+                  onChange={(e) => setNewBlog({ ...newBlog, contentHtml: e.target.value })}
+                  placeholder="<p>Full article body HTML or text content...</p>"
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF] font-mono resize-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setIsBlogModalOpen(false)}
+                  className="px-4 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 text-white border-none cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={actionSubmitting || !newBlog.heroImage}
+                  className="px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2F6BFF] hover:brightness-110 text-white border-none cursor-pointer disabled:opacity-50"
+                >
+                  {actionSubmitting ? "Publishing..." : "Save Article"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ==================================================== */}
+      {/* 6. EDIT BLOG POST ARTICLE MODAL */}
+      {/* ==================================================== */}
+      {isEditBlogModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
+          <div className="w-full max-w-2xl bg-[#191A1A] border border-white/10 rounded-3xl p-6 sm:p-8 text-white relative shadow-2xl my-8 max-h-[90vh] overflow-y-auto animate-fade-in">
+            <button
+              onClick={() => setIsEditBlogModalOpen(false)}
+              className="absolute top-5 right-5 text-white/50 hover:text-white transition-colors border-none bg-transparent cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <h3 className="text-xl font-extrabold mb-1">Edit Blog Article</h3>
+            <p className="text-xs text-white/60 mb-6">Modify article content, metadata, or Cloudinary cover image.</p>
+
+            {actionError && (
+              <div className="p-3 rounded-lg bg-red-950/50 border border-red-500/25 text-red-400 text-xs font-semibold text-center mb-4">
+                {actionError}
+              </div>
+            )}
+
+            <form onSubmit={handleEditBlog} className="space-y-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Title *</label>
+                <input
+                  type="text"
+                  required
+                  value={editingBlog.title}
+                  onChange={(e) => setEditingBlog({ ...editingBlog, title: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div className="flex flex-col gap-1">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Category *</label>
+                  <select
+                    value={editingBlog.category}
+                    onChange={(e) => setEditingBlog({ ...editingBlog, category: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl bg-[#191A1A] border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                  >
+                    <option value="Exhibitor Guides">Exhibitor Guides</option>
+                    <option value="Cost Guide">Cost Guide</option>
+                    <option value="Design Tips">Design Tips</option>
+                    <option value="Planning">Planning</option>
+                  </select>
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Read Time *</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingBlog.readTime}
+                    onChange={(e) => setEditingBlog({ ...editingBlog, readTime: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Author *</label>
+                  <input
+                    type="text"
+                    required
+                    value={editingBlog.author}
+                    onChange={(e) => setEditingBlog({ ...editingBlog, author: e.target.value })}
+                    className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF]"
+                  />
+                </div>
+              </div>
+
+              {/* Cloudinary Drag & Drop */}
+              <CloudinaryDropzone
+                label="Article Hero Image"
+                value={editingBlog.heroImage}
+                onChange={(url) => setEditingBlog({ ...editingBlog, heroImage: url })}
+              />
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Excerpt *</label>
+                <textarea
+                  required
+                  rows={2}
+                  value={editingBlog.excerpt}
+                  onChange={(e) => setEditingBlog({ ...editingBlog, excerpt: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF] resize-none"
+                />
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Content (HTML / Text) *</label>
+                <textarea
+                  required
+                  rows={6}
+                  value={editingBlog.contentHtml}
+                  onChange={(e) => setEditingBlog({ ...editingBlog, contentHtml: e.target.value })}
+                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF] font-mono resize-none"
+                />
+              </div>
+
+              <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+                <button
+                  type="button"
+                  onClick={() => setIsEditBlogModalOpen(false)}
+                  className="px-4 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/5 hover:bg-white/10 text-white border-none cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={actionSubmitting || !editingBlog.heroImage}
+                  className="px-5 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#2F6BFF] hover:brightness-110 text-white border-none cursor-pointer disabled:opacity-50"
+                >
+                  {actionSubmitting ? "Saving..." : "Update Article"}
                 </button>
               </div>
             </form>

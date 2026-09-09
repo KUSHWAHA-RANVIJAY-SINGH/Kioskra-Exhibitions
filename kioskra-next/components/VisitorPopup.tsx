@@ -16,7 +16,7 @@ export default function VisitorPopup() {
 
     async function initVisitorPopup() {
       try {
-        let finalCount = 1;
+        let finalCount = 576;
         if (!storedVisitorId) {
           const newVisitorId =
             "visitor_" + Date.now() + "_" + Math.random().toString(36).substring(2, 11);
@@ -39,8 +39,8 @@ export default function VisitorPopup() {
           if (data?.success && typeof data.count === "number") {
             finalCount = data.count;
           } else {
-            const cached = parseInt(localStorage.getItem("visitorCount") || "1", 10);
-            finalCount = isNaN(cached) || cached === 200 ? 1 : cached;
+            const cached = parseInt(localStorage.getItem("visitorCount") || "576", 10);
+            finalCount = isNaN(cached) || cached < 576 ? 576 : cached;
           }
         }
 

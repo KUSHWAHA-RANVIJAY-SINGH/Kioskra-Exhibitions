@@ -80,9 +80,9 @@ export default function ServicesPage() {
   ];
 
   return (
-    <div className="pt-20 md:pt-24 min-h-screen bg-brand-warmOffWhite pb-20">
+    <div className="pt-20 md:pt-24 min-h-screen bg-brand-warmOffWhite pb-16">
       {/* Header Banner */}
-      <Section className="pb-8">
+      <Section className="py-6 sm:py-8 pb-2 sm:pb-3">
         <Heading
           badge="End-To-End Capabilities"
           sansPrefix="Spatial"
@@ -90,12 +90,13 @@ export default function ServicesPage() {
           sansSuffix="& Engineering"
           subtitle="From photorealistic 3D concepts to premium wood fabrication and multi-city campaign deployments, we execute with absolute precision."
           size="xl"
+          className="mb-2 sm:mb-4"
         />
       </Section>
 
       {/* Services List Scaffold */}
-      <Section className="pt-0">
-        <div className="space-y-8">
+      <Section className="pt-0 pb-12 sm:pb-16">
+        <div className="space-y-5 sm:space-y-6">
           {serviceCategories.map((service, idx) => {
             const Icon = service.icon;
             return (
@@ -144,7 +145,7 @@ export default function ServicesPage() {
         </div>
 
         {/* Action Prompt */}
-        <div className="mt-16 p-8 rounded-3xl bg-brand-softStone/50 border border-brand-softStone text-center flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="mt-10 sm:mt-12 p-8 rounded-3xl bg-brand-softStone/50 border border-brand-softStone text-center flex flex-col sm:flex-row items-center justify-between gap-6">
           <div className="text-left">
             <h4 className="text-lg font-bold text-brand-deepBlack">
               Need a custom spatial campaign or multi-city plan?

@@ -45,9 +45,9 @@ export default function AboutPage() {
   ];
 
   return (
-    <div className="pt-20 md:pt-24 min-h-screen bg-brand-warmOffWhite pb-20">
+    <div className="pt-20 md:pt-24 min-h-screen bg-brand-warmOffWhite pb-16">
       {/* Header Banner */}
-      <Section className="pb-8">
+      <Section className="py-6 sm:py-8 pb-2 sm:pb-3">
         <Heading
           badge="Our Spatial Ethos"
           sansPrefix="Architectural"
@@ -55,11 +55,12 @@ export default function AboutPage() {
           sansSuffix="In Exhibition Spaces"
           subtitle="We re-imagine exhibition pavilions not as temporary booths, but as monolithic spatial installations that elevate brand prestige."
           size="xl"
+          className="mb-2 sm:mb-4"
         />
       </Section>
 
       {/* 2-Column Philosophy & Narrative */}
-      <Section className="pt-0 pb-16">
+      <Section className="pt-0 pb-10 sm:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           {/* Left Column: Narrative */}
           <div className="lg:col-span-7 space-y-6">
@@ -123,7 +124,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Metrics / Key Stats */}
-      <Section className="py-16 bg-white border-y border-brand-softStone/60">
+      <Section className="py-10 sm:py-12 bg-white border-y border-brand-softStone/60">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           {stats.map((stat, idx) => (
             <div key={idx} className="space-y-2">
@@ -139,7 +140,7 @@ export default function AboutPage() {
       </Section>
 
       {/* Leadership Vision Section */}
-      <Section className="py-20">
+      <Section className="py-12 sm:py-16">
         <div className="space-y-12">
           {/* Section Title */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
