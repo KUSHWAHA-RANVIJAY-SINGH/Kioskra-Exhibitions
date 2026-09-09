@@ -394,16 +394,21 @@ export default function AdminDashboardPage() {
   const handleDeleteProject = async (projectId: string) => {
     if (!confirm("Are you sure you want to delete this project? This cannot be undone.")) return;
     try {
+      setProjects((prev) => prev.filter((p) => p._id !== projectId));
       const res = await fetch(`/api/projects/${projectId}`, {
         method: "DELETE",
       });
       if (res.ok) {
         fetchProjects();
       } else {
-        alert("Failed to delete the project.");
+        const errorData = await res.json().catch(() => ({}));
+        alert(errorData.error || "Failed to delete the project.");
+        fetchProjects();
       }
     } catch (err) {
       console.error("Delete project error:", err);
+      alert("Failed to delete the project.");
+      fetchProjects();
     }
   };
 
@@ -437,7 +442,7 @@ export default function AdminDashboardPage() {
         });
         fetchExhibitions();
       } else {
-        const errorData = await res.json();
+        const errorData = await res.json().catch(() => ({}));
         setActionError(errorData.error || "Failed to create exhibition.");
       }
     } catch (err) {
@@ -480,7 +485,7 @@ export default function AdminDashboardPage() {
         setIsEditExhibitionModalOpen(false);
         fetchExhibitions();
       } else {
-        const errorData = await res.json();
+        const errorData = await res.json().catch(() => ({}));
         setActionError(errorData.error || "Failed to update exhibition.");
       }
     } catch (err) {
@@ -493,16 +498,21 @@ export default function AdminDashboardPage() {
   const handleDeleteExhibition = async (exhibitionId: string) => {
     if (!confirm("Are you sure you want to delete this exhibition? This cannot be undone.")) return;
     try {
+      setExhibitions((prev) => prev.filter((e) => e._id !== exhibitionId));
       const res = await fetch(`/api/exhibitions/${exhibitionId}`, {
         method: "DELETE",
       });
       if (res.ok) {
         fetchExhibitions();
       } else {
-        alert("Failed to delete the exhibition.");
+        const errorData = await res.json().catch(() => ({}));
+        alert(errorData.error || "Failed to delete the exhibition.");
+        fetchExhibitions();
       }
     } catch (err) {
       console.error("Delete exhibition error:", err);
+      alert("Failed to delete the exhibition.");
+      fetchExhibitions();
     }
   };
 
@@ -539,7 +549,7 @@ export default function AdminDashboardPage() {
         });
         fetchBlogs();
       } else {
-        const errorData = await res.json();
+        const errorData = await res.json().catch(() => ({}));
         setActionError(errorData.error || "Failed to create blog post.");
       }
     } catch (err) {
@@ -581,7 +591,7 @@ export default function AdminDashboardPage() {
         setIsEditBlogModalOpen(false);
         fetchBlogs();
       } else {
-        const errorData = await res.json();
+        const errorData = await res.json().catch(() => ({}));
         setActionError(errorData.error || "Failed to update blog post.");
       }
     } catch (err) {
@@ -594,16 +604,21 @@ export default function AdminDashboardPage() {
   const handleDeleteBlog = async (blogId: string) => {
     if (!confirm("Are you sure you want to delete this blog post? This cannot be undone.")) return;
     try {
+      setBlogs((prev) => prev.filter((b) => b._id !== blogId));
       const res = await fetch(`/api/blogs/${blogId}`, {
         method: "DELETE",
       });
       if (res.ok) {
         fetchBlogs();
       } else {
-        alert("Failed to delete the blog post.");
+        const errorData = await res.json().catch(() => ({}));
+        alert(errorData.error || "Failed to delete the blog post.");
+        fetchBlogs();
       }
     } catch (err) {
       console.error("Delete blog error:", err);
+      alert("Failed to delete the blog post.");
+      fetchBlogs();
     }
   };
 

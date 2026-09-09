@@ -19,13 +19,13 @@ if (!cached) {
 }
 
 export async function connectDB() {
-  if (cached?.conn) {
+  if (cached?.conn && mongoose.connection.readyState === 1) {
     return cached.conn;
   }
 
-  if (!cached?.promise) {
+  if (!cached?.promise || mongoose.connection.readyState === 0) {
     const opts = {
-      bufferCommands: false,
+      dbName: "kioskra",
       serverSelectionTimeoutMS: 5000, // Fail fast after 5 seconds instead of 30 seconds
       connectTimeoutMS: 5000,
     };
@@ -38,14 +38,6 @@ export async function connectDB() {
       })
       .catch((err) => {
         console.error("❌ MongoDB Connection Error:", err.message);
-        if (
-          err.name === "MongooseServerSelectionError" ||
-          err.message.includes("selection timed out")
-        ) {
-          console.error(
-            "👉 Please check your MongoDB Atlas Network Access / IP Whitelist settings (allow 0.0.0.0/0 or add current IP)."
-          );
-        }
         cached!.promise = null; // Reset promise so subsequent requests can retry
         throw err;
       });

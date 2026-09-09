@@ -11,13 +11,10 @@ export async function GET(request: Request) {
 
     let projects = await Project.find({}).sort({ createdAt: -1 });
 
-    // Sync static projects into MongoDB if missing by slug
-    const existingSlugs = new Set(projects.map((p) => p.slug));
-    const missingProjects = projectsData.filter((p) => !existingSlugs.has(p.slug));
-
-    if (missingProjects.length > 0) {
+    // Seed default projects ONLY if database collection is completely empty
+    if (projects.length === 0 && projectsData.length > 0) {
       try {
-        const seedPayload = missingProjects.map((p) => ({
+        const seedPayload = projectsData.map((p) => ({
           title: p.title,
           slug: p.slug,
           category: p.category,

@@ -29,12 +29,10 @@ export default async function PortfolioPage() {
     await connectDB();
     let dbProjects = await Project.find({}).sort({ createdAt: -1 });
     
-    // Auto sync missing static projects
-    const existingSlugs = new Set(dbProjects.map((p) => p.slug));
-    const missingProjects = projectsData.filter((p) => !existingSlugs.has(p.slug));
-    if (missingProjects.length > 0) {
+    // Auto seed default projects ONLY if collection is empty
+    if (dbProjects.length === 0 && projectsData.length > 0) {
       try {
-        const seedPayload = missingProjects.map((p) => ({
+        const seedPayload = projectsData.map((p) => ({
           title: p.title,
           slug: p.slug,
           category: p.category,
