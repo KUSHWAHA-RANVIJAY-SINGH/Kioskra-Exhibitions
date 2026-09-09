@@ -1,62 +1,83 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function VisitorToast() {
   const [visitorCount, setVisitorCount] = useState<number | null>(null);
   const [showToast, setShowToast] = useState(false);
   const [isHiding, setIsHiding] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(false);
+  const hasProcessedRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    if (hasProcessedRef.current) return;
+    hasProcessedRef.current = true;
 
-    try {
-      const storedCount = localStorage.getItem("visitorCount");
-      const hasVisited = localStorage.getItem("hasVisited");
+    async function initVisitorToast() {
+      try {
+        const storedVisitorId = localStorage.getItem("visitorId");
+        let firstTime = false;
+        let finalCount = 1;
 
-      let currentCount = 200;
-      let firstTime = false;
+        if (!storedVisitorId) {
+          // Unique new visitor visit on this browser
+          const newVisitorId =
+            "visitor_" + Date.now() + "_" + Math.random().toString(36).substring(2, 11);
+          localStorage.setItem("visitorId", newVisitorId);
+          firstTime = true;
 
-      if (!storedCount || !hasVisited) {
-        currentCount = 200;
-        localStorage.setItem("visitorCount", "200");
-        localStorage.setItem("hasVisited", "true");
-        firstTime = true;
-      } else {
-        const parsed = parseInt(storedCount, 10);
-        currentCount = isNaN(parsed) ? 200 : parsed + 1;
-        localStorage.setItem("visitorCount", currentCount.toString());
-        firstTime = false;
+          // Call global API to atomically increment server count
+          const res = await fetch("/api/visitors", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "increment" }),
+          });
+          const data = await res.json();
+
+          if (data?.success && typeof data.count === "number") {
+            finalCount = data.count;
+          } else {
+            const cached = parseInt(localStorage.getItem("visitorCount") || "1", 10);
+            finalCount = isNaN(cached) || cached === 200 ? 1 : cached;
+          }
+        } else {
+          // Returning visit on this browser (refresh or revisit)
+          firstTime = false;
+
+          // Fetch latest global count from API without incrementing
+          const res = await fetch("/api/visitors", { method: "GET" });
+          const data = await res.json();
+
+          if (data?.success && typeof data.count === "number") {
+            finalCount = data.count;
+          } else {
+            const cached = parseInt(localStorage.getItem("visitorCount") || "1", 10);
+            finalCount = isNaN(cached) || cached === 200 ? 1 : cached;
+          }
+        }
+
+        localStorage.setItem("visitorCount", finalCount.toString());
+        setVisitorCount(finalCount);
+        setIsFirstVisit(firstTime);
+        setShowToast(true);
+
+        // Auto-hide timer: slide out after 4 seconds
+        const hideTimer = setTimeout(() => {
+          setIsHiding(true);
+          setTimeout(() => {
+            setShowToast(false);
+          }, 400); // 400ms slide-out animation
+        }, 4000);
+
+        return () => clearTimeout(hideTimer);
+      } catch (err) {
+        console.error("Error initializing VisitorToast:", err);
       }
-
-      setVisitorCount(currentCount);
-      setIsFirstVisit(firstTime);
-      setShowToast(true);
-
-      // Auto-hide timer: slide out after 4 seconds (4000ms)
-      const hideTimer = setTimeout(() => {
-        setIsHiding(true);
-        setTimeout(() => {
-          setShowToast(false);
-        }, 400); // 400ms slide-out animation
-      }, 4000);
-
-      return () => clearTimeout(hideTimer);
-    } catch (err) {
-      console.error("Error initializing VisitorToast:", err);
     }
+
+    initVisitorToast();
   }, []);
-
-  useEffect(() => {
-    if (visitorCount !== null && visitorCount >= 200) {
-      fetch("/api/visitors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ count: visitorCount }),
-      }).catch(() => {});
-    }
-  }, [visitorCount]);
 
   const handleClose = () => {
     setIsHiding(true);

@@ -11,68 +11,55 @@ export default function VisitorPopup() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const storedCount = localStorage.getItem("visitorCount");
-    const hasVisitedFlag = localStorage.getItem("isFirstVisit");
+    const storedVisitorId = localStorage.getItem("visitorId");
+    let firstTime = false;
 
-    let currentCount = 200;
-    let shouldShowPopup = false;
+    async function initVisitorPopup() {
+      try {
+        let finalCount = 1;
+        if (!storedVisitorId) {
+          const newVisitorId =
+            "visitor_" + Date.now() + "_" + Math.random().toString(36).substring(2, 11);
+          localStorage.setItem("visitorId", newVisitorId);
+          firstTime = true;
 
-    if (!storedCount) {
-      // First visit on this browser
-      currentCount = 200;
-      localStorage.setItem("visitorCount", "200");
-      localStorage.setItem("isFirstVisit", "true");
-      shouldShowPopup = true;
-    } else {
-      // Subsequent visit/page load
-      const parsed = parseInt(storedCount, 10);
-      currentCount = isNaN(parsed) ? 200 : parsed + 1;
-      localStorage.setItem("visitorCount", currentCount.toString());
+          const res = await fetch("/api/visitors", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ action: "increment" }),
+          });
+          const data = await res.json();
+          if (data?.success && typeof data.count === "number") {
+            finalCount = data.count;
+          }
+        } else {
+          firstTime = false;
+          const res = await fetch("/api/visitors", { method: "GET" });
+          const data = await res.json();
+          if (data?.success && typeof data.count === "number") {
+            finalCount = data.count;
+          } else {
+            const cached = parseInt(localStorage.getItem("visitorCount") || "1", 10);
+            finalCount = isNaN(cached) || cached === 200 ? 1 : cached;
+          }
+        }
 
-      // If isFirstVisit flag was not set yet
-      if (!hasVisitedFlag) {
-        localStorage.setItem("isFirstVisit", "true");
-        shouldShowPopup = true;
+        localStorage.setItem("visitorCount", finalCount.toString());
+        setVisitorCount(finalCount);
+
+        if (firstTime) {
+          setIsOpen(true);
+          const timer = setTimeout(() => {
+            setIsOpen(false);
+          }, 4000);
+          return () => clearTimeout(timer);
+        }
+      } catch (err) {
+        console.error("Error initializing VisitorPopup:", err);
       }
     }
 
-    setVisitorCount(currentCount);
-
-    if (shouldShowPopup) {
-      setIsOpen(true);
-      // Auto close after 4 seconds
-      const timer = setTimeout(() => {
-        setIsOpen(false);
-      }, 4000);
-
-      return () => clearTimeout(timer);
-    }
-
-    // Debounce API sync: max 1 call per 5 seconds
-    const lastSync = localStorage.getItem("visitorLastSyncTime");
-    const now = Date.now();
-    const DEBOUNCE_INTERVAL_MS = 5000;
-
-    if (!lastSync || now - parseInt(lastSync, 10) >= DEBOUNCE_INTERVAL_MS) {
-      localStorage.setItem("visitorLastSyncTime", now.toString());
-
-      // Non-blocking fire-and-forget request
-      fetch("/api/visitors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ count: currentCount }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          if (data?.success && typeof data.count === "number" && data.count > currentCount) {
-            localStorage.setItem("visitorCount", data.count.toString());
-            setVisitorCount(data.count);
-          }
-        })
-        .catch(() => {
-          // Gracefully catch network errors
-        });
-    }
+    initVisitorPopup();
   }, []);
 
   if (!isOpen || visitorCount === null) return null;

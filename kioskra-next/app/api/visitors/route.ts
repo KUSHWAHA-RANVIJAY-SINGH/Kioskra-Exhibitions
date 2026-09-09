@@ -5,6 +5,71 @@ import Visitor from "@/lib/models/Visitor";
 // In-memory rate limiting map (IP -> timestamp)
 const rateLimitMap = new Map<string, number>();
 
+// Global memory counter fallback if DB is temporarily unreachable
+const globalObj = globalThis as unknown as { __visitorMemoryCount?: number };
+if (typeof globalObj.__visitorMemoryCount !== "number") {
+  globalObj.__visitorMemoryCount = 1;
+}
+
+function getMemoryCount(): number {
+  return globalObj.__visitorMemoryCount ?? 1;
+}
+
+function setMemoryCount(val: number): number {
+  globalObj.__visitorMemoryCount = val;
+  return val;
+}
+
+async function getGlobalCount(): Promise<number> {
+  try {
+    await connectDB();
+    let visitorDoc = await Visitor.findById("kioskra-main");
+    if (!visitorDoc) {
+      visitorDoc = await Visitor.create({
+        _id: "kioskra-main",
+        count: 1,
+        lastUpdated: new Date(),
+      });
+    } else if (visitorDoc.count === 200) {
+      // Reset legacy hardcoded 200 default to 1
+      visitorDoc.count = 1;
+      visitorDoc.lastUpdated = new Date();
+      await visitorDoc.save();
+    }
+    return setMemoryCount(visitorDoc.count);
+  } catch (dbErr) {
+    console.warn("GET /api/visitors DB fallback:", dbErr);
+    return getMemoryCount();
+  }
+}
+
+async function incrementGlobalCount(): Promise<number> {
+  try {
+    await connectDB();
+    let visitorDoc = await Visitor.findById("kioskra-main");
+    if (!visitorDoc) {
+      visitorDoc = await Visitor.create({
+        _id: "kioskra-main",
+        count: 1,
+        lastUpdated: new Date(),
+      });
+    } else {
+      if (visitorDoc.count === 200) {
+        visitorDoc.count = 1;
+      } else {
+        visitorDoc.count += 1;
+      }
+      visitorDoc.lastUpdated = new Date();
+      await visitorDoc.save();
+    }
+    return setMemoryCount(visitorDoc.count);
+  } catch (dbErr) {
+    console.warn("POST /api/visitors DB update warning:", dbErr);
+    const nextCount = getMemoryCount() + 1;
+    return setMemoryCount(nextCount);
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const forwarded = request.headers.get("x-forwarded-for");
@@ -13,45 +78,24 @@ export async function POST(request: Request) {
     const now = Date.now();
     const lastRequestTime = rateLimitMap.get(ip) || 0;
 
-    // Rate limiting: max 1 update per 5 seconds per IP
-    if (now - lastRequestTime < 5000) {
-      return NextResponse.json(
-        { error: "Too many requests. Please wait 5 seconds." },
-        { status: 429 }
-      );
+    // Rate limiting: max 1 increment request per 3 seconds per IP
+    if (now - lastRequestTime < 3000) {
+      const currentCount = await getGlobalCount();
+      return NextResponse.json({ success: true, count: currentCount }, { status: 200 });
     }
 
     rateLimitMap.set(ip, now);
 
     const body = await request.json().catch(() => ({}));
-    const count = typeof body.count === "number" ? body.count : null;
+    const isIncrement = body.action === "increment" || body.increment === true;
 
-    if (count === null || isNaN(count)) {
-      return NextResponse.json({ error: "Invalid count parameter." }, { status: 400 });
+    let count: number;
+    if (isIncrement) {
+      count = await incrementGlobalCount();
+    } else {
+      count = await getGlobalCount();
     }
 
-    // Async background update to MongoDB without blocking response
-    (async () => {
-      try {
-        await connectDB();
-        let visitorDoc = await Visitor.findById("kioskra-main");
-        if (!visitorDoc) {
-          await Visitor.create({
-            _id: "kioskra-main",
-            count: count,
-            lastUpdated: new Date(),
-          });
-        } else {
-          visitorDoc.count = Math.max(visitorDoc.count + 1, count);
-          visitorDoc.lastUpdated = new Date();
-          await visitorDoc.save();
-        }
-      } catch (dbErr) {
-        console.warn("Background DB visitor update warning:", dbErr);
-      }
-    })();
-
-    // Immediate 200 response
     return NextResponse.json({ success: true, count }, { status: 200 });
   } catch (error: unknown) {
     console.error("POST /api/visitors error:", error);
@@ -61,18 +105,12 @@ export async function POST(request: Request) {
 
 export async function GET() {
   try {
-    let count = 200;
-    try {
-      await connectDB();
-      const visitorDoc = await Visitor.findById("kioskra-main");
-      if (visitorDoc) {
-        count = visitorDoc.count;
-      }
-    } catch (dbErr) {
-      console.warn("GET /api/visitors DB fallback:", dbErr);
-    }
+    const count = await getGlobalCount();
     return NextResponse.json({ success: true, count }, { status: 200 });
   } catch (error: unknown) {
-    return NextResponse.json({ success: false, count: 200 }, { status: 200 });
+    return NextResponse.json(
+      { success: true, count: getMemoryCount() },
+      { status: 200 }
+    );
   }
 }

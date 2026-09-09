@@ -8,7 +8,7 @@ export interface IVisitor extends Document {
 const VisitorSchema: Schema = new Schema(
   {
     _id: { type: String, default: "kioskra-main" },
-    count: { type: Number, required: true, default: 200 },
+    count: { type: Number, required: true, default: 1 },
     lastUpdated: { type: Date, default: Date.now },
   },
   { timestamps: true }
