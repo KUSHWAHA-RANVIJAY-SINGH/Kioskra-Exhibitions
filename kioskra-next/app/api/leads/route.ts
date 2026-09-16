@@ -43,7 +43,7 @@ export async function POST(request: Request) {
 
     if (checkRateLimit(ip)) {
       return NextResponse.json(
-        { error: "Too many submissions. Please try again or call +91 9643378735" },
+        { error: "Too many submissions. Please try again or call +91 83779 29424 / +91 96433 78735" },
         { status: 429 }
       );
     }

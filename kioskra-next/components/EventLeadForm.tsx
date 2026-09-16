@@ -87,7 +87,7 @@ export default function EventLeadForm({
       reset();
     } catch (err: unknown) {
       setStatus("error");
-      triggerToast("× Submission failed. Please call +91 9643378735 directly.", "error");
+      triggerToast("× Submission failed. Please call +91 83779 29424 / +91 96433 78735 directly.", "error");
     }
   };
 

@@ -162,10 +162,10 @@ export default async function BlogPostDetailPage({ params }: BlogPostPageProps) 
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
-                href="tel:+919643378735"
+                href="tel:+918377929424"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-wider px-6 py-4 rounded-full transition-all border border-white/20"
               >
-                <span>Call +91 9643378735</span>
+                <span>Call +91 83779 29424</span>
               </a>
             </div>
           </div>

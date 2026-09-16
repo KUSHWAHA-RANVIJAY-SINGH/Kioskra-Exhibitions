@@ -61,11 +61,11 @@ export default function ContactPage() {
                   referrerPolicy="no-referrer-when-downgrade"
                   className="opacity-95 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
                 ></iframe>
-                
+
                 {/* Clickable Overlay Link */}
-                <a 
-                  href="https://maps.google.com/?q=L2/86,+near+Nag+Mandir+Road,+Block+L+2,+Shastri+Nagar,+New+Delhi,+Delhi,+110052" 
-                  target="_blank" 
+                <a
+                  href="https://maps.google.com/?q=L2/86,+near+Nag+Mandir+Road,+Block+L+2,+Shastri+Nagar,+New+Delhi,+Delhi,+110052"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="absolute inset-0 z-10 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
@@ -96,11 +96,16 @@ export default function ContactPage() {
                     </a>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Phone className="w-5 h-5 text-brand-electricBlue flex-shrink-0" />
-                  <a href="tel:+919643378735" className="hover:text-white transition-colors">
-                    +91 96433 78735
-                  </a>
+                <div className="flex items-start gap-3">
+                  <Phone className="w-5 h-5 text-brand-electricBlue flex-shrink-0 mt-0.5" />
+                  <div className="flex flex-col gap-1">
+                    <a href="tel:+919643378735" className="hover:text-white transition-colors">
+                      +91 96433 78735
+                    </a>
+                    <a href="tel:+918377929424" className="hover:text-white transition-colors">
+                      +91 83779 29424
+                    </a>
+                  </div>
                 </div>
               </div>
 

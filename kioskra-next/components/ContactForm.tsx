@@ -99,7 +99,7 @@ export default function ContactForm() {
       reset();
     } catch (err: unknown) {
       setStatus("error");
-      triggerToast("× Submission failed. Please try again or call +91 9643378735", "error");
+      triggerToast("× Submission failed. Please try again or call +91 83779 29424 / +91 96433 78735", "error");
     }
   };
 

@@ -77,11 +77,16 @@ export default function ContactSection() {
                     </a>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Phone className="w-4 h-4 text-accent-blue flex-shrink-0" />
-                  <a href="tel:+919643378735" className="hover:text-accent-blue transition-colors">
-                    +91 9643378735
-                  </a>
+                <div className="flex items-start gap-3">
+                  <Phone className="w-4 h-4 text-accent-blue flex-shrink-0 mt-0.5" />
+                  <div className="flex flex-col gap-1">
+                    <a href="tel:+919643378735" className="hover:text-accent-blue transition-colors">
+                      +91 96433 78735
+                    </a>
+                    <a href="tel:+918377929424" className="hover:text-accent-blue transition-colors">
+                      +91 83779 29424
+                    </a>
+                  </div>
                 </div>
               </div>
 

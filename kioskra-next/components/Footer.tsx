@@ -22,7 +22,7 @@ export default function Footer() {
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-white/5 rounded-full filter blur-[120px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col gap-10 relative z-10">
-        
+
         {/* Compact Collaborative Header Callout */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-8 border-b border-white/10">
           <div>
@@ -44,7 +44,7 @@ export default function Footer() {
 
         {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-8 border-b border-white/10">
-          
+
           {/* Brand Bio Column */}
           <div className="lg:col-span-2 flex flex-col gap-4">
             <div className="flex items-center gap-2.5">
@@ -168,11 +168,16 @@ export default function Footer() {
                   </a>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-accent-blue flex-shrink-0" />
-                <a href="tel:+919643378735" className="hover:text-white transition-colors">
-                  +91 9643378735
-                </a>
+              <div className="flex items-start gap-2">
+                <Phone className="w-3.5 h-3.5 text-accent-blue flex-shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-0.5">
+                  <a href="tel:+919643378735" className="hover:text-white transition-colors">
+                    +91 96433 78735
+                  </a>
+                  <a href="tel:+918377929424" className="hover:text-white transition-colors">
+                    +91 83779 29424
+                  </a>
+                </div>
               </div>
             </div>
 

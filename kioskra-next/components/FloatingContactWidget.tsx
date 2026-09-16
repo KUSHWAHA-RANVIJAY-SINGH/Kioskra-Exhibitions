@@ -55,18 +55,27 @@ export default function FloatingContactWidget() {
       }`}>
         {/* Phone Call Button */}
         <div className="relative flex items-center">
-          {/* Tooltip */}
-          <span
-            className={`absolute right-14 bg-neutral-900 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg border border-neutral-700 shadow-xl whitespace-nowrap transition-all duration-200 pointer-events-none tooltip-text ${
-              showPhoneTooltip ? "opacity-100 translate-x-0" : "opacity-0 translate-x-2"
+          {/* Multi-number Popover / Tooltip */}
+          <div
+            className={`absolute right-14 bg-neutral-900/95 backdrop-blur-md text-white text-[11px] font-bold p-2.5 rounded-xl border border-neutral-700 shadow-2xl transition-all duration-200 flex flex-col gap-1.5 ${
+              showPhoneTooltip ? "opacity-100 translate-x-0 pointer-events-auto" : "opacity-0 translate-x-2 pointer-events-none"
             }`}
-          >
-            Call Exhibition Team
-          </span>
-          <a
-            href="tel:+919643378735"
             onMouseEnter={() => setShowPhoneTooltip(true)}
             onMouseLeave={() => setShowPhoneTooltip(false)}
+          >
+            <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-bold px-1">Call Exhibition Team</span>
+            <a href="tel:+918377929424" className="hover:text-blue-400 transition-colors px-1.5 py-1 rounded hover:bg-white/10 flex items-center gap-1.5">
+              <span>+91 83779 29424</span>
+            </a>
+            <a href="tel:+919643378735" className="hover:text-blue-400 transition-colors px-1.5 py-1 rounded hover:bg-white/10 flex items-center gap-1.5">
+              <span>+91 96433 78735</span>
+            </a>
+          </div>
+          <a
+            href="tel:+918377929424"
+            onMouseEnter={() => setShowPhoneTooltip(true)}
+            onMouseLeave={() => setShowPhoneTooltip(false)}
+            onClick={() => setShowPhoneTooltip(!showPhoneTooltip)}
             className="bg-neutral-900 text-white hover:bg-neutral-800 w-12 h-12 rounded-full shadow-2xl border border-neutral-700 transition-transform duration-200 hover:scale-110 flex items-center justify-center cursor-pointer"
             aria-label="Call Kioskra Exhibition Team"
           >
