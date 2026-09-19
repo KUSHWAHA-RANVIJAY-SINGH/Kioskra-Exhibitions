@@ -19,6 +19,7 @@ import {
   Upload,
 } from "lucide-react";
 import CloudinaryDropzone from "@/components/CloudinaryDropzone";
+import RichTextEditor from "@/components/RichTextEditor";
 
 interface LeadItem {
   _id: string;
@@ -1127,112 +1128,224 @@ export default function AdminDashboardPage() {
 
       {/* Blog CMS Section */}
       {activeTab === "blogs" && (
-        <div className="bg-white rounded-3xl border border-stone p-8 shadow-sm">
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-            <div className="flex items-center gap-3">
-              <h3 className="text-xl font-extrabold text-dark">Blog Posts & Articles Management</h3>
-              <button
-                onClick={fetchBlogs}
-                className="p-2 rounded-full hover:bg-stone text-dark/60 transition-colors border-none cursor-pointer"
-                title="Refresh blogs"
-              >
-                <RefreshCw className={`w-4 h-4 ${loadingBlogs ? "animate-spin" : ""}`} />
-              </button>
+        <div className="space-y-6">
+
+          {/* ── Page Structure Preview Banner ── */}
+          <div className="bg-gradient-to-br from-[#0b0d10] to-[#111827] rounded-3xl border border-white/10 p-6 text-white shadow-xl">
+            <div className="flex items-start justify-between gap-4 flex-wrap">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#2F6BFF] mb-2">LIVE PAGE STRUCTURE</p>
+                <h3 className="text-lg font-extrabold mb-1">Blog Page: /blog</h3>
+                <p className="text-xs text-white/50 max-w-lg">Each article you add below appears on the public blog page in this order. The <strong className="text-white">first article</strong> shows as the large Featured Article at the top.</p>
+              </div>
+              <a href="/blog" target="_blank" className="inline-flex items-center gap-2 bg-[#2F6BFF] hover:bg-blue-600 text-white text-xs font-bold px-4 py-2.5 rounded-full transition-colors cursor-pointer">
+                View Live Page ↗
+              </a>
             </div>
 
-            <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
-              <div className="relative flex-grow sm:flex-grow-0">
-                <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-dark/40" />
-                <input
-                  type="text"
-                  placeholder="Search articles..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-4 py-2 rounded-xl bg-warm border border-stone text-xs font-semibold focus:outline-none focus:border-[#2F6BFF]"
-                />
+            {/* Page layout mockup */}
+            <div className="mt-5 grid grid-cols-4 gap-2 text-center text-[9px] font-bold uppercase tracking-wider">
+              <div className="col-span-4 bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 text-white/70">
+                🌑 Dark Hero — "In-depth <em>exhibitor</em> knowledge base."
               </div>
+              <div className="col-span-4 bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-[#2F6BFF]">
+                🔍 Sticky Filter Bar — All / Exhibitor Guides / Cost Guide / Design Tips / Planning + Search
+              </div>
+              <div className="col-span-2 bg-[#2F6BFF]/15 border border-[#2F6BFF]/30 rounded-xl py-3 px-3 text-[#7aa2ff]">
+                ⭐ Featured Article (1st card — large 2-col layout)
+              </div>
+              <div className="col-span-2 grid grid-cols-2 gap-2">
+                {[2, 3, 4, 5].map(n => (
+                  <div key={n} className="bg-white/5 border border-white/10 rounded-xl py-2.5 text-white/40">Card {n}</div>
+                ))}
+              </div>
+            </div>
 
-              <button
-                onClick={() => setIsBlogModalOpen(true)}
-                className="inline-flex items-center gap-1.5 bg-[#2F6BFF] text-white font-semibold text-xs px-5 py-2.5 rounded-full hover:bg-blue-600 shadow-md cursor-pointer border-none"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add Article</span>
-              </button>
+            {/* Category colour guide */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {[
+                { cat: "Exhibitor Guides", color: "#2e66ff" },
+                { cat: "Cost Guide", color: "#059669" },
+                { cat: "Design Tips", color: "#7c3aed" },
+                { cat: "Planning", color: "#d97706" },
+              ].map(({ cat, color }) => (
+                <span key={cat} className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[9px] font-bold text-white" style={{ background: color + "22", border: `1px solid ${color}55`, color }}>
+                  <span className="w-2 h-2 rounded-full inline-block" style={{ background: color }} />
+                  {cat}
+                </span>
+              ))}
             </div>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse text-xs">
-              <thead>
-                <tr className="border-b border-stone text-dark/60 font-bold uppercase tracking-wider">
-                  <th className="py-3 px-4">Hero Image</th>
-                  <th className="py-3 px-4">Article Title</th>
-                  <th className="py-3 px-4">Category</th>
-                  <th className="py-3 px-4">Author</th>
-                  <th className="py-3 px-4">Read Time</th>
-                  <th className="py-3 px-4">Published Date</th>
-                  <th className="py-3 px-4 text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-stone/60 text-dark font-medium">
-                {filteredBlogs.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-8 text-center text-dark/50">
-                      No blog articles recorded yet. Click "+ Add Article" to publish one.
-                    </td>
-                  </tr>
-                ) : (
-                  filteredBlogs.map((blog) => (
-                    <tr key={blog._id} className="hover:bg-warm/50 transition-colors">
-                      <td className="py-3 px-4">
-                        <div className="relative w-12 h-10 rounded-lg overflow-hidden bg-neutral-900 border border-stone">
-                          <img
-                            src={blog.heroImage}
-                            alt={blog.title}
-                            className="object-cover w-full h-full"
-                          />
+          {/* ── Articles Management Panel ── */}
+          <div className="bg-white rounded-3xl border border-stone p-8 shadow-sm">
+            <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
+              <div className="flex items-center gap-3">
+                <h3 className="text-xl font-extrabold text-dark">Blog Posts & Articles</h3>
+                <span className="text-xs bg-stone rounded-full px-2.5 py-1 font-bold text-dark/50">
+                  {filteredBlogs.length} article{filteredBlogs.length !== 1 ? "s" : ""}
+                </span>
+                <button
+                  onClick={fetchBlogs}
+                  className="p-2 rounded-full hover:bg-stone text-dark/60 transition-colors border-none cursor-pointer"
+                  title="Refresh blogs"
+                >
+                  <RefreshCw className={`w-4 h-4 ${loadingBlogs ? "animate-spin" : ""}`} />
+                </button>
+              </div>
+
+              <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <div className="relative flex-grow sm:flex-grow-0">
+                  <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-dark/40" />
+                  <input
+                    type="text"
+                    placeholder="Search articles..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="pl-9 pr-4 py-2 rounded-xl bg-warm border border-stone text-xs font-semibold focus:outline-none focus:border-[#2F6BFF]"
+                  />
+                </div>
+
+                <button
+                  onClick={() => setIsBlogModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 bg-[#2F6BFF] text-white font-semibold text-xs px-5 py-2.5 rounded-full hover:bg-blue-600 shadow-md cursor-pointer border-none whitespace-nowrap"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Article</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Sort hint */}
+            <p className="text-[11px] text-dark/40 mb-5 font-medium">
+              Articles are sorted newest-first. The <strong className="text-dark/60">topmost article</strong> appears as the Featured Article on the public blog page.{" "}
+              <a href="/blog" target="_blank" className="text-[#2F6BFF] font-bold hover:underline">View live page ↗</a>
+            </p>
+
+            {filteredBlogs.length === 0 ? (
+              <div className="py-14 text-center">
+                <div className="w-14 h-14 rounded-2xl bg-stone/60 flex items-center justify-center mx-auto mb-3">
+                  <Plus className="w-6 h-6 text-dark/30" />
+                </div>
+                <p className="font-bold text-dark/40 mb-1">No articles yet</p>
+                <p className="text-xs text-dark/30 mb-4">Click "+ Add Article" to publish your first article.</p>
+                <button
+                  onClick={() => setIsBlogModalOpen(true)}
+                  className="inline-flex items-center gap-1.5 bg-[#2F6BFF] text-white font-semibold text-xs px-5 py-2.5 rounded-full hover:bg-blue-600 cursor-pointer border-none"
+                >
+                  <Plus className="w-4 h-4" />Add Article
+                </button>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+                {filteredBlogs.map((blog, idx) => {
+                  const catColors: Record<string, string> = {
+                    "Exhibitor Guides": "#2e66ff",
+                    "Cost Guide": "#059669",
+                    "Design Tips": "#7c3aed",
+                    "Planning": "#d97706",
+                  };
+                  const catColor = catColors[blog.category] || "#2e66ff";
+                  return (
+                    <div
+                      key={blog._id}
+                      className="group flex flex-col bg-warm rounded-2xl border border-stone overflow-hidden shadow-sm hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 relative"
+                    >
+                      {/* Featured badge for first article */}
+                      {idx === 0 && (
+                        <div className="absolute top-0 left-0 right-0 z-10 bg-[#2F6BFF] text-white text-[9px] font-bold uppercase tracking-wider text-center py-1 px-3">
+                          ⭐ Featured Article — displays large at top of blog page
                         </div>
-                      </td>
-                      <td className="py-3 px-4 font-bold text-dark max-w-xs truncate">{blog.title}</td>
-                      <td className="py-3 px-4">
-                        <span className="px-2.5 py-1 rounded bg-stone/50 font-bold uppercase text-[9px]">
+                      )}
+
+                      {/* Hero image */}
+                      <div className={`relative overflow-hidden bg-neutral-200 flex-shrink-0 ${idx === 0 ? "h-48 mt-6" : "h-44"}`}>
+                        <img
+                          src={blog.heroImage || "/images/hero_slider_1.png"}
+                          alt={blog.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        {/* Category badge */}
+                        <span
+                          className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-white text-[9px] font-bold uppercase tracking-wider"
+                          style={{ background: catColor }}
+                        >
                           {blog.category}
                         </span>
-                      </td>
-                      <td className="py-3 px-4">{blog.author || "Kioskra Team"}</td>
-                      <td className="py-3 px-4">{blog.readTime || "5 min read"}</td>
-                      <td className="py-3 px-4 text-dark/50">{blog.publishDate}</td>
-                      <td className="py-3 px-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
+                        {/* Action buttons */}
+                        <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
                           <button
                             onClick={() => openEditBlogModal(blog)}
-                            className="p-1.5 rounded-lg hover:bg-stone text-dark/70 hover:text-dark transition-all cursor-pointer border-none bg-transparent"
+                            className="w-7 h-7 rounded-lg bg-white/90 backdrop-blur-sm text-dark/80 hover:text-dark flex items-center justify-center cursor-pointer border-none shadow"
                             title="Edit Article"
                           >
                             <Edit className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => handleDeleteBlog(blog._id)}
-                            className="p-1.5 rounded-lg hover:bg-rose-50 text-rose-600 hover:text-rose-800 transition-all cursor-pointer border-none bg-transparent"
+                            className="w-7 h-7 rounded-lg bg-white/90 backdrop-blur-sm text-rose-600 hover:text-rose-800 flex items-center justify-center cursor-pointer border-none shadow"
                             title="Delete Article"
                           >
                             <Trash className="w-3.5 h-3.5" />
                           </button>
                         </div>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                      </div>
+
+                      {/* Card body */}
+                      <div className="p-4 flex-1 flex flex-col gap-2">
+                        {/* Meta */}
+                        <div className="flex items-center gap-2 text-[10px] text-dark/50 font-medium flex-wrap">
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" style={{ color: catColor }} />
+                            {blog.publishDate}
+                          </span>
+                          <span>•</span>
+                          <span>{blog.readTime || "5 min read"}</span>
+                          <span>•</span>
+                          <span>By {blog.author || "Kioskra Team"}</span>
+                        </div>
+
+                        {/* Title */}
+                        <h4 className="text-sm font-extrabold text-dark line-clamp-2 leading-snug">
+                          {blog.title}
+                        </h4>
+
+                        {/* Excerpt */}
+                        {blog.excerpt && (
+                          <p className="text-[11px] text-dark/55 line-clamp-2 leading-relaxed">
+                            {blog.excerpt}
+                          </p>
+                        )}
+
+                        {/* Footer */}
+                        <div className="mt-auto pt-3 border-t border-stone flex items-center justify-between">
+                          <span className="text-[9px] font-mono text-dark/30 truncate max-w-[55%]">
+                            /blog/{blog.slug || "—"}
+                          </span>
+                          <a
+                            href={`/blog/${blog.slug}`}
+                            target="_blank"
+                            className="text-[10px] font-bold hover:underline"
+                            style={{ color: catColor }}
+                          >
+                            Preview ↗
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       )}
 
+
       {/* ==================================================== */}
       {/* 1. ADD PORTFOLIO PROJECT MODAL */}
       {/* ==================================================== */}
+
       {isProjectModalOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto">
           <div className="w-full max-w-lg bg-[#191A1A] border border-white/10 rounded-3xl p-6 sm:p-8 text-white relative shadow-2xl animate-fade-in my-8 max-h-[90vh] overflow-y-auto">
@@ -1796,14 +1909,11 @@ export default function AdminDashboardPage() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Content (HTML / Text) *</label>
-                <textarea
-                  required
-                  rows={6}
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Content (Visual Rich Text Editor) *</label>
+                <RichTextEditor
                   value={newBlog.contentHtml}
-                  onChange={(e) => setNewBlog({ ...newBlog, contentHtml: e.target.value })}
-                  placeholder="<p>Full article body HTML or text content...</p>"
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF] font-mono resize-none"
+                  onChange={(val) => setNewBlog({ ...newBlog, contentHtml: val })}
+                  placeholder="Write formatted article content (Headings, Bold, Lists, Links)..."
                 />
               </div>
 
@@ -1919,13 +2029,11 @@ export default function AdminDashboardPage() {
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Content (HTML / Text) *</label>
-                <textarea
-                  required
-                  rows={6}
+                <label className="text-[9px] font-bold uppercase tracking-wider text-white/80">Article Content (Visual Rich Text Editor) *</label>
+                <RichTextEditor
                   value={editingBlog.contentHtml}
-                  onChange={(e) => setEditingBlog({ ...editingBlog, contentHtml: e.target.value })}
-                  className="w-full px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 text-white text-xs focus:outline-none focus:border-[#2F6BFF] font-mono resize-none"
+                  onChange={(val) => setEditingBlog({ ...editingBlog, contentHtml: val })}
+                  placeholder="Write formatted article content (Headings, Bold, Lists, Links)..."
                 />
               </div>
 
