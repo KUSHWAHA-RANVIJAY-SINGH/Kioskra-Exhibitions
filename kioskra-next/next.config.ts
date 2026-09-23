@@ -14,6 +14,10 @@ const nextConfig: NextConfig = {
     ],
   },
   serverExternalPackages: ["mongoose"],
+  turbopack: {},
+  webpack: (config) => {
+    return config;
+  },
 };
 
 export default nextConfig;

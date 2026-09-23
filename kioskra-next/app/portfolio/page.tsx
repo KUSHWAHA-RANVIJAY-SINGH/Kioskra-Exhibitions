@@ -8,6 +8,7 @@ import Project from "@/lib/models/Project";
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 export const metadata: Metadata = {
   title: "Exhibition Portfolio & Case Studies | Kioskra Exhibitions",

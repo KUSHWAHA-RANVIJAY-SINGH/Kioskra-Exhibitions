@@ -86,6 +86,7 @@ async function getEvent(slug: string) {
 
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

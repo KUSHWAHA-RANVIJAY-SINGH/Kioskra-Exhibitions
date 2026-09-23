@@ -9,6 +9,7 @@ import { Calendar, MapPin, ArrowUpRight } from "lucide-react";
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 export const metadata: Metadata = {
   title: "Upcoming Exhibitions Calendar 2026 - 2027 | Kioskra Exhibitions",

@@ -6,6 +6,7 @@ import connectDB from "@/lib/db";
 import Blog from "@/lib/models/Blog";
 
 export const dynamic = "force-dynamic";
+export const fetchCache = "force-no-store";
 
 export const metadata: Metadata = {
   title: "Upcoming Exhibitions in Delhi NCR 2026 | Kioskra Journal",

@@ -19,7 +19,12 @@ if (!cached) {
 }
 
 export async function connectDB() {
-  if (process.env.NEXT_PHASE === "phase-production-build") {
+  // Never initiate database connection loops during Next.js production build / static generation phase
+  if (
+    process.env.NEXT_PHASE === "phase-production-build" ||
+    process.env.NEXT_PHASE?.includes("build") ||
+    process.argv.some((arg) => arg.includes("build"))
+  ) {
     return null;
   }
 
@@ -35,8 +40,9 @@ export async function connectDB() {
   if (!cached?.promise || mongoose.connection.readyState === 0) {
     const opts = {
       dbName: "kioskra",
-      serverSelectionTimeoutMS: 2000, // Fail fast after 2s if database server is not reachable
-      connectTimeoutMS: 2000,
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+      bufferCommands: false, // Disable Mongoose buffering so operations fail fast if not connected
     };
 
     cached!.promise = mongoose
