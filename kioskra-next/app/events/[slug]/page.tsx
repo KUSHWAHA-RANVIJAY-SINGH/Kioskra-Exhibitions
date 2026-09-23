@@ -90,7 +90,8 @@ export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
-  const event = await getEvent(resolvedParams.slug);
+  // Use only static fallback data for metadata — never call DB at build time
+  const event = fallbackEvents.find((e) => e.slug === resolvedParams.slug);
 
   if (!event) {
     return {

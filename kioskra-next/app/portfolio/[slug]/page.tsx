@@ -46,7 +46,8 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
-  const project = await getProject(slug);
+  // Use only static data for metadata — never call DB at build time
+  const project = projectsData.find((p) => p.slug === slug);
   
   if (!project) {
     return {
@@ -56,7 +57,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${project.title} Case Study | Kioskra Exhibitions`,
-    description: `Read how Kioskra engineered and fabricated the ${project.title} for ${project.client}. Details on design challenge, materials, and execution.`,
+    description: `Read how Kioskra engineered and fabricated the ${project.title}. Details on design challenge, materials, and execution.`,
   };
 }
 

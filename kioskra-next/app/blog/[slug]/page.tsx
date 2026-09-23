@@ -37,7 +37,8 @@ export async function generateMetadata({
   params,
 }: BlogPostPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const { post } = await getBlogPost(slug);
+  // Use only static data for metadata — never call DB at build time
+  const post = blogPostsData.find((p) => p.slug === slug);
 
   if (!post) {
     return {
