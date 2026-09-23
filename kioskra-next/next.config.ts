@@ -1,10 +1,6 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
-  turbopack: {
-    root: path.resolve(__dirname),
-  },
   images: {
     remotePatterns: [
       {
@@ -17,7 +13,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["three", "@react-three/fiber", "@react-three/drei", "three-stdlib", "mongoose"],
+  serverExternalPackages: ["mongoose"],
 };
 
 export default nextConfig;

@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd kioskra-next && npm run build",
+  "installCommand": "cd kioskra-next && npm install",
+  "outputDirectory": "kioskra-next/.next",
+  "framework": "nextjs"
+}
