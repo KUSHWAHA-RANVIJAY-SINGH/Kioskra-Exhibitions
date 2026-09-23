@@ -19,6 +19,10 @@ if (!cached) {
 }
 
 export async function connectDB() {
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return null;
+  }
+
   if (!process.env.MONGODB_URI) {
     console.warn("⚠️ MONGODB_URI is not defined in environment variables. Falling back to local/static data.");
     return null;

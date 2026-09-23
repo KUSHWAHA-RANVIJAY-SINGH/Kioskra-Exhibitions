@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
   images: {
     remotePatterns: [
       {
@@ -13,19 +17,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  webpack: (config, { isServer }) => {
-    if (isServer) {
-      // Exclude WebGL/browser-only 3D libraries from server bundle entirely
-      config.externals = [
-        ...(Array.isArray(config.externals) ? config.externals : []),
-        "three",
-        "@react-three/fiber",
-        "@react-three/drei",
-        "three-stdlib",
-      ];
-    }
-    return config;
-  },
+  serverExternalPackages: ["three", "@react-three/fiber", "@react-three/drei", "three-stdlib", "mongoose"],
 };
 
 export default nextConfig;
