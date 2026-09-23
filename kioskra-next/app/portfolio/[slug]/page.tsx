@@ -39,17 +39,9 @@ async function getProject(slug: string) {
   return projectsData.find((p) => p.slug === slug) || null;
 }
 
-export async function generateStaticParams() {
-  let slugs = projectsData.map((project) => ({ slug: project.slug }));
-  try {
-    await connectDB();
-    const dbProjects = await Project.find({}, { slug: 1 });
-    if (dbProjects && dbProjects.length > 0) {
-      slugs = dbProjects.map((p) => ({ slug: p.slug }));
-    }
-  } catch (err) {}
-  return slugs;
-}
+
+export const dynamic = "force-dynamic";
+
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;

@@ -7,6 +7,8 @@ import connectDB from "@/lib/db";
 import Project from "@/lib/models/Project";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Exhibition Portfolio & Case Studies | Kioskra Exhibitions",
   description: "Browse Kioskra's award-winning portfolio of custom exhibition stalls, double-decker pavilions, turnkey physical builds, and premium 3D spatial renders executed across India.",

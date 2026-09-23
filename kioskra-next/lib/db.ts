@@ -19,6 +19,11 @@ if (!cached) {
 }
 
 export async function connectDB() {
+  if (!process.env.MONGODB_URI) {
+    console.warn("⚠️ MONGODB_URI is not defined in environment variables. Falling back to local/static data.");
+    return null;
+  }
+
   if (cached?.conn && mongoose.connection.readyState === 1) {
     return cached.conn;
   }
@@ -26,8 +31,8 @@ export async function connectDB() {
   if (!cached?.promise || mongoose.connection.readyState === 0) {
     const opts = {
       dbName: "kioskra",
-      serverSelectionTimeoutMS: 5000, // Fail fast after 5 seconds instead of 30 seconds
-      connectTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 2000, // Fail fast after 2s if database server is not reachable
+      connectTimeoutMS: 2000,
     };
 
     cached!.promise = mongoose
@@ -37,9 +42,9 @@ export async function connectDB() {
         return mongooseInstance;
       })
       .catch((err) => {
-        console.error("❌ MongoDB Connection Error:", err.message);
+        console.warn("⚠️ MongoDB Connection Error (Falling back to local data):", err.message);
         cached!.promise = null; // Reset promise so subsequent requests can retry
-        throw err;
+        return null;
       });
   }
 
@@ -47,7 +52,7 @@ export async function connectDB() {
     cached!.conn = await cached!.promise;
   } catch (e) {
     cached!.promise = null;
-    throw e;
+    return null;
   }
 
   return cached!.conn;

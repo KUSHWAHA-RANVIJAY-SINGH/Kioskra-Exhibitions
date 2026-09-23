@@ -121,19 +121,9 @@ async function getExhibition(slug: string) {
   return mockEx ? JSON.parse(JSON.stringify(mockEx)) : null;
 }
 
-export async function generateStaticParams() {
-  let slugs = fallbackExhibitions.map((e) => ({ slug: e.slug }));
-  try {
-    await connectDB();
-    const dbExhibitions = await Exhibition.find({ status: "Published" }, { slug: 1 });
-    if (dbExhibitions && dbExhibitions.length > 0) {
-      slugs = dbExhibitions.map((e) => ({ slug: e.slug }));
-    }
-  } catch (error) {
-    // Ignore build database connection issues
-  }
-  return slugs;
-}
+
+export const dynamic = "force-dynamic";
+
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;

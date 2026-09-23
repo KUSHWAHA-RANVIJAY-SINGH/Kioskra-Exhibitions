@@ -84,19 +84,9 @@ async function getEvent(slug: string) {
   return mockEvent ? JSON.parse(JSON.stringify(mockEvent)) : null;
 }
 
-export async function generateStaticParams() {
-  let slugs = fallbackEvents.map((e) => ({ slug: e.slug }));
-  try {
-    await connectDB();
-    const dbEvents = await Event.find({ status: "Published" }, { slug: 1 });
-    if (dbEvents && dbEvents.length > 0) {
-      slugs = dbEvents.map((e) => ({ slug: e.slug }));
-    }
-  } catch (error) {
-    // Ignore build database connection issues
-  }
-  return slugs;
-}
+
+export const dynamic = "force-dynamic";
+
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;

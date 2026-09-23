@@ -8,6 +8,8 @@ import Event from "@/lib/models/Event";
 import { Calendar, MapPin, ArrowUpRight } from "lucide-react";
 import { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Upcoming Trade Shows & Exhibitions 2026 - 2027 | Kioskra",
   description: "Plan your trade show stall design and fabrication. Explore major upcoming exhibitions in Delhi, Mumbai, Bengaluru, and get customized 3D spatial concepts with Kioskra.",

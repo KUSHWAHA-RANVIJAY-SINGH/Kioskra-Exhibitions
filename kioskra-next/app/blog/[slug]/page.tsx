@@ -8,6 +8,8 @@ import { blogPostsData, BlogPost } from "@/lib/blogData";
 import connectDB from "@/lib/db";
 import Blog from "@/lib/models/Blog";
 
+export const dynamic = "force-dynamic";
+
 interface BlogPostPageProps {
   params: Promise<{
     slug: string;
