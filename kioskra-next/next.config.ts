@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["three"],
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -17,10 +16,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["mongoose"],
-  webpack: (config) => {
-    return config;
-  },
+  serverExternalPackages: ["three", "@react-three/fiber", "@react-three/drei", "three-stdlib", "mongoose"],
 };
 
 export default nextConfig;
