@@ -1,17 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
+import BoothConfigurator from "@/components/BoothConfigurator";
 import Section from "@/components/Section";
 import Heading from "@/components/Heading";
-
-const BoothConfigurator = dynamic(() => import("@/components/BoothConfigurator"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex items-center justify-center h-96 text-neutral-500 text-sm">
-      Loading 3D Configurator...
-    </div>
-  ),
-});
 
 export const metadata: Metadata = {
   title: "Interactive 3D Stall Configurator | Kioskra Exhibitions",

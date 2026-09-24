@@ -11,25 +11,21 @@ interface RichTextEditorProps {
   minHeight?: string;
 }
 
+const ReactQuill = dynamic(() => import("react-quill-new"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-48 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-xs text-white/40">
+      Loading Visual Editor...
+    </div>
+  ),
+});
+
 export default function RichTextEditor({
   value,
   onChange,
   placeholder = "Write your article content visually...",
   minHeight = "260px",
 }: RichTextEditorProps) {
-  // Dynamically import ReactQuill with ssr: false to prevent SSR document undefined error
-  const ReactQuill = useMemo(
-    () =>
-      dynamic(() => import("react-quill-new"), {
-        ssr: false,
-        loading: () => (
-          <div className="w-full h-48 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-xs text-white/40">
-            Loading Visual Editor...
-          </div>
-        ),
-      }),
-    []
-  );
 
   const modules = useMemo(
     () => ({

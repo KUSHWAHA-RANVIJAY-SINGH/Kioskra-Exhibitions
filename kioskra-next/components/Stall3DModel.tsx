@@ -3,7 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
-import { BoothConfigState } from "./BoothConfigurator";
+import type { BoothConfigState } from "@/types/booth";
 
 interface Stall3DModelProps {
   config: BoothConfigState;

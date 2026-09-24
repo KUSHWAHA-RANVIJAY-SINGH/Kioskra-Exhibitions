@@ -14,23 +14,8 @@ const Booth3DCanvas = dynamic(() => import("./Booth3DCanvas"), {
   ),
 });
 
-export interface BoothConfigState {
-  shape: "square" | "l-shape" | "open-three";
-  width: number;
-  depth: number;
-  height: number;
-  color: string;
-  flooring: "carpet" | "wooden" | "raised-platform";
-  features: {
-    led: boolean;
-    counter: boolean;
-    lounge: boolean;
-    shelves: boolean;
-    plants: boolean;
-    touchScreen: boolean;
-  };
-  tier: "octanorm" | "basic" | "premium" | "luxury";
-}
+import type { BoothConfigState } from "@/types/booth";
+export type { BoothConfigState };
 
 export const TIERS = [
   { id: "octanorm", label: "Octanorm / Modular", price: 5500, limit: 10, desc: "Modular aluminum system" },

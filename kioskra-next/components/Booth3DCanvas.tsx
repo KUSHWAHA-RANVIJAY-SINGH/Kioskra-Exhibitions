@@ -5,7 +5,7 @@ import { Canvas, useThree, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import Stall3DModel from "./Stall3DModel";
-import { BoothConfigState } from "./BoothConfigurator";
+import type { BoothConfigState } from "@/types/booth";
 
 // Type definitions for OrbitControls from Drei
 import type { OrbitControls as OrbitControlsImpl } from "three-stdlib";
