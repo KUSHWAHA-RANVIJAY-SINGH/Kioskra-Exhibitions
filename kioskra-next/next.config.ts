@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  serverExternalPackages: ["three", "@react-three/fiber", "@react-three/drei", "three-stdlib", "mongoose"],
+  serverExternalPackages: ["mongoose"],
 };
 
 export default nextConfig;

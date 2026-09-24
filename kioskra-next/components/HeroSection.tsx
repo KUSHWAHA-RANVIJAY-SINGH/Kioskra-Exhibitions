@@ -8,17 +8,17 @@ import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Sparkles } from "lu
 
 const sliderImages = [
   {
-    src: "/images/hero_slider_2.png",
+    src: "/images/hero_slider_2.webp",
     alt: "Modern Double-Decker Exhibition Stall",
     caption: "Double-Decker Spatial Engineering",
   },
   {
-    src: "/images/hero_slider_1.png",
+    src: "/images/hero_slider_1.webp",
     alt: "Minimalist Architectural Pavilion",
     caption: "Bespoke Exhibition Architecture",
   },
   {
-    src: "/images/Designs/51.png",
+    src: "/images/Designs/51.webp",
     alt: "Futuristic 3D Spatial Pavilion",
     caption: "Turnkey Trade Show Fabrication",
   },

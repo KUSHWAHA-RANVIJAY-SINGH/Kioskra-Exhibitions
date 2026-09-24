@@ -1261,7 +1261,7 @@ export default function AdminDashboardPage() {
                       {/* Hero image */}
                       <div className={`relative overflow-hidden bg-neutral-200 flex-shrink-0 ${idx === 0 ? "h-48 mt-6" : "h-44"}`}>
                         <img
-                          src={blog.heroImage || "/images/hero_slider_1.png"}
+                          src={blog.heroImage || "/images/hero_slider_1.webp"}
                           alt={blog.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

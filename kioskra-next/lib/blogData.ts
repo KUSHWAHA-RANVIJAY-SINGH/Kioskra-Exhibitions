@@ -26,7 +26,7 @@ export const blogPostsData: BlogPost[] = [
     publishDate: "September 4, 2026",
     readTime: "12 min read",
     author: "Kioskra Team",
-    heroImage: "/images/hero_slider_1.png",
+    heroImage: "/images/hero_slider_1.webp",
     excerpt: "Complete guide to upcoming 2026-2027 trade fairs across Bharat Mandapam (Pragati Maidan), Yashobhumi (IICC Dwarka), and India Expo Centre Greater Noida, plus a step-by-step exhibitor registration guide.",
     contentHtml: `
       <p class="lead-text">Delhi NCR is, without question, the exhibition capital of India. Between Bharat Mandapam (Pragati Maidan), Yashobhumi (IICC Dwarka), and the India Expo Centre & Mart in Greater Noida, the region hosts hundreds of trade fairs every year — covering everything from electronics and EVs to interiors, food, dairy, and defence.</p>
@@ -250,7 +250,7 @@ export const blogPostsData: BlogPost[] = [
     publishDate: "July 15, 2026",
     readTime: "8 min read",
     author: "Kioskra Team",
-    heroImage: "/images/hero_slider_2.png",
+    heroImage: "/images/hero_slider_2.webp",
     excerpt: "Understand the true cost of exhibition stall design and fabrication in Delhi NCR with tier-by-tier pricing, key cost drivers, and optimization strategies.",
     contentHtml: `
       <p class="lead-text">If you're planning to exhibit at a trade show, expo, or industry event in Delhi, one of the first questions you'll ask is: <strong>"How much does an exhibition stall cost?"</strong></p>
@@ -275,7 +275,7 @@ export const blogPostsData: BlogPost[] = [
     publishDate: "June 28, 2026",
     readTime: "6 min read",
     author: "Kioskra Team",
-    heroImage: "/images/Designs/1 (1).png",
+    heroImage: "/images/Designs/1 (1).webp",
     excerpt: "Discover the top 10 booth design trends transforming trade show experiences, from sustainable materials to immersive digital activations.",
     contentHtml: `
       <p class="lead-text">Discover the top 10 booth design trends transforming trade show experiences, from sustainable materials to immersive digital activations.</p>

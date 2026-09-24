@@ -55,9 +55,9 @@ export const metadata: Metadata = {
     canonical: "https://kioskra.com",
   },
   icons: {
-    icon: "/images/LOGOS/Kioskra Transparent.png",
-    shortcut: "/images/LOGOS/Kioskra Transparent.png",
-    apple: "/images/LOGOS/Kioskra Transparent.png",
+    icon: "/images/LOGOS/Kioskra Transparent.webp",
+    shortcut: "/images/LOGOS/Kioskra Transparent.webp",
+    apple: "/images/LOGOS/Kioskra Transparent.webp",
   },
   openGraph: {
     type: "website",
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     siteName: "Kioskra Exhibitions",
     images: [
       {
-        url: "/images/LOGOS/Kioskra Transparent.png",
+        url: "/images/LOGOS/Kioskra Transparent.webp",
         width: 800,
         height: 800,
         alt: "Kioskra Exhibitions Logo",

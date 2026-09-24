@@ -37,7 +37,7 @@ export default async function BlogListingPage() {
         heroImage:
           item.heroImage && item.heroImage.trim() !== ""
             ? item.heroImage
-            : "/images/hero_slider_1.png",
+            : "/images/hero_slider_1.webp",
       }));
     } else {
       try {

@@ -137,8 +137,8 @@ export default function Navbar() {
               <Image
                 src={
                   isDarkBackground
-                    ? "/images/LOGOS/Kioskra Transparent.png"
-                    : "/images/LOGOS/Kioskra Exhibition Logo White With Trasparent.png"
+                    ? "/images/LOGOS/Kioskra Transparent.webp"
+                    : "/images/LOGOS/Kioskra Exhibition Logo White With Trasparent.webp"
                 }
                 alt="Kioskra Logo Icon"
                 width={36}

@@ -49,7 +49,7 @@ export default function Footer() {
           <div className="lg:col-span-2 flex flex-col gap-4">
             <div className="flex items-center gap-2.5">
               <Image
-                src="/images/LOGOS/Kioskra Transparent.png"
+                src="/images/LOGOS/Kioskra Transparent.webp"
                 alt="Kioskra Logo"
                 width={32}
                 height={32}

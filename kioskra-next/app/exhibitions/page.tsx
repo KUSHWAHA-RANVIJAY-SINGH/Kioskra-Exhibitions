@@ -35,7 +35,7 @@ const fallbackExhibitions = [
     location: "New Delhi",
     venue: "Pragati Maidan",
     descriptionMarkdown: "ACETECH is Asia's leading exhibition on architecture, building materials, art, and design. It brings together architectural innovators and premium suppliers from across the globe.",
-    featuredImage: "/images/Designs/52.png",
+    featuredImage: "/images/Designs/52.webp",
     metaTitle: "Exhibition Stall Design for ACETECH Delhi 2026 | Kioskra",
     metaDescription: "Fabricate a custom exhibition stall for ACETECH Delhi 2026 with Kioskra. Premium 3D design and turnkey fabrication at Pragati Maidan.",
     status: "Published",
@@ -49,7 +49,7 @@ const fallbackExhibitions = [
     location: "Greater Noida",
     venue: "India Expo Mart",
     descriptionMarkdown: "The Auto Expo is India's flagship automotive exhibition, showcasing new vehicles, mobility solutions, green energy concepts, and manufacturing technologies.",
-    featuredImage: "/images/Designs/1 (2).png",
+    featuredImage: "/images/Designs/1 (2).webp",
     metaTitle: "Premium Booth Construction for Auto Expo 2027 | Kioskra",
     metaDescription: "Partner with Kioskra for bespoke booth fabrication at Auto Expo 2027, India Expo Mart. Get a customized 3D design quote.",
     status: "Published",
@@ -63,7 +63,7 @@ const fallbackExhibitions = [
     location: "New Delhi",
     venue: "Pragati Maidan",
     descriptionMarkdown: "Plastindia is a major global plastics forum showcasing the entire plastics industry ecosystem, polymer research, processing equipment, and sustainable recycling techniques.",
-    featuredImage: "/images/Designs/51.png",
+    featuredImage: "/images/Designs/51.webp",
     metaTitle: "Exhibition Stall Fabricator for Plastindia 2027 | Kioskra",
     metaDescription: "Custom booth design & structural fabrication for Plastindia 2027 at Pragati Maidan. Design your spatial journey with Kioskra.",
     status: "Published",
@@ -77,7 +77,7 @@ const fallbackExhibitions = [
     location: "Bengaluru",
     venue: "BIEC",
     descriptionMarkdown: "IMTEX showcases the latest advances in metal-cutting machine tools, manufacturing automation, and industrial robotics in South Asia, drawing cutting-edge engineering firms globally.",
-    featuredImage: "/images/Designs/1 (1).png",
+    featuredImage: "/images/Designs/1 (1).webp",
     metaTitle: "Turnkey Stall Construction for IMTEX 2027 | Kioskra",
     metaDescription: "Exhibiting at IMTEX 2027, BIEC Bengaluru? Get top-tier exhibition design and turnkey fabrication with Kioskra. Enquire now.",
     status: "Published",
@@ -155,7 +155,7 @@ export default async function ExhibitionsPage() {
                 {/* Featured Image */}
                 <div className="relative h-56 w-full overflow-hidden bg-neutral-900">
                   <Image
-                    src={exhibition.featuredImage || "/images/Designs/1 (1).png"}
+                    src={exhibition.featuredImage || "/images/Designs/1 (1).webp"}
                     alt={exhibition.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

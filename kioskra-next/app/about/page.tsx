@@ -31,14 +31,14 @@ export default function AboutPage() {
     {
       name: "Piyush Gupta",
       role: "Director of Design & Strategy",
-      image: "/images/piyush_gupta.png",
+      image: "/images/piyush_gupta.webp",
       bio: "Piyush heads the architectural design and spatial strategy division at Kioskra. With a focus on modern structural aesthetics and visual merchandising, he transforms raw corporate briefs into striking, high-impact spatial statements.",
       specialty: "Parametric Design, Client Relations & Spatial Planning",
     },
     {
       name: "Sourav Sharma",
       role: "Director of Production & Project Delivery",
-      image: "/images/sourav_sharma.png",
+      image: "/images/sourav_sharma.webp",
       bio: "Sourav oversees the workshop fabrication and execution phases. His extensive technical knowledge of metallurgy, timber craftsmanship, and structural safety ensure every pavilion is engineered flawlessly and handed over on time.",
       specialty: "On-ground logistics, structural engineering, safety compliance",
     },

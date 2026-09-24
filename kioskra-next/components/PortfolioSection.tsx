@@ -24,7 +24,7 @@ const projectsData: Project[] = [
     category: "3D Renders",
     clientName: "Prayag",
     location: "Pragati Maidan, New Delhi",
-    image: "/images/Designs/1 (1).png",
+    image: "/images/Designs/1 (1).webp",
     tag: "3D Render",
   },
   {
@@ -54,7 +54,7 @@ const projectsData: Project[] = [
     category: "Turnkey Solutions",
     clientName: "LG Electronics",
     location: "HITEX, Hyderabad",
-    image: "/images/Designs/51.png",
+    image: "/images/Designs/51.webp",
     tag: "Turnkey Solution",
   },
   {

@@ -24,7 +24,7 @@ export const projectsData: ProjectData[] = [
     venue: "Pragati Maidan, New Delhi",
     areaSize: "150 sqm",
     year: "2024",
-    heroImage: "/images/Designs/1 (1).png",
+    heroImage: "/images/Designs/1 (1).webp",
     galleryImages: [
       "/images/Designs/1 (10).jpeg",
       "/images/Designs/1 (11).jpeg",
@@ -64,7 +64,7 @@ export const projectsData: ProjectData[] = [
     venue: "Bengaluru, Karnataka",
     areaSize: "250 sqm",
     year: "2025",
-    heroImage: "/images/Designs/1 (2).png",
+    heroImage: "/images/Designs/1 (2).webp",
     galleryImages: [
       "/images/Designs/1 (13).jpeg",
       "/images/Designs/1 (14).jpeg",
@@ -84,7 +84,7 @@ export const projectsData: ProjectData[] = [
     venue: "HITEX, Hyderabad",
     areaSize: "180 sqm",
     year: "2023",
-    heroImage: "/images/Designs/51.png",
+    heroImage: "/images/Designs/51.webp",
     galleryImages: [
       "/images/Designs/1 (6).jpeg",
       "/images/Designs/1 (7).jpeg",

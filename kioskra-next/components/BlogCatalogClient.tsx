@@ -33,7 +33,7 @@ export default function BlogCatalogClient({ posts }: BlogCatalogClientProps) {
     publishDate: p?.publishDate || "September 2026",
     readTime: p?.readTime || "5 min read",
     author: p?.author || "Kioskra Team",
-    heroImage: p?.heroImage && p.heroImage.trim() !== "" ? p.heroImage : "/images/hero_slider_1.png",
+    heroImage: p?.heroImage && p.heroImage.trim() !== "" ? p.heroImage : "/images/hero_slider_1.webp",
     excerpt: p?.excerpt || "",
     contentHtml: p?.contentHtml || "",
   }));

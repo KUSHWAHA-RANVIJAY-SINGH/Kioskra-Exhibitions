@@ -32,7 +32,7 @@ const fallbackExhibitions = [
 
 ### Exhibitor Profile
 Exhibitors showcase innovations in lighting solutions, bath fittings, smart home automation, high-performance glazing, structural cladding, tile innovations, and modular interior systems.`,
-    featuredImage: "/images/Designs/52.png",
+    featuredImage: "/images/Designs/52.webp",
     metaTitle: "Exhibition Stall Design for ACETECH Delhi 2026 | Kioskra",
     metaDescription: "Fabricate a custom exhibition stall for ACETECH Delhi 2026 with Kioskra. Premium 3D design and turnkey fabrication at Pragati Maidan.",
     status: "Published",
@@ -54,7 +54,7 @@ Exhibitors showcase innovations in lighting solutions, bath fittings, smart home
 
 ### Exhibitor Profile
 Exhibitors range from multinational automotive manufacturers (OEMs) to EV startups, lithium-ion battery innovators, smart charging infrastructure brands, and advanced ADAS software developers.`,
-    featuredImage: "/images/Designs/1 (2).png",
+    featuredImage: "/images/Designs/1 (2).webp",
     metaTitle: "Premium Booth Construction for Auto Expo 2027 | Kioskra",
     metaDescription: "Partner with Kioskra for bespoke booth fabrication at Auto Expo 2027, India Expo Mart. Get a customized 3D design quote.",
     status: "Published",
@@ -76,7 +76,7 @@ Exhibitors range from multinational automotive manufacturers (OEMs) to EV startu
 
 ### Exhibitor Profile
 Exhibiting entities present blow molding machinery, bio-degradable polymer raw materials, masterbatches, advanced recycling equipment, and engineered plastics applications.`,
-    featuredImage: "/images/Designs/51.png",
+    featuredImage: "/images/Designs/51.webp",
     metaTitle: "Exhibition Stall Fabricator for Plastindia 2027 | Kioskra",
     metaDescription: "Custom booth design & structural fabrication for Plastindia 2027 at Pragati Maidan. Design your spatial journey with Kioskra.",
     status: "Published",
@@ -98,7 +98,7 @@ Exhibiting entities present blow molding machinery, bio-degradable polymer raw m
 
 ### Exhibitor Profile
 Exhibitors display CNC milling machines, industrial 3D printing equipment, precision toolings, metrology software, and smart factory IoT systems.`,
-    featuredImage: "/images/Designs/1 (1).png",
+    featuredImage: "/images/Designs/1 (1).webp",
     metaTitle: "Turnkey Stall Construction for IMTEX 2027 | Kioskra",
     metaDescription: "Exhibiting at IMTEX 2027, BIEC Bengaluru? Get top-tier exhibition design and turnkey fabrication with Kioskra. Enquire now.",
     status: "Published",
@@ -199,7 +199,7 @@ export default async function ExhibitionDetailPage({ params }: PageProps) {
       }
     },
     "image": [
-      exhibition.featuredImage || "https://kioskra.com/images/LOGOS/Kioskra%20Transparent.png"
+      exhibition.featuredImage || "https://kioskra.com/images/LOGOS/Kioskra%20Transparent.webp"
     ],
     "description": exhibition.metaDescription || `${exhibition.title} trade show at ${exhibition.venue}, ${exhibition.location}.`,
     "organizer": {
@@ -222,7 +222,7 @@ export default async function ExhibitionDetailPage({ params }: PageProps) {
         {/* Background Image with overlay */}
         <div className="absolute inset-0 z-0 opacity-40">
           <Image
-            src={exhibition.featuredImage || "/images/Designs/1 (1).png"}
+            src={exhibition.featuredImage || "/images/Designs/1 (1).webp"}
             alt={exhibition.title}
             fill
             priority

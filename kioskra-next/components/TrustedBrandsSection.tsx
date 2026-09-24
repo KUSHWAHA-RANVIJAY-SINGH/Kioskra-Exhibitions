@@ -4,18 +4,18 @@ import React from "react";
 import Image from "next/image";
 
 const clientLogos = [
-  { src: "/images/LOGOS/Livguard.png", alt: "Livguard" },
-  { src: "/images/LOGOS/Voltas.png", alt: "Voltas" },
-  { src: "/images/LOGOS/okaya-power-seeklogo.png", alt: "Okaya Power" },
-  { src: "/images/LOGOS/Milton.png", alt: "Milton" },
-  { src: "/images/LOGOS/Treo.png", alt: "Treo" },
-  { src: "/images/LOGOS/procook.png", alt: "ProCook" },
-  { src: "/images/LOGOS/Prayag_Logo.png", alt: "Prayag" },
-  { src: "/images/LOGOS/Servo.png", alt: "Servo" },
-  { src: "/images/LOGOS/Federal.png", alt: "Federal" },
-  { src: "/images/LOGOS/Livfast.png", alt: "Livfast" },
-  { src: "/images/LOGOS/BOB card.png", alt: "BOBCARD" },
-  { src: "/images/LOGOS/tulip Logo.png", alt: "Tulip Diagnostics" },
+  { src: "/images/LOGOS/Livguard.webp", alt: "Livguard" },
+  { src: "/images/LOGOS/Voltas.webp", alt: "Voltas" },
+  { src: "/images/LOGOS/okaya-power-seeklogo.webp", alt: "Okaya Power" },
+  { src: "/images/LOGOS/Milton.webp", alt: "Milton" },
+  { src: "/images/LOGOS/Treo.webp", alt: "Treo" },
+  { src: "/images/LOGOS/procook.webp", alt: "ProCook" },
+  { src: "/images/LOGOS/Prayag_Logo.webp", alt: "Prayag" },
+  { src: "/images/LOGOS/Servo.webp", alt: "Servo" },
+  { src: "/images/LOGOS/Federal.webp", alt: "Federal" },
+  { src: "/images/LOGOS/Livfast.webp", alt: "Livfast" },
+  { src: "/images/LOGOS/BOB card.webp", alt: "BOBCARD" },
+  { src: "/images/LOGOS/tulip Logo.webp", alt: "Tulip Diagnostics" },
 ];
 
 export default function TrustedBrandsSection() {

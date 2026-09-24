@@ -36,7 +36,7 @@ export default function BlogPageClient({ posts }: BlogPageClientProps) {
         heroImage:
           p?.heroImage && p.heroImage.trim() !== ""
             ? p.heroImage
-            : "/images/hero_slider_1.png",
+            : "/images/hero_slider_1.webp",
         excerpt: p?.excerpt || "",
       })),
     [posts]
