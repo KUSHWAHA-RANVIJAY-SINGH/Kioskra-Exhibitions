@@ -40,6 +40,7 @@ export async function connectDB() {
   if (!cached?.promise || mongoose.connection.readyState === 0) {
     const opts = {
       dbName: "kioskra",
+      family: 4, // Force IPv4 to prevent IPv6 TLS handshake timeouts
       serverSelectionTimeoutMS: 5000,
       connectTimeoutMS: 5000,
       bufferCommands: false, // Disable Mongoose buffering so operations fail fast if not connected

@@ -23,7 +23,9 @@ function setMemoryCount(val: number): number {
 
 async function getGlobalCount(): Promise<number> {
   try {
-    await connectDB();
+    const conn = await connectDB();
+    if (!conn) return getMemoryCount();
+
     let visitorDoc = await Visitor.findById("kioskra-main");
     if (!visitorDoc) {
       visitorDoc = await Visitor.create({
@@ -32,7 +34,6 @@ async function getGlobalCount(): Promise<number> {
         lastUpdated: new Date(),
       });
     } else if (visitorDoc.count < 576) {
-      // Upgrade count to starting base 576 if lower
       visitorDoc.count = 576;
       visitorDoc.lastUpdated = new Date();
       await visitorDoc.save();
@@ -46,24 +47,25 @@ async function getGlobalCount(): Promise<number> {
 
 async function incrementGlobalCount(): Promise<number> {
   try {
-    await connectDB();
-    let visitorDoc = await Visitor.findById("kioskra-main");
-    if (!visitorDoc) {
-      visitorDoc = await Visitor.create({
-        _id: "kioskra-main",
-        count: 576,
-        lastUpdated: new Date(),
-      });
-    } else {
-      if (visitorDoc.count < 576) {
-        visitorDoc.count = 576;
-      } else {
-        visitorDoc.count += 1;
-      }
-      visitorDoc.lastUpdated = new Date();
+    const conn = await connectDB();
+    if (!conn) {
+      const nextCount = getMemoryCount() + 1;
+      return setMemoryCount(nextCount);
+    }
+
+    const visitorDoc = await Visitor.findOneAndUpdate(
+      { _id: "kioskra-main" },
+      { $inc: { count: 1 }, $set: { lastUpdated: new Date() } },
+      { returnDocument: "after", upsert: true }
+    );
+
+    let finalCount = visitorDoc.count;
+    if (finalCount < 576) {
+      finalCount = 576;
+      visitorDoc.count = 576;
       await visitorDoc.save();
     }
-    return setMemoryCount(visitorDoc.count);
+    return setMemoryCount(finalCount);
   } catch (dbErr) {
     console.warn("POST /api/visitors DB update warning:", dbErr);
     const nextCount = getMemoryCount() + 1;

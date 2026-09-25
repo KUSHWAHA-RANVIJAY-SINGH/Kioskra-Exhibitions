@@ -23,7 +23,7 @@ export default function PortfolioShowcasePage() {
     if (isHeroHovered) return;
     const timer = setInterval(() => {
       setHeroIndex((prev) => (prev + 1) % featuredProjects.length);
-    }, 5000);
+    }, 2000);
     return () => clearInterval(timer);
   }, [isHeroHovered, featuredProjects.length]);
 
@@ -388,6 +388,18 @@ function ProjectCard({
   onOpen: () => void;
 }) {
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-slide images every 2 seconds in a loop
+  useEffect(() => {
+    if (project.images.length <= 1 || isHovered) return;
+
+    const interval = setInterval(() => {
+      setCurrentImgIndex((prev) => (prev + 1) % project.images.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, [project.images.length, isHovered]);
 
   const prevImage = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -407,6 +419,8 @@ function ProjectCard({
   return (
     <div
       onClick={onOpen}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       className="group relative aspect-[16/10] rounded-[22px] overflow-hidden bg-stone-200 border border-stone-300/80 cursor-pointer shadow-sm hover:shadow-xl transition-all duration-300"
     >
       {/* Slider Track */}
